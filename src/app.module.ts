@@ -3,8 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BookModule } from './book/book.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,8 +11,6 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    BookModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
