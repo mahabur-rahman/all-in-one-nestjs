@@ -10,6 +10,6 @@ export class TagsService {
 
   // find all tags
   findAll(): string[] {
-    return ['1'];
+    return ['hello', 'world']
   }
 }
