@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from './schemas/tag.schema';
 import mongoose from 'mongoose';
 import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 
 @Injectable()
 export class TagsService {
@@ -41,5 +42,37 @@ export class TagsService {
     }
 
     return this.TagModel.findById(id);
+  }
+
+  // update tag
+  async updateTag(
+    id: string,
+    updateTagDto: UpdateTagDto,
+  ): Promise<UpdateTagDto> {
+    const modifyTag = await this.TagModel.findByIdAndUpdate(id, updateTagDto, {
+      new: true,
+      runValidators: true,
+    });
+
+    return modifyTag;
+  }
+
+  // delete tag
+  async deleteTag(id: string): Promise<Tag> {
+    const isValidId = mongoose.isValidObjectId(id);
+
+    if (!isValidId) {
+      throw new BadRequestException(`Please enter correct id.`);
+    }
+
+    const tag = await this.TagModel.findById(id);
+
+    if (!tag) {
+      throw new NotFoundException(`Tag is not found!`);
+    }
+
+    await this.TagModel.findByIdAndDelete(id);
+
+    return tag;
   }
 }

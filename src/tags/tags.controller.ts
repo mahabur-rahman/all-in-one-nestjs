@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { Tag } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 
 @Controller('tags')
 export class TagsController {
@@ -23,8 +32,25 @@ export class TagsController {
   }
 
   // get single tag
-  @Get('/:id')
+  @Get(':id')
   async findOne(@Param('id') id: string): Promise<Tag> {
     return await this.tagsService.findOne(id);
+  }
+
+  // update tag
+  @Put(':id')
+  async updateTag(
+    @Param('id')
+    id: string,
+    @Body()
+    updateTagDto: UpdateTagDto,
+  ) {
+    return this.tagsService.updateTag(id, updateTagDto);
+  }
+
+  // delete tag
+  @Delete(':id')
+  async deleteTag(@Param('id') id: string): Promise<Tag> {
+    return this.tagsService.deleteTag(id);
   }
 }
