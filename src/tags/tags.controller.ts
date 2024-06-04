@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { Tag } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -20,5 +20,11 @@ export class TagsController {
   @Get()
   async findAll(): Promise<{ tags: Tag[] }> {
     return this.tagsService.findAll();
+  }
+
+  // get single tag
+  @Get('/:id')
+  async findOne(@Param('id') id: string): Promise<Tag> {
+    return await this.tagsService.findOne(id);
   }
 }
