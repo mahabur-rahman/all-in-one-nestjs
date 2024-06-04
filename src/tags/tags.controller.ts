@@ -1,6 +1,6 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get } from '@nestjs/common';
 import { TagsService } from './tags.service';
+import { Tag } from './schemas/tag.schema';
 
 @Controller('tags')
 export class TagsController {
@@ -8,7 +8,7 @@ export class TagsController {
 
   //  find all tags
   @Get()
-  findAll(): string[] {
+  async findAll(): Promise<{ tags: Tag[] }> {
     return this.tagsService.findAll();
   }
 }
