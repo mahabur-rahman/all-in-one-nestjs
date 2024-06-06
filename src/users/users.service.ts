@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/auth/schemas/user.schema';
+import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +31,51 @@ export class UsersService {
     }
 
     return { user: userProfile };
+  }
+
+  //   get all users
+  async findAll(): Promise<{ users: User[] }> {
+    const users = await this.userModel.find();
+
+    return { users };
+  }
+
+  // get single user
+  async getUserById(id: string): Promise<User> {
+    return await this.userModel.findById(id);
+  }
+
+  // update user
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    // Fetch the user from the database
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Update user fields based on DTO
+    if (updateUserDto.userName) {
+      user.userName = updateUserDto.userName;
+    }
+    if (updateUserDto.email) {
+      user.email = updateUserDto.email;
+    }
+    if (updateUserDto.bio) {
+      user.bio = updateUserDto.bio;
+    }
+    if (updateUserDto.profileImg) {
+      user.profileImg = updateUserDto.profileImg;
+    }
+    if (updateUserDto.password) {
+      // Hash the new password before saving
+      user.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    // Save updated user to the database
+    await user.save();
+
+    // Return updated user document
+    return user;
   }
 }
