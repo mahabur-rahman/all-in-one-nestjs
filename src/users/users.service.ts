@@ -10,11 +10,24 @@ export class UsersService {
     private userModel: Model<User>,
   ) {}
 
-  // current user profile
-  async getProfile(user: any): Promise<User> {
-    const currentUser = user.toObject();
-    delete currentUser.password;
+  // ----------- current user profile -----------
+  //   async getProfile(user: any): Promise<User> {
+  //     const currentUser = user.toObject();
+  //     delete currentUser.password;
 
-    return currentUser;
+  //     return currentUser;
+  //   }
+
+  // ----------- current user profile -----------
+  async getProfile(user: User): Promise<{ user: Partial<User> }> {
+    // Fetch the user from the database and convert to a plain object
+    const userProfile = await this.userModel.findById(user._id).lean();
+
+    // Remove the password field
+    if (userProfile) {
+      delete userProfile.password;
+    }
+
+    return { user: userProfile };
   }
 }
