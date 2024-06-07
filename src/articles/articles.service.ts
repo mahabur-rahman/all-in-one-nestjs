@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Article } from './schemas/article.schema';
 import mongoose from 'mongoose';
@@ -38,5 +38,15 @@ export class ArticlesService {
     }
 
     return uniqueSlug;
+  }
+
+  // find article using :slug
+  async findArticleBySlug(slug: string): Promise<Article> {
+    const article = await this.articleModel.findOne({ slug });
+    if (!article) {
+      throw new NotFoundException(`Article not found.`);
+    }
+
+    return article;
   }
 }
