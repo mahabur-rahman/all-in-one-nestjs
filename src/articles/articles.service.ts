@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Article } from './schemas/article.schema';
 import mongoose from 'mongoose';
@@ -47,6 +52,30 @@ export class ArticlesService {
       throw new NotFoundException(`Article not found.`);
     }
 
+    return article;
+  }
+
+  // update article attached with :slug
+
+  // delete article using slug
+  async deleteArticleBySlug(slug: string, userId: string): Promise<Article> {
+    const article = await this.articleModel.findOne({ slug }).exec();
+
+    if (!article) {
+      throw new HttpException(
+        `Article doesn't exist!`,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    if (article.author.toString() !== userId.toString()) {
+      throw new HttpException(
+        `You do not have permission to delete this article!`,
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    await this.articleModel.deleteOne({ _id: article._id });
     return article;
   }
 }

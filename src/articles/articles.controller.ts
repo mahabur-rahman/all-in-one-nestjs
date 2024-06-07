@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -30,7 +31,23 @@ export class ArticlesController {
 
   // find article using :slug
   @Get(':slug')
-  async findArticle(@Param('slug') slug: string): Promise<Article> {
+  async findArticle(
+    @Param('slug')
+    slug: string,
+  ): Promise<Article> {
     return await this.articlesService.findArticleBySlug(slug);
+  }
+
+  // update article attached with :slug
+
+  // delete article using slug
+  @Delete(':slug')
+  async deleteArticle(
+    @Param('slug')
+    slug: string,
+    @Req()
+    req,
+  ): Promise<Article> {
+    return await this.articlesService.deleteArticleBySlug(slug, req.user._id);
   }
 }
