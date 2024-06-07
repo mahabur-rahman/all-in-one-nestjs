@@ -10,6 +10,7 @@ import mongoose from 'mongoose';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { User } from 'src/auth/schemas/user.schema';
 import slugify from 'slugify';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -55,7 +56,40 @@ export class ArticlesService {
     return article;
   }
 
-  // update article attached with :slug
+  // if update article title slug automatic updated
+  async updateArticleBySlug(
+    slug: string,
+    updateArticleDto: UpdateArticleDto,
+    userId: string,
+  ): Promise<Article> {
+    const article = await this.articleModel.findOne({ slug }).exec();
+
+    if (!article) {
+      throw new NotFoundException('Article not found.');
+    }
+
+    if (article.author.toString() !== userId.toString()) {
+      throw new HttpException(
+        'You do not have permission to update this article!',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    if (updateArticleDto.title && updateArticleDto.title !== article.title) {
+      const newSlug = await this.generateUniqueSlug(updateArticleDto.title);
+      const updatedArticle = {
+        ...updateArticleDto,
+        slug: newSlug,
+      };
+      Object.assign(article, updatedArticle);
+    } else {
+      Object.assign(article, updateArticleDto);
+    }
+
+    await article.save();
+
+    return article;
+  }
 
   // delete article using slug
   async deleteArticleBySlug(slug: string, userId: string): Promise<Article> {

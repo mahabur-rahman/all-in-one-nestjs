@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { ArticlesService } from './articles.service';
 import { Article } from './schemas/article.schema';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Controller('articles')
 @UseGuards(AuthGuard())
@@ -38,7 +40,19 @@ export class ArticlesController {
     return await this.articlesService.findArticleBySlug(slug);
   }
 
-  // update article attached with :slug
+  // if update article title slug automatic updated
+  @Put(':slug')
+  async updateArticle(
+    @Param('slug') slug: string,
+    @Body() updateArticleDto: UpdateArticleDto,
+    @Req() req,
+  ): Promise<Article> {
+    return await this.articlesService.updateArticleBySlug(
+      slug,
+      updateArticleDto,
+      req.user._id,
+    );
+  }
 
   // delete article using slug
   @Delete(':slug')
