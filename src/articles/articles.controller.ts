@@ -43,7 +43,8 @@ export class ArticlesController {
   // if update article title slug automatic updated
   @Put(':slug')
   async updateArticle(
-    @Param('slug') slug: string,
+    @Param('slug')
+    slug: string,
     @Body() updateArticleDto: UpdateArticleDto,
     @Req() req,
   ): Promise<Article> {
@@ -63,5 +64,11 @@ export class ArticlesController {
     req,
   ): Promise<Article> {
     return await this.articlesService.deleteArticleBySlug(slug, req.user._id);
+  }
+
+  // Read All articles
+  @Get()
+  async findAll(): Promise<Article[]> {
+    return await this.articlesService.findAll();
   }
 }

@@ -112,4 +112,10 @@ export class ArticlesService {
     await this.articleModel.deleteOne({ _id: article._id });
     return article;
   }
+
+  // Read All articles
+  async findAll(): Promise<Article[]> {
+    const articles = await this.articleModel.find().populate('author').exec();
+    return articles;
+  }
 }
