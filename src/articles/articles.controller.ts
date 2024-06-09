@@ -71,11 +71,15 @@ export class ArticlesController {
   // Read All articles
   @Get()
   async findAll(
-    @Query() query: ExpressQuery,
+    @Query('offset') offset?: number,
+    @Query('limit') limit?: number,
+    @Query('tag') tag?: string,
+    @Query('user') user?: string, // Add user query parameter
   ): Promise<{ articles: Article[]; articlesCount: number }> {
-    const articles = await this.articlesService.findAll(query);
+    const query = { offset, limit, tag, user }; // Create query object to pass to service methods
 
-    const articlesCount = await this.articlesService.countAll(query);
+    const articles = await this.articlesService.findAll(query as any);
+    const articlesCount = await this.articlesService.countAll(query as any);
 
     return { articles, articlesCount };
   }

@@ -116,9 +116,7 @@ export class ArticlesService {
 
   // Read All articles
   async findAll(query: Query): Promise<Article[]> {
-    const { limit, offset, tag, ...findQuery } = query;
-
-    console.log(tag);
+    const { limit, offset, tag, user, ...findQuery } = query;
 
     let mongooseQuery = this.articleModel.find(findQuery);
 
@@ -134,24 +132,42 @@ export class ArticlesService {
       mongooseQuery = mongooseQuery.where('tagList').in([tag]);
     }
 
-    const articles = await mongooseQuery
-      .populate('author')
-      .sort({ createdAt: -1 })
-      .exec();
-    return articles;
+    if (user) {
+      mongooseQuery = mongooseQuery.populate({
+        path: 'author',
+        match: { userName: user }, // Filter based on user query parameter
+      });
+    } else {
+      mongooseQuery = mongooseQuery.populate('author');
+    }
+
+    const articles = await mongooseQuery.sort({ createdAt: -1 }).exec();
+
+    // Filter out articles where author is null (if no match found)
+    return articles.filter((article) => article.author !== null);
   }
 
-  // Count all articles matching the query
   async countAll(query: Query): Promise<number> {
-    const { limit, offset, tag, ...countQuery } = query;
-    const countBuilder = this.articleModel.countDocuments(countQuery);
+    const { limit, offset, tag, user, ...countQuery } = query;
 
-    // If tag is provided, apply tagList filter to count query
+    let countBuilder = this.articleModel.countDocuments(countQuery);
+
     if (tag) {
-      countBuilder.where('tagList').in([tag]);
+      countBuilder = countBuilder.where('tagList').in([tag]);
+    }
+
+    if (user) {
+      countBuilder = countBuilder.populate({
+        path: 'author',
+        match: { userName: user }, // Filter based on user query parameter
+      });
+    } else {
+      countBuilder = countBuilder.populate('author');
     }
 
     const count = await countBuilder.exec();
+
+    // Return the count of matching articles
     return count;
   }
 }
