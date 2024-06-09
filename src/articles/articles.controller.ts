@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { Article } from './schemas/article.schema';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('articles')
 @UseGuards(AuthGuard())
@@ -68,7 +70,13 @@ export class ArticlesController {
 
   // Read All articles
   @Get()
-  async findAll(): Promise<Article[]> {
-    return await this.articlesService.findAll();
+  async findAll(
+    @Query() query: ExpressQuery,
+  ): Promise<{ articles: Article[]; articlesCount: number }> {
+    const articles = await this.articlesService.findAll(query);
+
+    const articlesCount = await this.articlesService.countAll(query);
+
+    return { articles, articlesCount };
   }
 }

@@ -11,6 +11,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { User } from 'src/auth/schemas/user.schema';
 import slugify from 'slugify';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class ArticlesService {
@@ -114,8 +115,23 @@ export class ArticlesService {
   }
 
   // Read All articles
-  async findAll(): Promise<Article[]> {
-    const articles = await this.articleModel.find().populate('author').exec();
+  async findAll(query: Query): Promise<Article[]> {
+    const { limit } = query;
+
+    let mongooseQuery = this.articleModel.find();
+
+    if (limit) {
+      mongooseQuery = mongooseQuery.limit(+limit);
+    }
+
+    const articles = await mongooseQuery.populate('author').exec();
     return articles;
+  }
+
+  async countAll(query: Query): Promise<number> {
+    const { limit, ...countQuery } = query;
+
+    const count = await this.articleModel.countDocuments(countQuery).exec();
+    return count;
   }
 }
