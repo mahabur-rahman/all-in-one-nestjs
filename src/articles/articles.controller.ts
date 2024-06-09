@@ -73,8 +73,6 @@ export class ArticlesController {
   async findAll(
     @Query() query: ExpressQuery,
   ): Promise<{ articles: Article[]; articlesCount: number }> {
-    console.log(query);
-
     const articles = await this.articlesService.findAll(query);
 
     const articlesCount = await this.articlesService.countAll(query);

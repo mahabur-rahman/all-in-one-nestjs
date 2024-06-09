@@ -116,7 +116,9 @@ export class ArticlesService {
 
   // Read All articles
   async findAll(query: Query): Promise<Article[]> {
-    const { limit, offset, ...findQuery } = query;
+    const { limit, offset, tag, ...findQuery } = query;
+
+    console.log(tag);
 
     let mongooseQuery = this.articleModel.find(findQuery);
 
@@ -128,15 +130,28 @@ export class ArticlesService {
       mongooseQuery = mongooseQuery.limit(+limit);
     }
 
-    const articles = await mongooseQuery.populate('author').exec();
+    if (tag) {
+      mongooseQuery = mongooseQuery.where('tagList').in([tag]);
+    }
+
+    const articles = await mongooseQuery
+      .populate('author')
+      .sort({ createdAt: -1 })
+      .exec();
     return articles;
   }
 
   // Count all articles matching the query
   async countAll(query: Query): Promise<number> {
-    const { limit, offset, ...countQuery } = query;
+    const { limit, offset, tag, ...countQuery } = query;
+    const countBuilder = this.articleModel.countDocuments(countQuery);
 
-    const count = await this.articleModel.countDocuments(countQuery).exec();
+    // If tag is provided, apply tagList filter to count query
+    if (tag) {
+      countBuilder.where('tagList').in([tag]);
+    }
+
+    const count = await countBuilder.exec();
     return count;
   }
 }
