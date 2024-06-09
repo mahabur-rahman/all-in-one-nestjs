@@ -116,9 +116,13 @@ export class ArticlesService {
 
   // Read All articles
   async findAll(query: Query): Promise<Article[]> {
-    const { limit } = query;
+    const { limit, offset, ...findQuery } = query;
 
-    let mongooseQuery = this.articleModel.find();
+    let mongooseQuery = this.articleModel.find(findQuery);
+
+    if (offset) {
+      mongooseQuery = mongooseQuery.skip(+offset);
+    }
 
     if (limit) {
       mongooseQuery = mongooseQuery.limit(+limit);
@@ -128,8 +132,9 @@ export class ArticlesService {
     return articles;
   }
 
+  // Count all articles matching the query
   async countAll(query: Query): Promise<number> {
-    const { limit, ...countQuery } = query;
+    const { limit, offset, ...countQuery } = query;
 
     const count = await this.articleModel.countDocuments(countQuery).exec();
     return count;
