@@ -188,6 +188,7 @@ export class ArticlesService {
 
     article.favoritedBy.push(user._id);
     article.favoritesCount += 1;
+    article.favorites = true;
     await article.save();
 
     return article;
@@ -211,6 +212,7 @@ export class ArticlesService {
 
     article.favoritedBy.splice(userIndex, 1);
     article.favoritesCount -= 1;
+    article.favorites = false;
     await article.save();
 
     return article;

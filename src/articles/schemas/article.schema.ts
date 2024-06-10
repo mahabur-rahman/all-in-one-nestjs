@@ -29,6 +29,9 @@ export class Article {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   favoritedBy: User[];
+
+  @Prop({ default: false })
+  favorites: boolean;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
