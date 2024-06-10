@@ -53,6 +53,12 @@ export class UsersController {
 
   // get single user
   @Get(':id')
+  // swagger setup
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: 'Get single user' })
+  @ApiUnauthorizedResponse({
+    description: 'UnAuthorized, login first access this endpoint!',
+  })
   async getUserById(
     @Param('id')
     id: string,
@@ -62,6 +68,12 @@ export class UsersController {
 
   // update user
   @Put(':id')
+  // swagger setup
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: 'Modify single user' })
+  @ApiUnauthorizedResponse({
+    description: 'UnAuthorized, login first access this endpoint!',
+  })
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -71,6 +83,12 @@ export class UsersController {
 
   // delete user
   @Delete(':id')
+  // swagger setup
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ description: 'Delete user success!' })
+  @ApiUnauthorizedResponse({
+    description: 'UnAuthorized, login first access this endpoint!',
+  })
   async deleteUser(
     @Param('id')
     id: string,
