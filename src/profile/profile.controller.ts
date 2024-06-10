@@ -6,12 +6,13 @@ import { User } from 'src/auth/schemas/user.schema';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  // get Profile
+  // get Profile using dynamic userName
   @Get(':username')
   async getProfileByUsername(
     @Param('username')
     username: string,
   ): Promise<User> {
+    console.log(username);
     return this.profileService.getProfileByUsername(username);
   }
 }
