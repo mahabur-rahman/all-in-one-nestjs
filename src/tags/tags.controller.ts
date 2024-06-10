@@ -11,15 +11,23 @@ import { TagsService } from './tags.service';
 import { Tag } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('tags')
+// swagger setup
 @ApiTags('Access Tag endpoint')
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
   // create tags
   @Post('/create')
+  // swagger setup
+  @ApiCreatedResponse({ description: 'Create tag successfully!' })
+  @ApiBadRequestResponse({ description: 'Bad request!' })
   async createTag(
     @Body()
     crateTagDto: CreateTagDto,
