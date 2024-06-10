@@ -15,7 +15,7 @@ import { Article } from './schemas/article.schema';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Query as ExpressQuery } from 'express-serve-static-core';
+// import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('articles')
 @UseGuards(AuthGuard())
@@ -74,13 +74,19 @@ export class ArticlesController {
     @Query('offset') offset?: number,
     @Query('limit') limit?: number,
     @Query('tag') tag?: string,
-    @Query('user') user?: string, // Add user query parameter
+    @Query('user') user?: string,
   ): Promise<{ articles: Article[]; articlesCount: number }> {
-    const query = { offset, limit, tag, user }; // Create query object to pass to service methods
+    const query = { offset, limit, tag, user };
 
     const articles = await this.articlesService.findAll(query as any);
     const articlesCount = await this.articlesService.countAll(query as any);
 
     return { articles, articlesCount };
+  }
+
+  // like an article
+  @Post(':slug/like')
+  async likeArticle(@Param('slug') slug: string, @Req() req): Promise<Article> {
+    return await this.articlesService.likeArticle(slug, req.user);
   }
 }

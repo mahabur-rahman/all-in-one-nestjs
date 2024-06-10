@@ -135,7 +135,7 @@ export class ArticlesService {
     if (user) {
       mongooseQuery = mongooseQuery.populate({
         path: 'author',
-        match: { userName: user }, // Filter based on user query parameter
+        match: { userName: user },
       });
     } else {
       mongooseQuery = mongooseQuery.populate('author');
@@ -148,6 +148,7 @@ export class ArticlesService {
   }
 
   async countAll(query: Query): Promise<number> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { limit, offset, tag, user, ...countQuery } = query;
 
     let countBuilder = this.articleModel.countDocuments(countQuery);
@@ -159,7 +160,7 @@ export class ArticlesService {
     if (user) {
       countBuilder = countBuilder.populate({
         path: 'author',
-        match: { userName: user }, // Filter based on user query parameter
+        match: { userName: user },
       });
     } else {
       countBuilder = countBuilder.populate('author');
@@ -167,7 +168,28 @@ export class ArticlesService {
 
     const count = await countBuilder.exec();
 
-    // Return the count of matching articles
     return count;
+  }
+
+  // like an article
+  async likeArticle(slug: string, user: User): Promise<Article> {
+    const article = await this.articleModel.findOne({ slug });
+
+    if (!article) {
+      throw new NotFoundException(`Article not found.`);
+    }
+
+    if (article.favoritedBy.includes(user._id)) {
+      throw new HttpException(
+        `You have already liked this article!`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    article.favoritedBy.push(user._id);
+    article.favoritesCount += 1;
+    await article.save();
+
+    return article;
   }
 }
