@@ -89,4 +89,13 @@ export class ArticlesController {
   async likeArticle(@Param('slug') slug: string, @Req() req): Promise<Article> {
     return await this.articlesService.likeArticle(slug, req.user);
   }
+
+  // dislike an article
+  @Post(':slug/dislike')
+  async dislikeArticle(
+    @Param('slug') slug: string,
+    @Req() req,
+  ): Promise<Article> {
+    return await this.articlesService.dislikeArticle(slug, req.user);
+  }
 }

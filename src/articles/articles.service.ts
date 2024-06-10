@@ -192,4 +192,27 @@ export class ArticlesService {
 
     return article;
   }
+
+  // dislike an article
+  async dislikeArticle(slug: string, user: User): Promise<Article> {
+    const article = await this.articleModel.findOne({ slug }).exec();
+
+    if (!article) {
+      throw new NotFoundException('Article not found.');
+    }
+
+    const userIndex = article.favoritedBy.indexOf(user._id);
+    if (userIndex === -1) {
+      throw new HttpException(
+        'You have not liked this article!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    article.favoritedBy.splice(userIndex, 1);
+    article.favoritesCount -= 1;
+    await article.save();
+
+    return article;
+  }
 }
