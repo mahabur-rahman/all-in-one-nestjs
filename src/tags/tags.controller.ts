@@ -37,18 +37,27 @@ export class TagsController {
 
   //  find all tags
   @Get()
+  // swagger setup
+  @ApiCreatedResponse({ description: 'Get all tag successfully!' })
+  @ApiBadRequestResponse({ description: 'Bad request!' })
   async findAll(): Promise<{ tags: Tag[] }> {
     return this.tagsService.findAll();
   }
 
   // get single tag
   @Get(':id')
+  // swagger setup
+  @ApiCreatedResponse({ description: 'Get single tag successfully!' })
+  @ApiBadRequestResponse({ description: 'Bad request!' })
   async findOne(@Param('id') id: string): Promise<Tag> {
     return await this.tagsService.findOne(id);
   }
 
   // update tag
   @Put(':id')
+  // swagger setup
+  @ApiCreatedResponse({ description: 'Modify tag successfully!' })
+  @ApiBadRequestResponse({ description: 'Bad request!' })
   async updateTag(
     @Param('id')
     id: string,
@@ -60,6 +69,9 @@ export class TagsController {
 
   // delete tag
   @Delete(':id')
+  // swagger setup
+  @ApiCreatedResponse({ description: 'Delete tag successfully!' })
+  @ApiBadRequestResponse({ description: 'Bad request!' })
   async deleteTag(@Param('id') id: string): Promise<Tag> {
     return this.tagsService.deleteTag(id);
   }
