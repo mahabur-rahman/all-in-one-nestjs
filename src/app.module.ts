@@ -3,12 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TagsModule } from './tags/tags.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { ArticlesModule } from './articles/articles.module';
-import { ProfileModule } from './profile/profile.module';
-
+import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,11 +11,7 @@ import { ProfileModule } from './profile/profile.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    TagsModule,
-    AuthModule,
-    UsersModule,
-    ArticlesModule,
-    ProfileModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
