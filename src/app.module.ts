@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -11,7 +10,6 @@ import { EventsModule } from './events/events.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
