@@ -15,6 +15,9 @@ export class Lesson {
 
   @Prop()
   endDate: string;
+
+  @Prop()
+  students: string[];
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

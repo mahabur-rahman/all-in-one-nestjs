@@ -20,6 +20,7 @@ export class LessonService {
       name,
       startDate,
       endDate,
+      students: [],
     });
 
     return await newLesson.save();
@@ -44,5 +45,16 @@ export class LessonService {
   //   get all lessons
   async getAllLessons(): Promise<Lesson[]> {
     return await this.lessonModel.find();
+  }
+
+  // assign students to lesson
+  async assignStudentToLesson(
+    lessonId: string,
+    studentsIds: string[],
+  ): Promise<Lesson> {
+    const lesson = await this.lessonModel.findOne({ id: lessonId });
+    lesson.students = [...lesson.students, ...studentsIds];
+
+    return await lesson.save();
   }
 }
