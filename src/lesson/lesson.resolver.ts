@@ -19,7 +19,7 @@ export class LessonResolver {
     return this.lessonService.getLessonById(id);
   }
 
-  // get all lesson 
+  // get all lesson
   @Query(() => [LessonType])
   getLessons() {
     return this.lessonService.getAllLessons();
