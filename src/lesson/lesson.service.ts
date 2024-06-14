@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { Lesson } from './schemas/lesson.schema';
 import { v4 as uuid } from 'uuid';
+import { CreateLessonDto } from './dto/create-lesson.dto';
 
 @Injectable()
 export class LessonService {
@@ -12,11 +13,8 @@ export class LessonService {
   ) {}
 
   //   create lesson
-  async createLesson(
-    name: string,
-    startDate: string,
-    endDate: string,
-  ): Promise<Lesson> {
+  async createLesson(createLessonInput: CreateLessonDto): Promise<Lesson> {
+    const { name, startDate, endDate } = createLessonInput;
     const newLesson = await this.lessonModel.create({
       id: uuid(),
       name,
@@ -41,5 +39,10 @@ export class LessonService {
     }
 
     return lesson;
+  }
+
+  //   get all lessons
+  async getAllLessons(): Promise<Lesson[]> {
+    return await this.lessonModel.find();
   }
 }
