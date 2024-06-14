@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { AppResolver } from './app.resolver'; // Import your resolver
+import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
-import { UserModule } from './users/user.module';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { UserModule } from './users/user.module';
       autoSchemaFile: true,
       playground: true,
     }),
-    UserModule,
+    LessonModule,
   ],
   providers: [AppResolver, AppService],
 })
