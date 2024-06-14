@@ -1,4 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { isValidObjectId, Model } from 'mongoose';
+import { Lesson } from './schemas/lesson.schema';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class LessonService {}
+export class LessonService {
+  constructor(
+    @InjectModel(Lesson.name)
+    private readonly lessonModel: Model<Lesson>,
+  ) {}
+
+  //   create lesson
+  async createLesson(
+    name: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Lesson> {
+    const newLesson = await this.lessonModel.create({
+      id: uuid(),
+      name,
+      startDate,
+      endDate,
+    });
+
+    return await newLesson.save();
+  }
+
+  //   get single lesson using id
+  async getLessonById(id: string): Promise<Lesson> {
+    let lesson: Lesson | null;
+
+    if (isValidObjectId(id)) {
+      lesson = await this.lessonModel.findById({ _id: id });
+    } else {
+      lesson = await this.lessonModel.findOne({ id });
+    }
+    if (!lesson) {
+      throw new NotFoundException(`Lesson ${id} not found`);
+    }
+
+    return lesson;
+  }
+}
