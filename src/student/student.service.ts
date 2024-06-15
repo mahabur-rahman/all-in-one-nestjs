@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { Student } from './schemas/student.schema';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Injectable()
 export class StudentService {
@@ -43,6 +44,26 @@ export class StudentService {
     if (!student) {
       throw new NotFoundException(`Student with id ${id} not found`);
     }
+    return student;
+  }
+
+  // update student :id
+  async updateStudent(
+    id: string,
+    updateStudentDto: UpdateStudentDto,
+  ): Promise<Student> {
+    const { firstName, lastName } = updateStudentDto;
+
+    const student = await this.studentModel.findByIdAndUpdate(
+      { _id: id },
+      { firstName, lastName },
+      { new: true },
+    );
+
+    if (!student) {
+      throw new NotFoundException(`Student with id ${id} not found`);
+    }
+
     return student;
   }
 }

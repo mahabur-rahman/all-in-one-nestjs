@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { StudentService } from './student.service';
 import { StudentType } from './types/student.type';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Resolver()
 export class StudentResolver {
@@ -31,5 +32,14 @@ export class StudentResolver {
   @Mutation(() => StudentType)
   async deleteStudent(@Args('id') id: string) {
     return this.studentService.deleteStudent(id);
+  }
+
+  // update student :id
+  @Mutation(() => StudentType)
+  async updateStudent(
+    @Args('id') id: string,
+    @Args('updateStudent') updateStudentDto: UpdateStudentDto,
+  ) {
+    return this.studentService.updateStudent(id, updateStudentDto);
   }
 }
