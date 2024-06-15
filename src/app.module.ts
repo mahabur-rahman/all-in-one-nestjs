@@ -6,7 +6,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { LessonModule } from './lesson/lesson.module';
-import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { StudentModule } from './student/student.module';
       playground: true,
     }),
     LessonModule,
-    StudentModule,
   ],
   providers: [AppResolver, AppService],
 })
