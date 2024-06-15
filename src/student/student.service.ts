@@ -38,4 +38,9 @@ export class StudentService {
 
     return student;
   }
+
+  // when i create lesson resolve also students and access to student properties
+  async getManyStudentProperties(studentIds: string[]): Promise<Student[]> {
+    return await this.studentModel.find({ id: { $in: studentIds } }).exec();
+  }
 }
