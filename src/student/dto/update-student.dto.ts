@@ -3,13 +3,13 @@ import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class UpdateStudentDto {
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 }
