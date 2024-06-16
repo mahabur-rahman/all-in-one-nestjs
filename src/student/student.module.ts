@@ -9,5 +9,6 @@ import { StudentSchema } from './schemas/student.schema';
     MongooseModule.forFeature([{ name: 'Student', schema: StudentSchema }]),
   ],
   providers: [StudentResolver, StudentService],
+  exports: [StudentService],
 })
 export class StudentModule {}

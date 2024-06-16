@@ -14,13 +14,14 @@ export class LessonService {
 
   //   create lesson
   async createLesson(createLessonDto: CreateLessonDto): Promise<Lesson> {
-    const { name, startDate, endDate } = createLessonDto;
+    const { name, startDate, endDate, students } = createLessonDto;
 
     const newLesson = await this.lessonModel.create({
       id: uuid(),
       name,
       startDate,
       endDate,
+      students
     });
 
     return await newLesson.save();
@@ -39,5 +40,16 @@ export class LessonService {
   //   delete lesson
   async deleteLesson(id: string): Promise<Lesson> {
     return await this.lessonModel.findByIdAndDelete({ _id: id });
+  }
+
+  // assign students to lesson
+  async assignStudentsToLesson(
+    lessonId: string,
+    studentsIds: string[],
+  ): Promise<Lesson> {
+    const lesson = await this.lessonModel.findOne({ id: lessonId });
+    lesson.students = [...lesson.students, ...studentsIds];
+
+    return await lesson.save();
   }
 }
