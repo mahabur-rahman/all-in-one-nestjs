@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { LessonStatus } from '../schema/lesson.schema';
 import {
   IsDateString,
@@ -50,4 +50,7 @@ export class CreateLessonDto {
   @IsNotEmpty()
   @IsOptional()
   status?: LessonStatus;
+
+  @Field(() => [ID], { defaultValue: [] })
+  students: string[];
 }

@@ -3,6 +3,7 @@ import { LessonService } from './lesson.service';
 import { LessonType } from './types/lesson.type';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { AssignStudentsToLessonDto } from './dto/assign-studentTo-lesson.dto';
 
 @Resolver(() => LessonType)
 export class LessonResolver {
@@ -12,7 +13,7 @@ export class LessonResolver {
   @Mutation(() => LessonType)
   async createLesson(
     @Args('createLessonDto') createLessonDto: CreateLessonDto,
-  ): Promise<LessonType> {
+  ) {
     return this.lessonService.createLesson(createLessonDto);
   }
 
@@ -41,5 +42,15 @@ export class LessonResolver {
     @Args('updateLesson') updateLessonDto: UpdateLessonDto,
   ): Promise<LessonType> {
     return this.lessonService.updateLesson(id, updateLessonDto);
+  }
+
+  // assign students to lesson (parent : Lesson)
+  @Mutation(() => LessonType)
+  async assignStudentsToLesson(
+    @Args('assignStudentsToLesson')
+    assignStudentsToLesson: AssignStudentsToLessonDto,
+  ) {
+    const { lessonId, studentIds } = assignStudentsToLesson;
+    return this.lessonService.assignStudentsToLesson(lessonId, studentIds);
   }
 }

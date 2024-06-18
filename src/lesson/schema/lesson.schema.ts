@@ -31,6 +31,9 @@ export class Lesson extends Document {
 
   @Prop({ enum: LessonStatus, default: LessonStatus.ONGOING })
   status: LessonStatus; // e.g., 'planned', 'ongoing', 'completed'
+
+  @Prop()
+  students: string[];
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

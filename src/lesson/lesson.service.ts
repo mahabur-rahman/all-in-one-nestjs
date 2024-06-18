@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Lesson, LessonStatus } from './schema/lesson.schema';
+import { Lesson } from './schema/lesson.schema';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { LessonType } from './types/lesson.type';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
@@ -14,30 +14,30 @@ export class LessonService {
   ) {}
 
   //   create lesson
-  async createLesson(createLessonDto: CreateLessonDto): Promise<LessonType> {
+  async createLesson(createLessonDto: CreateLessonDto): Promise<Lesson> {
     const {
       lessonName,
-      description,
-      instructor,
       startDate,
       endDate,
-      duration,
+      instructor,
       status,
+      description,
+      duration,
+      students,
     } = createLessonDto;
 
-    const newLesson = new this.lessonModel({
+    const newLesson = await this.lessonModel.create({
       lessonName,
-      description,
+      startDate,
+      endDate,
       instructor,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+      status,
+      description,
       duration,
-      status: status || LessonStatus.ONGOING, // Default to LessonStatus.ONGOING if status is not provided
+      students,
     });
 
-    const savedLesson = await newLesson.save();
-
-    return savedLesson.toObject() as LessonType;
+    return await newLesson.save();
   }
 
   //   get lesson using :id
@@ -77,6 +77,22 @@ export class LessonService {
 
     const updatedLesson = await lesson.save();
 
+    return updatedLesson.toObject() as LessonType;
+  }
+
+  // assign students to lesson
+  async assignStudentsToLesson(
+    lessonId: string,
+    studentIds: string[],
+  ): Promise<LessonType> {
+    const lesson = await this.lessonModel.findById(lessonId).exec();
+
+    if (!lesson) {
+      throw new NotFoundException(`Lesson with ID ${lessonId} not found`);
+    }
+
+    lesson.students = [...lesson.students, ...studentIds];
+    const updatedLesson = await lesson.save();
     return updatedLesson.toObject() as LessonType;
   }
 }

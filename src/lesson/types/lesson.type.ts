@@ -1,5 +1,6 @@
 import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { LessonStatus } from '../schema/lesson.schema';
+import { StudentType } from '../../student/types/student.type';
 
 // Register the LessonStatus enum with GraphQL
 registerEnumType(LessonStatus, {
@@ -31,4 +32,7 @@ export class LessonType {
 
   @Field(() => LessonStatus)
   status: LessonStatus;
+
+  @Field(() => [StudentType])
+  students: string[];
 }
