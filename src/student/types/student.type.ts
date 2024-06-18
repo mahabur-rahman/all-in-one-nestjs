@@ -3,8 +3,8 @@ import { Gender } from '../schema/student.schema';
 
 @ObjectType('Student')
 export class StudentType {
-  @Field(() => ID)
-  _id: string;
+  @Field(() => ID, { nullable: true })
+  _id?: string;
 
   @Field()
   name: string;
