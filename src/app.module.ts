@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -20,6 +21,8 @@ import { AppService } from './app.service';
       autoSchemaFile: true,
       playground: true,
     }),
+
+    LessonModule,
   ],
   providers: [AppResolver, AppService],
 })
