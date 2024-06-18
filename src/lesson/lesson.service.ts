@@ -38,4 +38,11 @@ export class LessonService {
 
     return savedLesson.toObject() as LessonType;
   }
+
+  //   get lesson using :id
+  async getLessonById(id: string): Promise<LessonType> {
+    const lesson = await this.lessonModel.findById(id).exec();
+
+    return lesson.toObject() as LessonType;
+  }
 }
