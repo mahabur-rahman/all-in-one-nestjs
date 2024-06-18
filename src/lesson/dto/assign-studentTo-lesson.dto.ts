@@ -5,6 +5,6 @@ export class AssignStudentsToLessonDto {
   @Field(() => ID)
   lessonId: string;
 
-  @Field(() => [ID])
+  @Field((type) => [ID])
   studentIds: string[];
 }

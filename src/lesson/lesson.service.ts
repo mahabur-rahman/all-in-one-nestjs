@@ -83,16 +83,11 @@ export class LessonService {
   // assign students to lesson
   async assignStudentsToLesson(
     lessonId: string,
-    studentIds: string[],
-  ): Promise<LessonType> {
-    const lesson = await this.lessonModel.findById(lessonId).exec();
+    studentsIds: string[],
+  ): Promise<Lesson> {
+    const lesson = await this.lessonModel.findOne({ _id: lessonId });
+    lesson.students = [...lesson.students, ...studentsIds];
 
-    if (!lesson) {
-      throw new NotFoundException(`Lesson with ID ${lessonId} not found`);
-    }
-
-    lesson.students = [...lesson.students, ...studentIds];
-    const updatedLesson = await lesson.save();
-    return updatedLesson.toObject() as LessonType;
+    return await lesson.save();
   }
 }

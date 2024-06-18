@@ -1,9 +1,9 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Gender } from '../schema/student.schema';
 
 @ObjectType('Student')
 export class StudentType {
-  @Field(() => ID, { nullable: true })
+  @Field()
   _id?: string;
 
   @Field()

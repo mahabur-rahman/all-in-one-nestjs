@@ -44,13 +44,13 @@ export class LessonResolver {
     return this.lessonService.updateLesson(id, updateLessonDto);
   }
 
-  // assign students to lesson (parent : Lesson)
+  // assign students to lesson
   @Mutation(() => LessonType)
   async assignStudentsToLesson(
     @Args('assignStudentsToLesson')
-    assignStudentsToLesson: AssignStudentsToLessonDto,
+    assignStudentsToLessonDto: AssignStudentsToLessonDto,
   ) {
-    const { lessonId, studentIds } = assignStudentsToLesson;
+    const { lessonId, studentIds } = assignStudentsToLessonDto;
     return this.lessonService.assignStudentsToLesson(lessonId, studentIds);
   }
 }

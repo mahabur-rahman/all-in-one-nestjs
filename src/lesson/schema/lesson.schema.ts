@@ -30,7 +30,7 @@ export class Lesson extends Document {
   endDate: Date;
 
   @Prop({ enum: LessonStatus, default: LessonStatus.ONGOING })
-  status: LessonStatus; // e.g., 'planned', 'ongoing', 'completed'
+  status: LessonStatus;
 
   @Prop()
   students: string[];
