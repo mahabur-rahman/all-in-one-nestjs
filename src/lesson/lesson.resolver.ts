@@ -1,13 +1,25 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { LessonService } from './lesson.service';
 import { LessonType } from './types/lesson.type';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { AssignStudentsToLessonDto } from './dto/assign-studentTo-lesson.dto';
+import { StudentService } from 'src/student/student.service';
+import { Lesson } from './schema/lesson.schema';
 
 @Resolver(() => LessonType)
 export class LessonResolver {
-  constructor(private readonly lessonService: LessonService) {}
+  constructor(
+    private readonly lessonService: LessonService,
+    private readonly studentService: StudentService,
+  ) {}
 
   // create lesson
   @Mutation(() => LessonType)
@@ -52,5 +64,11 @@ export class LessonResolver {
   ) {
     const { lessonId, studentIds } = assignStudentsToLessonDto;
     return this.lessonService.assignStudentsToLesson(lessonId, studentIds);
+  }
+
+  // when i create lesson resolve also students and access all students properties
+  @ResolveField()
+  async students(@Parent() lesson: Lesson) {
+    return this.studentService.getManyStudentProperties(lesson.students);
   }
 }

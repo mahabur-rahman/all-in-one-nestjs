@@ -66,4 +66,9 @@ export class StudentService {
     const deletedStudent = await this.studentModel.findByIdAndDelete(id).exec();
     return deletedStudent;
   }
+
+  // After pushing students id in lesson when i create lesson resolve also students and access to student properties
+  async getManyStudentProperties(studentIds: string[]): Promise<Student[]> {
+    return await this.studentModel.find({ _id: { $in: studentIds } }).exec();
+  }
 }
