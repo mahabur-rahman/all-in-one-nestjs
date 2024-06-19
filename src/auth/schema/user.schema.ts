@@ -17,7 +17,7 @@ export class User extends Document {
   @Prop()
   lastName: string;
 
-  @Prop()
+  @Prop({ unique: [true, `Duplicate email entered.`] })
   email: string;
 
   @Prop()
