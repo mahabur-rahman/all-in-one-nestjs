@@ -14,9 +14,9 @@ export class AuthResolver {
     return this.authService.signUp(signUpDto);
   }
 
-  // login user
-  @Mutation(() => UserType)
-  login(@Args('loginDto') loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  @Mutation(() => String)
+  async login(@Args('loginDto') loginDto: LoginDto) {
+    const token = await this.authService.login(loginDto);
+    return token;
   }
 }
