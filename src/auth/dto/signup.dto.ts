@@ -1,6 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { UserRole } from '../schema/user.schema';
-import { IsEmail, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  MinLength,
+} from 'class-validator';
 
 @InputType()
 export class SignUpDto {
@@ -23,6 +29,7 @@ export class SignUpDto {
   password: string;
 
   @Field(() => UserRole, { defaultValue: UserRole.USER })
+  @IsOptional()
   @IsEnum(UserRole, { message: `Invalid role` })
-  role: UserRole;
+  role?: UserRole;
 }

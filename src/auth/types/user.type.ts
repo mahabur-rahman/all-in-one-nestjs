@@ -23,6 +23,6 @@ export class UserType {
   @Field()
   password: string;
 
-  @Field(() => UserRole)
-  role: UserRole;
+  @Field(() => UserRole, { nullable: true })
+  role?: UserRole;
 }
