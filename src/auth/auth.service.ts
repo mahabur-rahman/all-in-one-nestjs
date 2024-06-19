@@ -4,6 +4,7 @@ import { User } from './schema/user.schema';
 import { Model } from 'mongoose';
 import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,5 +37,24 @@ export class AuthService {
     });
 
     return newUser.save();
+  }
+
+  //   login user
+  async login(loginDto: LoginDto): Promise<User> {
+    const { email, password } = loginDto;
+
+    const user = await this.userModel.findOne({ email });
+
+    if (!user) {
+      throw new BadRequestException(`User does not exist!`);
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new BadRequestException(`Invalid credentials!`);
+    }
+
+    return user;
   }
 }
