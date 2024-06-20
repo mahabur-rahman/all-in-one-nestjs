@@ -1,10 +1,11 @@
-import { Query, Resolver, Context, Args } from '@nestjs/graphql';
+import { Query, Resolver, Context, Args, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { UserRole } from 'src/auth/schema/user.schema';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
 import { RoleGuard } from 'src/auth/utils/role.guard';
 import { UserType } from 'src/auth/types/user.type';
 import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Resolver(() => UserType)
 export class UserResolver {
@@ -29,7 +30,9 @@ export class UserResolver {
   dataForUser(@Context('user') user: any): string {
     return `Data for user: ` + JSON.stringify(user);
   }
-
+  //  ================================================================
+  // ================================================================
+  // ================================================================
   // Get All users
   @Query(() => [UserType])
   @UseGuards(JwtGuard, new RoleGuard(UserRole.ADMIN))
@@ -44,6 +47,19 @@ export class UserResolver {
     return await this.userService.getSingleUserById(id);
   }
 
-  // delete user :id 
-  
+  // delete user :id
+  @Mutation(() => UserType)
+  @UseGuards(JwtGuard)
+  async deleteUser(@Args('id') id: string) {
+    return this.userService.deleteUser(id);
+  }
+  // update user :id
+  @Mutation(() => UserType)
+  @UseGuards(JwtGuard)
+  async updateUser(
+    @Args('id') id: string,
+    @Args('updateUserDto') updateUserDto: UpdateUserDto,
+  ) {
+    return await this.userService.updateUser(id, updateUserDto);
+  }
 }

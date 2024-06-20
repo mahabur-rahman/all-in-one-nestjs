@@ -4,24 +4,24 @@ import { UserRole } from 'src/auth/schema/user.schema';
 
 @InputType()
 export class UpdateUserDto {
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   firstName: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   lastName: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   @IsEmail()
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   password: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   @IsEnum(UserRole)
   role: UserRole;
