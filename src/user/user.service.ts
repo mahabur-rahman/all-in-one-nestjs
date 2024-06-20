@@ -10,9 +10,14 @@ export class UserService {
     private userModel: Model<User>,
   ) {}
 
-  // find user by email
+  // find user by email for authentication
   async findUserByEmail(email: string) {
     const user = await this.userModel.findOne({ email: email });
     return user;
+  }
+
+  // get all users
+  async getAllUsers(): Promise<User[]> {
+    return await this.userModel.find().exec();
   }
 }

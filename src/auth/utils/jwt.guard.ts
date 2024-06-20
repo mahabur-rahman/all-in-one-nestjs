@@ -19,7 +19,7 @@ export class JwtGuard implements CanActivate {
       const token = authorizationHeader.split(' ')[1];
 
       try {
-        const user = jwt.verify(token, 'secretKey');
+        const user = jwt.verify(token, process.env.JWT_SECRET);
 
         ctx.user = user;
 

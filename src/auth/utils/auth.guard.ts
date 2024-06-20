@@ -5,9 +5,10 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from './schema/user.schema';
+import { User } from '../schema/user.schema';
+import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -19,8 +20,9 @@ export class AuthGuard implements CanActivate {
 
     const user: User = await this.userService.findUserByEmail(email);
 
-    if (user && user.password === password) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       ctx.user = user;
+
       return true;
     } else {
       throw new HttpException('UnAuthorized user!!!', HttpStatus.UNAUTHORIZED);

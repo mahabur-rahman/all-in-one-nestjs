@@ -1,11 +1,11 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-export const Roles = {
-  ADMIN: 'ADMIN',
-  USER: 'USER',
-  MODERATOR: 'MODERATOR',
-};
+// export const Roles = {
+//   ADMIN: 'ADMIN',
+//   USER: 'USER',
+//   MODERATOR: 'MODERATOR',
+// };
 
 export class RoleGuard implements CanActivate {
   public role: string;

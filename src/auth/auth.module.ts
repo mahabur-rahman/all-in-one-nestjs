@@ -4,14 +4,16 @@ import { AuthResolver } from './auth.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './schema/user.schema';
 import { UserModule } from 'src/user/user.module';
-import { AuthGuard } from './auth.guard';
-import { JwtGuard } from './jwt.guard';
+import { AuthGuard } from './utils/auth.guard';
+import { JwtGuard } from './utils/jwt.guard';
+import { RoleGuard } from './utils/role.guard';
 
 @Module({
   imports: [
     UserModule,
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
-  providers: [AuthResolver, AuthService, AuthGuard, JwtGuard],
+  providers: [AuthResolver, AuthService, AuthGuard, JwtGuard, RoleGuard],
+  exports: [AuthGuard, JwtGuard, RoleGuard],
 })
 export class AuthModule {}

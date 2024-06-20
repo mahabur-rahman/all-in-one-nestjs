@@ -3,11 +3,9 @@ import { AuthService } from './auth.service';
 import { UserType } from './types/user.type';
 import { SignUpDto } from './dto/signup.dto';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
 import { User } from './schema/user.schema';
 import * as jwt from 'jsonwebtoken';
-import { JwtGuard } from './jwt.guard';
-import { RoleGuard, Roles } from './role.guard';
+import { AuthGuard } from './utils/auth.guard';
 
 @Resolver(() => UserType)
 export class AuthResolver {
@@ -35,26 +33,8 @@ export class AuthResolver {
       password: user.password,
       role: user.role,
     };
-    return jwt.sign(payload, 'secretKey', { expiresIn: '2d' });
-  }
-
-  // after authentication successful
-  @Query(() => String)
-  @UseGuards(JwtGuard)
-  securedData(@Context('user') user: User): string {
-    return 'I am secured data after login' + JSON.stringify(user);
-  }
-
-  // role base checking
-  @Query(() => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.ADMIN))
-  dataForAdmin(@Context('user') user: User): string {
-    return 'Data for admin..' + JSON.stringify(user);
-  }
-
-  @Query(() => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.USER))
-  dataForUser(@Context('user') user: User): string {
-    return 'Data for user..' + JSON.stringify(user);
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES,
+    });
   }
 }
