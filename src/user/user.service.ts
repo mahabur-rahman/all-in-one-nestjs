@@ -20,4 +20,11 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     return await this.userModel.find().exec();
   }
+
+  // get single user :id
+  async getSingleUserById(id: string): Promise<User> {
+    return await this.userModel.findById(id).exec();
+  }
+
+    // delete user :id 
 }

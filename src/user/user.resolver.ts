@@ -1,4 +1,4 @@
-import { Query, Resolver, Context } from '@nestjs/graphql';
+import { Query, Resolver, Context, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { UserRole } from 'src/auth/schema/user.schema';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
@@ -36,4 +36,14 @@ export class UserResolver {
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }
+
+  // get single user :id
+  @Query(() => UserType)
+  @UseGuards(JwtGuard)
+  async getSingleUserById(@Args('id') id: string) {
+    return await this.userService.getSingleUserById(id);
+  }
+
+  // delete user :id 
+  
 }
