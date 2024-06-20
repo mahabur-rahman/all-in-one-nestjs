@@ -10,5 +10,5 @@ export class QuoteType {
   title: string;
 
   @Field(() => UserType)
-  createBy?: UserType 
+  createBy?: UserType;
 }

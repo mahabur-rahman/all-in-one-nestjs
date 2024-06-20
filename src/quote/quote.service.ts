@@ -50,7 +50,9 @@ export class QuoteService {
 
   //   get single quote :id
   async getSingleQuoteById(id: string): Promise<Quote> {
-    return await this.quoteModel.findById(id).exec();
+    return await this.quoteModel
+      .findById(id)
+      .populate('createBy', '_id firstName lastName email password role');
   }
 
   //   delete quote :id
