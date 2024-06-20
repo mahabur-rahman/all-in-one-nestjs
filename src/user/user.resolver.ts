@@ -63,4 +63,15 @@ export class UserResolver {
   ) {
     return await this.userService.updateUser(id, updateUserDto);
   }
+
+
+  // qoute added in user module
+  @Mutation(() => UserType)
+  @UseGuards(JwtGuard)
+  async updateUserQuotes(
+    @Args('userId') userId: string,
+    @Args('quotes', { type: () => [String] }) quotes: string[],
+  ) {
+    return await this.userService.updateUserQuotes(userId, quotes);
+  }
 }

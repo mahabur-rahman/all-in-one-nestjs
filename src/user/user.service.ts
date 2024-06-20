@@ -53,4 +53,20 @@ export class UserService {
     }
     return user;
   }
+
+  // qoute added in user module
+  async updateUserQuotes(userId: string, quotes: string[]): Promise<User> {
+    const user = await this.userModel
+      .findByIdAndUpdate(
+        userId,
+        { $addToSet: { quotes: { $each: quotes } } },
+        { new: true, runValidators: true },
+      )
+      .populate('quotes')
+      .exec();
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    return user;
+  }
 }
