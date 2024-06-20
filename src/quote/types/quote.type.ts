@@ -8,6 +8,6 @@ export class QuoteType {
   @Field()
   title: string;
 
-  @Field()
-  createBy: string;
+  @Field({ nullable: true })
+  createBy?: string;
 }

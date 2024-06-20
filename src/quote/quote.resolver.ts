@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { QuoteService } from './quote.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { QuoteType } from './types/quote.type';
@@ -15,7 +15,34 @@ export class QuoteResolver {
     @Args('createQuoteDto') createQuoteDto: CreateQuoteDto,
     @Context('user') user: any,
   ) {
-    console.log(`User : `, user._id);
-    return this.quoteService.createQuote(createQuoteDto);
+    return this.quoteService.createQuote(createQuoteDto, user._id);
+  }
+
+  // get all quotes
+  @Query(() => [QuoteType])
+  @UseGuards(JwtGuard)
+  async getAllQuotes() {
+    return await this.quoteService.getAllQuotes();
+  }
+
+  // get single quote :id
+  @Query(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async getSingleQuoteById(@Args('id') id: string) {
+    return await this.quoteService.getSingleQuoteById(id);
+  }
+
+  // delete quote :id
+  @Mutation(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async deleteQuote(@Args('id') id: string) {
+    return await this.quoteService.deleteQuoteById(id);
+  }
+
+  // update quote :id
+  @Mutation(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async updateQuote(@Args('id') id: string, @Args('title') title: string) {
+    return await this.quoteService.updateQuoteById(id, title);
   }
 }

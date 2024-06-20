@@ -1,15 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import mongoose from 'mongoose';
+
+import { User } from 'src/auth/schema/user.schema';
 
 @Schema({
   timestamps: true,
 })
-export class Quote extends Document {
+export class Quote {
   @Prop()
   title: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  createBy: MongooseSchema.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  createBy: User;
 }
 
 // Create the schema factory
