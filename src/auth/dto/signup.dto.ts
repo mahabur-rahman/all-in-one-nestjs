@@ -32,4 +32,7 @@ export class SignUpDto {
   @IsOptional()
   @IsEnum(UserRole, { message: `Invalid role` })
   role?: UserRole;
+
+  @Field(() => [String], { nullable: true })
+  quotes?: string[];
 }

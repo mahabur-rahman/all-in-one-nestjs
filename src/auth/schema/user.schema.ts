@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { Quote } from 'src/quote/schema/quote.schema';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -25,6 +26,9 @@ export class User extends Document {
 
   @Prop({ enum: UserRole, default: UserRole.USER })
   role: UserRole;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quote' }] })
+  quotes: Quote[];
 }
 
 // Create the schema factory

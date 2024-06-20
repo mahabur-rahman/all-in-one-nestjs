@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { UserRole } from '../schema/user.schema';
+import { QuoteType } from 'src/quote/types/quote.type';
 
 // Register the enum type for graphql
 registerEnumType(UserRole, {
@@ -25,4 +26,7 @@ export class UserType {
 
   @Field(() => UserRole, { nullable: true })
   role?: UserRole;
+
+  @Field(() => [QuoteType])
+  quotes: QuoteType[];
 }

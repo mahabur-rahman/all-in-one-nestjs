@@ -35,7 +35,8 @@ export class UserResolver {
   // ================================================================
   // Get All users
   @Query(() => [UserType])
-  @UseGuards(JwtGuard, new RoleGuard(UserRole.ADMIN))
+  // @UseGuards(JwtGuard, new RoleGuard(UserRole.ADMIN))
+  @UseGuards(JwtGuard)
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }

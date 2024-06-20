@@ -17,11 +17,14 @@ export class UserService {
     return user;
   }
 
+  //  ================================================================
+  // ================================================================
+  // ================================================================
   // get all users
   async getAllUsers(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find().populate('quotes').exec();
+    // Populate quotes field.exec();
   }
-
   // get single user :id
   async getSingleUserById(id: string): Promise<User> {
     return await this.userModel.findById(id).exec();
