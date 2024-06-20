@@ -9,10 +9,4 @@ export class UserService {
     @InjectModel(User.name)
     private userModel: Model<User>,
   ) {}
-
-  // find user by email
-  async findUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email: email });
-    return user;
-  }
 }
