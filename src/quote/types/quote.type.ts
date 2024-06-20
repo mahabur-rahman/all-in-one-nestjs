@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserType } from 'src/auth/types/user.type';
 
 @ObjectType('Quote')
 export class QuoteType {
@@ -8,6 +9,6 @@ export class QuoteType {
   @Field()
   title: string;
 
-  @Field({ nullable: true })
-  createBy?: string;
+  @Field(() => UserType)
+  createBy?: UserType 
 }

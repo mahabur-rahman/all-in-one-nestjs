@@ -23,9 +23,29 @@ export class QuoteService {
     return await newQuote.save();
   }
 
+  // =====================================================
+  // =====================================================
+  // =====================================================
+
+  // query getAllQuotes{
+  //   getAllQuotes{
+  //     _id
+  //     title
+  //     createBy{
+  //       _id
+  //       firstName
+  //       lastName
+  //       email
+  //       role
+  //     }
+  //   }
+  // }
   //   get all quotes
   async getAllQuotes(): Promise<Quote[]> {
-    return await this.quoteModel.find().exec();
+    return await this.quoteModel
+      .find()
+      .populate('createBy', '_id firstName lastName email password role') // Populate createBy with specific fields
+      .exec();
   }
 
   //   get single quote :id

@@ -18,6 +18,24 @@ export class QuoteResolver {
     return this.quoteService.createQuote(createQuoteDto, user._id);
   }
 
+  // =====================================================
+  // =====================================================
+  // =====================================================
+
+  // query getAllQuotes{
+  //   getAllQuotes{
+  //     _id
+  //     title
+  //     createBy{
+  //       _id
+  //       firstName
+  //       lastName
+  //       email
+  //       role
+  //     }
+  //   }
+  // }
+
   // get all quotes
   @Query(() => [QuoteType])
   @UseGuards(JwtGuard)
