@@ -64,7 +64,6 @@ export class UserResolver {
     return await this.userService.updateUser(id, updateUserDto);
   }
 
-
   // qoute added in user module
   @Mutation(() => UserType)
   @UseGuards(JwtGuard)
