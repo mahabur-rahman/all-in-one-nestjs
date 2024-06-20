@@ -1,7 +1,8 @@
 import { Query, Resolver, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/jwt.guard';
-import { RoleGuard, Roles } from 'src/auth/role.guard';
+import { RoleGuard } from 'src/auth/role.guard';
+import { UserRole } from 'src/auth/schema/user.schema';
 
 @Resolver(() => String)
 export class UserResolver {
@@ -13,14 +14,14 @@ export class UserResolver {
 
   // role for admin
   @Query(() => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.ADMIN))
+  @UseGuards(JwtGuard, new RoleGuard(UserRole.ADMIN))
   dataForAdmin(@Context('user') user: any): string {
     return `Data for admin: ` + JSON.stringify(user);
   }
 
   // role for user
   @Query(() => String)
-  @UseGuards(JwtGuard, new RoleGuard(Roles.USER))
+  @UseGuards(JwtGuard, new RoleGuard(UserRole.USER))
   dataForUser(@Context('user') user: any): string {
     return `Data for user: ` + JSON.stringify(user);
   }
