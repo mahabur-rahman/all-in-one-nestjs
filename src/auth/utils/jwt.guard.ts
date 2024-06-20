@@ -23,7 +23,7 @@ export class JwtGuard implements CanActivate {
 
         ctx.user = user;
 
-        console.log(user);
+        // console.log(user);
 
         return true;
       } catch (err) {

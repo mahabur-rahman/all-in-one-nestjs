@@ -7,6 +7,7 @@ import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { QuoteModule } from './quote/quote.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserModule } from './user/user.module';
 
     AuthModule,
     UserModule,
+    QuoteModule,
   ],
   providers: [AppResolver, AppService],
 })
