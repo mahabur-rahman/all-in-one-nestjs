@@ -9,6 +9,7 @@ import { JwtGuard } from 'src/auth/utils/jwt.guard';
 export class QuoteResolver {
   constructor(private readonly quoteService: QuoteService) {}
 
+  // create quote authenticated user
   @Mutation(() => QuoteType)
   @UseGuards(JwtGuard)
   async createQuote(

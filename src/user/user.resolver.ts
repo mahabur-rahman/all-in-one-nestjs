@@ -1,6 +1,6 @@
 import { Query, Resolver, Context, Args, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { UserRole } from 'src/auth/schema/user.schema';
+import { User, UserRole } from 'src/auth/schema/user.schema';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
 import { RoleGuard } from 'src/auth/utils/role.guard';
 import { UserType } from 'src/auth/types/user.type';
@@ -72,5 +72,16 @@ export class UserResolver {
     @Args('quotes', { type: () => [String] }) quotes: string[],
   ) {
     return await this.userService.updateUserQuotes(userId, quotes);
+  }
+
+  // get authenticated user profile
+  //  ================================================================
+  // ================================================================
+  // ================================================================
+
+  @Query(() => UserType)
+  @UseGuards(JwtGuard)
+  async getUserProfile(@Context('user') user: User) {
+    return user;
   }
 }
