@@ -45,7 +45,7 @@ export class QuoteResolver {
 
   // get single quote :id
   @Query(() => QuoteType)
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   async getSingleQuoteById(@Args('id') id: string) {
     return await this.quoteService.getSingleQuoteById(id);
   }
