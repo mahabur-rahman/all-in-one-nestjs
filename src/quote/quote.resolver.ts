@@ -38,7 +38,7 @@ export class QuoteResolver {
 
   // get all quotes
   @Query(() => [QuoteType])
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   async getAllQuotes() {
     return await this.quoteService.getAllQuotes();
   }
