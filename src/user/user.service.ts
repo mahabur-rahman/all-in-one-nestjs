@@ -69,4 +69,19 @@ export class UserService {
     }
     return user;
   }
+
+  // get authenticated user profile
+  //  ================================================================
+  // ================================================================
+  // ================================================================
+  async getUserProfile(user: User): Promise<User> {
+    const foundUser = await this.userModel
+      .findById(user._id)
+      .populate('quotes')
+      .exec();
+    if (!foundUser) {
+      throw new NotFoundException(`User with id ${user._id} not found`);
+    }
+    return foundUser;
+  }
 }

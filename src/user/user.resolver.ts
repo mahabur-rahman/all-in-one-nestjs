@@ -81,7 +81,7 @@ export class UserResolver {
 
   @Query(() => UserType)
   @UseGuards(JwtGuard)
-  async getUserProfile(@Context('user') user: User) {
-    return user;
+  async getUserProfile(@Context('user') user: any) {
+    return await this.userService.getUserProfile(user);
   }
 }
