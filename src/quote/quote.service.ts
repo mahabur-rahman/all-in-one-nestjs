@@ -41,10 +41,18 @@ export class QuoteService {
   //   }
   // }
   //   get all quotes
-  async getAllQuotes(): Promise<Quote[]> {
-    return await this.quoteModel
-      .find()
-      .populate('createBy', '_id firstName lastName email password role') // Populate createBy with specific fields
+  async getAllQuotes(title: string): Promise<Quote[]> {
+    let query = this.quoteModel.find();
+
+    if (title) {
+      query = query.where('title', {
+        $regex: title,
+        $options: 'i',
+      });
+    }
+
+    return await query
+      .populate('createBy', '_id firstName lastName email password role')
       .exec();
   }
 

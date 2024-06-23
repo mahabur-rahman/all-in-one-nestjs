@@ -40,8 +40,8 @@ export class QuoteResolver {
   // get all quotes
   @Query(() => [QuoteType])
   // @UseGuards(JwtGuard)
-  async getAllQuotes() {
-    return await this.quoteService.getAllQuotes();
+  async getAllQuotes(@Args('title', { nullable: true }) title?: string) {
+    return await this.quoteService.getAllQuotes(title);
   }
 
   // get single quote :id
