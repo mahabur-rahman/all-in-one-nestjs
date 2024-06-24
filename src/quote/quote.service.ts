@@ -132,4 +132,32 @@ export class QuoteService {
 
     return quote;
   }
+
+  // dislike quotes
+  async dislikeQuote(quoteId: string, userId: User): Promise<Quote> {
+    const quote = await this.quoteModel.findById(quoteId);
+
+    if (!quote) {
+      throw new NotFoundException('Quote not found');
+    }
+
+    const userIdString = userId.toString();
+
+    // Check if the user has already disliked the quote
+    if (quote.dislikes.some((id) => id && id.toString() === userIdString)) {
+      throw new BadRequestException('User has already disliked this quote');
+    }
+
+    // Add user to dislikes
+    quote.dislikes.push(userId);
+
+    // Remove user from likes if present
+    quote.likes = quote.likes.filter(
+      (likeUserId) => likeUserId && likeUserId.toString() !== userIdString,
+    );
+
+    await quote.save();
+
+    return quote;
+  }
 }

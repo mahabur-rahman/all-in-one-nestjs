@@ -80,4 +80,12 @@ export class QuoteResolver {
     const userId = user._id;
     return await this.quoteService.likeQuote(id, userId);
   }
+
+  // dislikes a quote
+  @Mutation(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async dislikeQuote(@Args('id') id: string, @Context('user') user: any) {
+    const userId = user._id;
+    return await this.quoteService.dislikeQuote(id, userId);
+  }
 }
