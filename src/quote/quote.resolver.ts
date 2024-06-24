@@ -60,10 +60,16 @@ export class QuoteResolver {
     return await this.quoteService.deleteQuoteById(id, userId);
   }
 
-  // update quote :id
+  // Update quote :id if user id matches with createBy in quote
   @Mutation(() => QuoteType)
   @UseGuards(JwtGuard)
-  async updateQuote(@Args('id') id: string, @Args('title') title: string) {
-    return await this.quoteService.updateQuoteById(id, title);
+  async updateQuote(
+    @Args('id') id: string,
+    @Args('title') title: string,
+    @Context('user') user: any,
+  ) {
+    // console.log(`user : `, user);
+    const userId = user._id;
+    return await this.quoteService.updateQuoteById(id, title, userId);
   }
 }

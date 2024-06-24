@@ -84,7 +84,22 @@ export class QuoteService {
   }
 
   //   update quote :id
-  async updateQuoteById(id: string, title: string): Promise<Quote> {
+  async updateQuoteById(
+    id: string,
+    title: string,
+    userId: string,
+  ): Promise<Quote> {
+    const quote = await this.quoteModel.findById(id).exec();
+
+    if (!quote) {
+      throw new NotFoundException(`Quote is not found with this ${id}`);
+    }
+
+    if (quote.createBy.toString() !== userId) {
+      throw new UnauthorizedException(
+        'You do not have permission to update this quote',
+      );
+    }
     return await this.quoteModel
       .findByIdAndUpdate(id, { title }, { new: true })
       .exec();
