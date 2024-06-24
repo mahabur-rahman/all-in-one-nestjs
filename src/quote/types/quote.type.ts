@@ -11,4 +11,10 @@ export class QuoteType {
 
   @Field(() => UserType)
   createBy?: UserType;
+
+  @Field(() => [UserType], { defaultValue: [] })
+  likes: UserType[];
+
+  @Field(() => [UserType], { defaultValue: [] })
+  dislikes: UserType[];
 }

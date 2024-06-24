@@ -72,4 +72,12 @@ export class QuoteResolver {
     const userId = user._id;
     return await this.quoteService.updateQuoteById(id, title, userId);
   }
+
+  // likes quote
+  @Mutation(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async likeQuote(@Args('id') id: string, @Context('user') user: any) {
+    const userId = user._id;
+    return await this.quoteService.likeQuote(id, userId);
+  }
 }

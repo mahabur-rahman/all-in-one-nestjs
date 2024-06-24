@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -7,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Quote } from './schema/quote.schema';
 import { Model } from 'mongoose';
 import { CreateQuoteDto } from './dto/create-quote.dto';
+import { User } from 'src/auth/schema/user.schema';
 
 @Injectable()
 export class QuoteService {
@@ -103,5 +105,31 @@ export class QuoteService {
     return await this.quoteModel
       .findByIdAndUpdate(id, { title }, { new: true })
       .exec();
+  }
+
+  //  likes quotes
+  async likeQuote(quoteId: string, userId: User): Promise<Quote> {
+    const quote = await this.quoteModel.findById(quoteId);
+
+    if (!quote) {
+      throw new NotFoundException('Quote not found');
+    }
+
+    // Check if the user has already liked the quote
+    if (quote.likes.includes(userId)) {
+      throw new BadRequestException('User has already liked this quote');
+    }
+
+    // Add user to likes
+    quote.likes.push(userId);
+
+    // Remove user from dislikes if present
+    quote.dislikes = quote.dislikes.filter(
+      (dislikeUserId) => dislikeUserId.toString() !== userId.toString(),
+    );
+
+    await quote.save();
+
+    return quote;
   }
 }

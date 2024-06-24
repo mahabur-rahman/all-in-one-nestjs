@@ -12,6 +12,18 @@ export class Quote {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   createBy: User;
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    default: [],
+  })
+  likes: User[];
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    default: [],
+  })
+  dislikes: User[];
 }
 
 // Create the schema factory
