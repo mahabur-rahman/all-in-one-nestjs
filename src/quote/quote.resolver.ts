@@ -51,11 +51,13 @@ export class QuoteResolver {
     return await this.quoteService.getSingleQuoteById(id);
   }
 
-  // delete quote :id
+  // delete quote :id if user id matches with createBy in quote
   @Mutation(() => QuoteType)
   @UseGuards(JwtGuard)
-  async deleteQuote(@Args('id') id: string) {
-    return await this.quoteService.deleteQuoteById(id);
+  async deleteQuote(@Args('id') id: string, @Context('user') user: any) {
+    // console.log(`user`, user);
+    const userId = user._id;
+    return await this.quoteService.deleteQuoteById(id, userId);
   }
 
   // update quote :id

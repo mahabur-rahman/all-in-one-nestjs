@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Quote } from './schema/quote.schema';
 import { Model } from 'mongoose';
@@ -63,8 +67,19 @@ export class QuoteService {
       .populate('createBy', '_id firstName lastName email password role');
   }
 
-  //   delete quote :id
-  async deleteQuoteById(id: string): Promise<Quote> {
+  // delete quote :id if user id matches with createBy in quote
+  async deleteQuoteById(id: string, userId: string): Promise<Quote> {
+    const quote = await this.quoteModel.findById(id).exec();
+    if (!quote) {
+      throw new NotFoundException(`Quote with id ${id} not found`);
+    }
+
+    if (quote.createBy.toString() !== userId) {
+      throw new UnauthorizedException(
+        'You do not have permission to delete this quote',
+      );
+    }
+
     return await this.quoteModel.findByIdAndDelete(id).exec();
   }
 
