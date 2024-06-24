@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { User } from './schema/user.schema';
 import * as jwt from 'jsonwebtoken';
 import { AuthGuard } from './utils/auth.guard';
+import { LoginResponseType } from './types/login.type';
 
 @Resolver(() => UserType)
 export class AuthResolver {
@@ -18,7 +19,7 @@ export class AuthResolver {
   }
 
   // login user
-  @Query(() => String)
+  @Query(() => LoginResponseType)
   @UseGuards(AuthGuard)
   login(
     @Args({ name: 'email', type: () => String }) email: string,
@@ -34,8 +35,13 @@ export class AuthResolver {
       role: user.role,
       // quotes: user.quotes,
     };
-    return jwt.sign(payload, process.env.JWT_SECRET, {
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES,
     });
+
+    return {
+      token,
+      user,
+    };
   }
 }
