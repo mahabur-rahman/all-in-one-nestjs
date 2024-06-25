@@ -24,4 +24,9 @@ export class CommentService {
     });
     return await newComment.save();
   }
+
+  // Get comments by quote reference
+  async getCommentsByQuote(quoteId: string): Promise<Comment[]> {
+    return await this.commentModel.find({ quoteRef: quoteId }).exec();
+  }
 }

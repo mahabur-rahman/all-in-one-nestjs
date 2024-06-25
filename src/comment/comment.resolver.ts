@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommentService } from './comment.service';
 import { CommentType } from './types/comment.type';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -18,5 +18,13 @@ export class CommentResolver {
   ) {
     const userId = user._id;
     return await this.commentService.createComment(createCommentDto, userId);
+  }
+
+  // Get comments by quote reference
+  @Query(() => [CommentType])
+  async getCommentsByQuote(
+    @Args('quoteId', { type: () => String }) quoteId: string,
+  ) {
+    return await this.commentService.getCommentsByQuote(quoteId);
   }
 }
