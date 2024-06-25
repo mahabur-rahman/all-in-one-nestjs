@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { QuoteModule } from './quote/quote.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { QuoteModule } from './quote/quote.module';
     AuthModule,
     UserModule,
     QuoteModule,
+    CommentModule,
   ],
   providers: [AppResolver, AppService],
 })
