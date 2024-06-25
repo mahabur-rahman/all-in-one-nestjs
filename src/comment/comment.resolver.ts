@@ -22,6 +22,7 @@ export class CommentResolver {
 
   // Get comments by quote reference
   @Query(() => [CommentType])
+  @UseGuards(JwtGuard)
   async getCommentsByQuote(
     @Args('quoteId', { type: () => String }) quoteId: string,
   ) {

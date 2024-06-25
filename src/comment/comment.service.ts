@@ -27,6 +27,9 @@ export class CommentService {
 
   // Get comments by quote reference
   async getCommentsByQuote(quoteId: string): Promise<Comment[]> {
-    return await this.commentModel.find({ quoteRef: quoteId }).exec();
+    return await this.commentModel
+      .find({ quoteRef: quoteId })
+      .populate('commentedBy')
+      .exec();
   }
 }
