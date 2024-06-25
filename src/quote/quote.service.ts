@@ -59,6 +59,8 @@ export class QuoteService {
 
     return await query
       .populate('createBy', '_id firstName lastName email password role')
+      .populate('likes', '_id firstName lastName email role')
+      .populate('dislikes', '_id firstName lastName email role')
       .exec();
   }
 
