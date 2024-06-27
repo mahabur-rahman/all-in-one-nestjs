@@ -34,6 +34,7 @@ import { PassportModule } from '@nestjs/passport';
     CommentModule,
     PassportModule,
   ],
+  controllers: [AppResolver],
   providers: [AppResolver, AppService, GoogleStrategy],
 })
 export class AppModule {}

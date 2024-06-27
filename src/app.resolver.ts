@@ -1,9 +1,9 @@
 import { Resolver, Query } from '@nestjs/graphql';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Get, UseGuards, Req } from '@nestjs/common';
+import { Get, UseGuards, Req, Controller } from '@nestjs/common';
 
-@Resolver()
+@Controller()
 export class AppResolver {
   constructor(private readonly appService: AppService) {}
 
