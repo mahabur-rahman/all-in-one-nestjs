@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { QuoteModule } from './quote/quote.module';
 import { CommentModule } from './comment/comment.module';
+import { GoogleStrategy } from './google.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -23,13 +25,15 @@ import { CommentModule } from './comment/comment.module';
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
+      context: ({ req }) => ({ req }), // include req in context for authentication
     }),
 
     AuthModule,
     UserModule,
     QuoteModule,
     CommentModule,
+    PassportModule,
   ],
-  providers: [AppResolver, AppService],
+  providers: [AppResolver, AppService, GoogleStrategy],
 })
 export class AppModule {}
