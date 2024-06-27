@@ -28,4 +28,23 @@ export class CommentResolver {
   ) {
     return await this.commentService.getCommentsByQuote(quoteId);
   }
+
+  // Delete a comment by comment ID
+  @Mutation(() => CommentType)
+  @UseGuards(JwtGuard)
+  async deleteComment(
+    @Args('commentId', { type: () => String }) commentId: string,
+  ) {
+    return await this.commentService.deleteComment(commentId);
+  }
+
+  // edit comment :id
+  @Mutation(() => CommentType)
+  @UseGuards(JwtGuard)
+  async editComment(
+    @Args('commentId', { type: () => String }) commentId: string,
+    @Args('content', { type: () => String }) content: string,
+  ) {
+    return this.commentService.editComment(commentId, content);
+  }
 }
