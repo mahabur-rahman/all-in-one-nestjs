@@ -27,7 +27,9 @@ export class AuthService {
     // Check if user already exists in db
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
-      throw new BadRequestException('Email already in use, try another email address!');
+      throw new BadRequestException(
+        'Email already in use, try another email address!',
+      );
     }
 
     // Hash password
@@ -44,6 +46,9 @@ export class AuthService {
 
     return newUser.save();
   }
+
+  // ========================= GOOGLE SIGNIN =========================
+  // npm i google-auth-library
 
   async googleLogin(token: string): Promise<any> {
     const ticket = await this.client.verifyIdToken({

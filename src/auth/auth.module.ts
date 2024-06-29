@@ -18,7 +18,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: {
         expiresIn: '3d', // Replace with your static expiry (e.g., '3d' for 3 days)
       },
-    })
+    }),
   ],
   providers: [AuthResolver, AuthService, AuthGuard, JwtGuard, RoleGuard],
   exports: [AuthService, AuthGuard, JwtGuard, RoleGuard],
