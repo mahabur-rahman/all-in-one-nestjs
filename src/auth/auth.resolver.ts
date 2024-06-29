@@ -44,4 +44,13 @@ export class AuthResolver {
       user,
     };
   }
+
+  // ========================= GOOGLE SIGNIN =========================
+  // npm i google-auth-library
+
+  // google signIn
+  @Mutation(() => LoginResponseType)
+  async googleLogin(@Args('token') token: string): Promise<LoginResponseType> {
+    return this.authService.googleLogin(token);
+  }
 }

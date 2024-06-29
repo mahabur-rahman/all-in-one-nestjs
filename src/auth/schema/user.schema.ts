@@ -24,8 +24,14 @@ export class User extends Document {
   @Prop()
   password: string;
 
+  @Prop()
+  image: string;
+
   @Prop({ enum: UserRole, default: UserRole.USER })
   role: UserRole;
+
+  @Prop({ unique: true })
+  googleId: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quote' }] })
   quotes: Quote[];

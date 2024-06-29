@@ -27,6 +27,9 @@ export class UserType {
   @Field(() => UserRole, { nullable: true })
   role?: UserRole;
 
+  @Field({ nullable: true })
+  image: string;
+
   @Field(() => [QuoteType])
   quotes: QuoteType[];
 }
