@@ -25,7 +25,7 @@ export class User extends Document {
   password: string;
 
   @Prop()
-  image: string;
+  image?: string;
 
   @Prop({ enum: UserRole, default: UserRole.USER })
   role: UserRole;
