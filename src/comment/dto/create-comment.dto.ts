@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsMongoId, IsNotEmpty, MaxLength } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 @InputType()
 export class CreateCommentDto {
@@ -12,4 +12,10 @@ export class CreateCommentDto {
   @IsNotEmpty()
   @IsMongoId()
   quoteRef: string;
+
+  // reply comment
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsMongoId()
+  parentCommentId?: string;
 }

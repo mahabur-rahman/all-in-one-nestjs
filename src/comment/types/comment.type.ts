@@ -15,4 +15,8 @@ export class CommentType {
 
   @Field(() => QuoteType)
   quoteRef: QuoteType;
+
+  // reply comment
+  @Field(() => [CommentType], { defaultValue: [] })
+  replies: CommentType[];
 }
