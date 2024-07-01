@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
@@ -8,7 +8,8 @@ export class CreateQuoteDto {
   @IsString()
   title: string;
 
-  // @Field()
-  // @IsEmpty({ message: `You can not pass user ID!` })
-  // createBy: string;
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsArray()
+  images?: string[];
 }

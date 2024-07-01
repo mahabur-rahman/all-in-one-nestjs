@@ -17,4 +17,7 @@ export class QuoteType {
 
   @Field(() => [UserType], { defaultValue: [] })
   dislikes: UserType[];
+
+  @Field(() => [String], { nullable: true })
+  images?: string[];
 }

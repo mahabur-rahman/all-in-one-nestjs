@@ -21,6 +21,8 @@ export class CommentType {
   replies: ReplyType[];
 }
 
+// reply comment
+
 @ObjectType('Reply')
 export class ReplyType {
   @Field()

@@ -24,6 +24,12 @@ export class Quote {
     default: [],
   })
   dislikes: User[];
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  images: string[];
 }
 
 // Create the schema factory
