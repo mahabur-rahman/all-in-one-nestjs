@@ -17,6 +17,15 @@ export class CommentType {
   quoteRef: QuoteType;
 
   // reply comment
-  @Field(() => [CommentType], { defaultValue: [] })
-  replies: CommentType[];
+  @Field(() => [ReplyType], { defaultValue: [] })
+  replies: ReplyType[];
+}
+
+@ObjectType('Reply')
+export class ReplyType {
+  @Field()
+  replyContent: string;
+
+  @Field(() => UserType)
+  repliedBy: UserType;
 }

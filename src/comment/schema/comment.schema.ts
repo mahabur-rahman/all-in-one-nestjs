@@ -22,9 +22,20 @@ export class Comment {
   })
   quoteRef: Quote;
 
-  // reply comment
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
-  replies: Comment[];
+  //  reply comment
+  @Prop({
+    type: [
+      {
+        replyContent: { type: String },
+        repliedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      },
+    ],
+    default: [],
+  })
+  replies: Array<{
+    replyContent: string;
+    repliedBy: mongoose.Schema.Types.ObjectId | User;
+  }>;
 }
 
 // Create the schema factory

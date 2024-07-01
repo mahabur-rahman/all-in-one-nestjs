@@ -47,4 +47,20 @@ export class CommentResolver {
   ) {
     return this.commentService.editComment(commentId, content);
   }
+
+  //  reply comment
+  @Mutation(() => CommentType)
+  @UseGuards(JwtGuard)
+  async replyToComment(
+    @Args('parentCommentId', { type: () => String }) parentCommentId: string,
+    @Args('replyContent', { type: () => String }) replyContent: string,
+    @Context('user') user: any,
+  ) {
+    const userId = user._id;
+    return await this.commentService.replyToComment(
+      parentCommentId,
+      replyContent,
+      userId,
+    );
+  }
 }

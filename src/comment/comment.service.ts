@@ -12,16 +12,19 @@ export class CommentService {
   ) {}
 
   //   create a comment
+
   async createComment(
     createCommentDto: CreateCommentDto,
     userId: string,
   ): Promise<Comment> {
     const { content, quoteRef } = createCommentDto;
+
     const newComment = new this.commentModel({
       content,
       commentedBy: userId,
       quoteRef,
     });
+
     return await newComment.save();
   }
 
@@ -30,6 +33,9 @@ export class CommentService {
     return await this.commentModel
       .find({ quoteRef: quoteId })
       .populate('commentedBy')
+      .populate({
+        path: 'replies.repliedBy',
+      })
       .exec();
   }
 
@@ -46,7 +52,6 @@ export class CommentService {
   }
 
   // edit comment :id
-  // Edit comment by ID
   async editComment(commentId: string, content: string): Promise<Comment> {
     const comment = await this.commentModel.findById(commentId);
 
@@ -57,5 +62,29 @@ export class CommentService {
     comment.content = content;
     await comment.save();
     return comment;
+  }
+
+  //  reply comment
+
+  async replyToComment(
+    parentCommentId: string,
+    replyContent: string,
+    userId: any,
+  ): Promise<Comment> {
+    const parentComment = await this.commentModel.findById(parentCommentId);
+
+    if (!parentComment) {
+      throw new NotFoundException('Parent comment not found');
+    }
+
+    const reply = {
+      replyContent,
+      repliedBy: userId,
+    };
+
+    parentComment.replies.push(reply);
+    await parentComment.save();
+
+    return parentComment;
   }
 }
