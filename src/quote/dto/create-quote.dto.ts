@@ -12,4 +12,9 @@ export class CreateQuoteDto {
   @IsOptional()
   @IsArray()
   images?: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsArray()
+  videos?: string[];
 }

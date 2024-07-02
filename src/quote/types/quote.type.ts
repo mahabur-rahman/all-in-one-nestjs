@@ -20,4 +20,7 @@ export class QuoteType {
 
   @Field(() => [String], { nullable: true })
   images?: string[];
+
+  @Field(() => [String], { nullable: true })
+  videos?: string[];
 }

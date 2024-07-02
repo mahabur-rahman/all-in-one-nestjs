@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-
 import { User } from 'src/auth/schema/user.schema';
 
 @Schema({
@@ -30,6 +29,12 @@ export class Quote {
     default: [],
   })
   images: string[];
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  videos: string[];
 }
 
 // Create the schema factory
