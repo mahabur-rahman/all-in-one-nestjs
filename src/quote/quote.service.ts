@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -167,5 +168,22 @@ export class QuoteService {
     await quote.save();
 
     return quote;
+  }
+
+  // for increase rating
+  async increaseRating(
+    id: string,
+    rating: number,
+    userId: string,
+  ): Promise<Quote> {
+    const quote = await this.quoteModel.findById(id);
+    if (!quote) {
+      throw new NotFoundException(`Quote with ID ${id} not found`);
+    }
+    if (rating < 0 || rating > 5) {
+      throw new ForbiddenException(`Rating must be between 0 and 5`);
+    }
+    quote.rating = rating;
+    return await quote.save();
   }
 }

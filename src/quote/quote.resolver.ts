@@ -88,4 +88,15 @@ export class QuoteResolver {
     const userId = user._id;
     return await this.quoteService.dislikeQuote(id, userId);
   }
+
+  // for increase rating
+  @Mutation(() => QuoteType)
+  @UseGuards(JwtGuard)
+  async increaseRating(
+    @Args('id') id: string,
+    @Args('rating') rating: number,
+    @Context('user') user: any,
+  ) {
+    return await this.quoteService.increaseRating(id, rating, user._id);
+  }
 }
