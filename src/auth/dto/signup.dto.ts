@@ -35,4 +35,8 @@ export class SignUpDto {
 
   @Field(() => [String], { nullable: true })
   quotes?: string[];
+
+  @Field({ nullable: true })
+  @IsOptional()
+  image?: string;
 }
