@@ -23,4 +23,7 @@ export class QuoteType {
 
   @Field(() => [String], { nullable: true })
   videos?: string[];
+
+  @Field(() => Number, { defaultValue: 0 })
+  rating: number;
 }

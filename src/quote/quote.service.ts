@@ -22,13 +22,14 @@ export class QuoteService {
     createQuoteDto: CreateQuoteDto,
     userId: string,
   ): Promise<Quote> {
-    const { title, images, videos } = createQuoteDto;
+    const { title, images, videos, rating } = createQuoteDto;
 
     const newQuote = new this.quoteModel({
       title,
       createBy: userId,
       images,
       videos,
+      rating,
     });
 
     return await newQuote.save();
