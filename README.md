@@ -71,3 +71,12 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+
+===========================================================  email send ========================================================
+
+<!-- sendGrid.com for email service provider -->
+Username: mahabur.dev@gmail.com
+password: Annur@119766annur@119766annur@119766
+recover code : RR5GGWGFH4KE2FAWWJS6UTBW
