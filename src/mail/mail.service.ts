@@ -1,5 +1,3 @@
-// src/mail/mail.service.ts
-
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
@@ -18,17 +16,17 @@ export class MailService {
     });
 
     const mailOptions = {
-      from: this.configService.get<string>('GMAIL_USER'),
-      to: recipient,
-      subject: subject,
-      text: content,
+      from: recipient, // sender address
+      to: this.configService.get<string>('GMAIL_USER'), // list of receivers
+      subject: subject, // Subject line
+      text: content, // plain text body
     };
 
     try {
       const info = await transporter.sendMail(mailOptions);
       return `Email sent: ${info.messageId}`;
     } catch (error) {
-      throw new Error(`Failed to send email: ${error}`);
+      throw new Error(`Failed to send email: ${error.message}`);
     }
   }
 }
