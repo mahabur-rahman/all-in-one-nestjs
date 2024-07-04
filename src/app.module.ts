@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import { QuoteModule } from './quote/quote.module';
 import { CommentModule } from './comment/comment.module';
 import { PassportModule } from '@nestjs/passport';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PassportModule } from '@nestjs/passport';
     QuoteModule,
     CommentModule,
     PassportModule,
+    MailerModule,
   ],
   providers: [AppResolver, AppService],
 })
