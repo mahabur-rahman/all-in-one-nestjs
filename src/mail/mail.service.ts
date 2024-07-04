@@ -10,18 +10,19 @@ export class MailService {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: this.configService.get<string>('GMAIL_USER'),
-        pass: this.configService.get<string>('GMAIL_PASS'),
+        user: 'annur4395@gmail.com',
+        pass: 'mjkxjismfxzcwasy',
       },
     });
 
     const mailOptions = {
-      from: recipient, // sender address
-      to: this.configService.get<string>('GMAIL_USER'), // list of receivers
-      subject: subject, // Subject line
-      text: content, // plain text body
+      from: recipient,
+      to: 'mahabur.dev@gmail.com',
+      subject: subject,
+      text: content,
     };
 
+    console.log('who is send email: ', recipient);
     try {
       const info = await transporter.sendMail(mailOptions);
       return `Email sent: ${info.messageId}`;
