@@ -7,22 +7,12 @@ import { EmailResponse } from './types/emailResponse.type';
 export class MailResolver {
   constructor(private readonly mailService: MailService) {}
 
+  // send email
   @Mutation(() => EmailResponse)
   async sendEmail(
-    @Args('from') from: string,
-    @Args('to') to: string,
-    @Args('subject') subject: string,
-    @Args('html') html: string,
+    @Args('sendEmailInput') sendEmailInput: SendEmailDto,
   ): Promise<EmailResponse> {
-    const sendEmailDto: SendEmailDto = {
-      from: { address: from },
-      recipients: [{ address: to }],
-      subject,
-      html,
-    };
-
-    const success = await this.mailService.sendEmail(sendEmailDto);
-
+    const success = await this.mailService.sendEmail(sendEmailInput);
     return { success };
   }
 }

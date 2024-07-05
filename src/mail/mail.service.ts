@@ -1,5 +1,3 @@
-// mail.service.ts
-
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
@@ -10,11 +8,12 @@ import { SendEmailDto } from './dto/sendEmail.dto';
 export class MailService {
   constructor(private readonly configService: ConfigService) {}
 
+  // transporter
   private mailTransporter(): nodemailer.Transporter {
     return nodemailer.createTransport({
       host: this.configService.get<string>('MAIL_HOST'),
       port: +this.configService.get<string>('MAIL_PORT'),
-      secure: false, // Change this to true if you are using SSL/TLS
+      secure: false,
       auth: {
         user: this.configService.get<string>('MAIL_USER'),
         pass: this.configService.get<string>('MAIL_PASSWORD'),
@@ -22,6 +21,7 @@ export class MailService {
     });
   }
 
+  // send an email
   async sendEmail(sendEmailDto: SendEmailDto): Promise<boolean> {
     const { from, recipients, subject, html } = sendEmailDto;
 
@@ -40,7 +40,7 @@ export class MailService {
     };
 
     try {
-      const result = await transporter.sendMail(options);
+      await transporter.sendMail(options);
       return true; // Email sent successfully
     } catch (error) {
       console.error('Error sending email:', error);

@@ -1,5 +1,3 @@
-// emailResponse.type.ts
-
 import { ObjectType, Field } from '@nestjs/graphql';
 
 @ObjectType()
