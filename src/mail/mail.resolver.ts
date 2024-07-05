@@ -7,6 +7,7 @@ import { SendEmailDto } from './dto/sendEmail.dto';
 export class MailResolver {
   constructor(private readonly mailService: MailService) {}
 
+  // Send email using nodemailer
   @Mutation(() => Boolean)
   async sendEmail(
     @Args('sendEmailInput') sendEmailInput: SendEmailDto,
