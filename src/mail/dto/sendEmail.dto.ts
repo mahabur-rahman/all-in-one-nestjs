@@ -1,23 +1,25 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { AddressInput } from './address.input';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
 export class SendEmailDto {
-  @Field(() => AddressInput, { nullable: true })
-  from?: AddressInput;
-
-  @Field(() => [AddressInput])
-  recipients: AddressInput[];
+  @Field()
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
   @Field()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @Field()
+  @IsNotEmpty()
+  @IsString()
   subject: string;
 
   @Field()
-  html: string;
-
-  @Field({ nullable: true })
-  text?: string;
-
-  @Field(() => String, { nullable: true })
-  placeholderReplacement?: Record<string, string>;
+  @IsNotEmpty()
+  @IsString()
+  message: string;
 }

@@ -1,19 +1,19 @@
+// mail.service.ts
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
-import { Address } from 'nodemailer/lib/mailer';
 import { SendEmailDto } from './dto/sendEmail.dto';
 
 @Injectable()
 export class MailService {
   constructor(private readonly configService: ConfigService) {}
 
-  // transporter
-  private mailTransporter(): nodemailer.Transporter {
+  // Create transporter for sending emails
+  private createTransporter() {
     return nodemailer.createTransport({
       host: this.configService.get<string>('MAIL_HOST'),
       port: +this.configService.get<string>('MAIL_PORT'),
-      secure: false,
+      secure: false, // true for 465, false for other ports
       auth: {
         user: this.configService.get<string>('MAIL_USER'),
         pass: this.configService.get<string>('MAIL_PASSWORD'),
@@ -21,27 +21,21 @@ export class MailService {
     });
   }
 
-  // send an email
+  // Send email using nodemailer
   async sendEmail(sendEmailDto: SendEmailDto): Promise<boolean> {
-    const { from, recipients, subject, html, text } = sendEmailDto;
+    const { name, email, subject, message } = sendEmailDto;
 
-    const transporter = this.mailTransporter();
-
-    const options = {
-      from:
-        from ??
-        ({
-          name: this.configService.get<string>('APP_NAME'),
-          address: this.configService.get<string>('DEFAULT_MAIL_FROM'),
-        } as Address),
-      to: recipients.map((recipient) => recipient.address),
-      subject,
-      html,
-      text,
-    };
+    const transporter = this.createTransporter();
 
     try {
-      await transporter.sendMail(options);
+      const mailOptions = {
+        from: `${name}-${email}`,
+        to: 'annur4395@gmail.com',
+        subject,
+        text: message,
+      };
+
+      await transporter.sendMail(mailOptions);
       return true; // Email sent successfully
     } catch (error) {
       console.error('Error sending email:', error);
