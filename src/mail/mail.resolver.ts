@@ -1,24 +1,28 @@
-import { Resolver } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { MailService } from './mail.service';
 import { SendEmailDto } from './dto/sendEmail.dto';
+import { EmailResponse } from './types/emailResponse.type';
 
 @Resolver()
 export class MailResolver {
   constructor(private readonly mailService: MailService) {}
 
-  async sendEmail() {
+  @Mutation(() => EmailResponse)
+  async sendEmail(
+    @Args('from') from: string,
+    @Args('to') to: string,
+    @Args('subject') subject: string,
+    @Args('html') html: string,
+  ): Promise<EmailResponse> {
     const sendEmailDto: SendEmailDto = {
-      from: { name: 'john', address: 'john@example.com' },
-      recipients: [
-        {
-          name: 'jane',
-          address: 'jane@example.com',
-        },
-      ],
-      subject: 'Hello World',
-      html: '<h1>Hello, world!</h1>',
+      from: { address: from },
+      recipients: [{ address: to }],
+      subject,
+      html,
     };
 
-    return await this.mailService.sendEmail(sendEmailDto);
+    const success = await this.mailService.sendEmail(sendEmailDto);
+
+    return { success };
   }
 }
