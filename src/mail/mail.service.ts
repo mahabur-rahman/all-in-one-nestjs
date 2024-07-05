@@ -1,33 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import { SendEmailDto } from './dto/sendEmail.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
   constructor(private readonly configService: ConfigService) {}
-
-  async sendMail(recipient: string, subject: string, content: string) {
+  mailTransporter() {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: this.configService.get<string>('MAIL_HOST'),
+      port: this.configService.get<string>('MAIL_PORT'),
+      secure: false,
       auth: {
-        user: 'annur4395@gmail.com',
-        pass: 'mjkxjismfxzcwasy',
+        user: this.configService.get<string>('MAIL_USER'),
+        pass: this.configService.get<string>('MAIL_PASSWORD'),
       },
     });
 
-    const mailOptions = {
-      from: recipient,
-      to: 'mahabur.dev@gmail.com',
-      subject: subject,
-      text: content,
+    return transporter;
+  }
+
+  // send email
+  async sendEmail(sendEmailDto: SendEmailDto) {
+    const { from, recipients, subject, html } = sendEmailDto;
+
+    const transport = this.mailTransporter();
+
+    const options = {
+      from: from ?? {
+        user: this.configService.get<string>('APP_NAME'),
+        address: this.configService.get<string>('DEFAULT_MAIL_FROM'),
+      },
+      to: recipients,
+      subject,
+      html,
     };
 
-    console.log('who is send email: ', recipient);
     try {
-      const info = await transporter.sendMail(mailOptions);
-      return `Email sent: ${info.messageId}`;
-    } catch (error) {
-      throw new Error(`Failed to send email: ${error.message}`);
+      const results = await transport.sendMail(options);
+      return results;
+    } catch (err) {
+      console.log(err);
     }
   }
 }
