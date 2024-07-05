@@ -1,8 +1,9 @@
-// mail.service.ts
+// Import Attachment type from nodemailer
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
 import { SendEmailDto } from './dto/sendEmail.dto';
+import { join } from 'path';
 
 @Injectable()
 export class MailService {
@@ -28,11 +29,23 @@ export class MailService {
     const transporter = this.createTransporter();
 
     try {
-      const mailOptions = {
+      const mailOptions: nodemailer.SendMailOptions = {
         from: `${name}-${email}`,
         to: 'annur4395@gmail.com',
         subject,
         text: message,
+        attachments: [
+          {
+            path: join(process.cwd(), 'templates', 'profile.jpeg'),
+            filename: 'profile.jpeg',
+            contentDisposition: 'attachment' as const,
+          },
+          {
+            path: join(process.cwd(), 'templates', 'resume.pdf'),
+            filename: 'resume.pdf',
+            contentDisposition: 'attachment' as const,
+          },
+        ],
       };
 
       await transporter.sendMail(mailOptions);

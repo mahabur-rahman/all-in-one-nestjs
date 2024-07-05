@@ -22,4 +22,6 @@ export class SendEmailDto {
   @IsNotEmpty()
   @IsString()
   message: string;
+
+
 }
