@@ -23,7 +23,7 @@ export class MailService {
 
   // send an email
   async sendEmail(sendEmailDto: SendEmailDto): Promise<boolean> {
-    const { from, recipients, subject, html } = sendEmailDto;
+    const { from, recipients, subject, html, text } = sendEmailDto;
 
     const transporter = this.mailTransporter();
 
@@ -37,6 +37,7 @@ export class MailService {
       to: recipients.map((recipient) => recipient.address),
       subject,
       html,
+      text,
     };
 
     try {
