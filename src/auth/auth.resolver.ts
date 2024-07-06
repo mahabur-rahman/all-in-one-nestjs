@@ -53,4 +53,11 @@ export class AuthResolver {
   async googleLogin(@Args('token') token: string): Promise<LoginResponseType> {
     return this.authService.googleLogin(token);
   }
+
+  // ========================= FORGOT PASSWORD =========================
+
+  @Mutation(() => String)
+  async forgotPassword(@Args('email') email: string): Promise<string> {
+    return this.authService.forgotPassword(email);
+  }
 }

@@ -6,10 +6,12 @@ import { SignUpDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class AuthService {
   private readonly client: OAuth2Client;
+  private transporter: nodemailer.Transporter;
 
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
@@ -18,6 +20,16 @@ export class AuthService {
     this.client = new OAuth2Client({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    });
+
+    this.transporter = nodemailer.createTransport({
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 465,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD,
+      },
     });
   }
 
@@ -84,5 +96,31 @@ export class AuthService {
     const jwtToken = await this.jwtService.sign(jwtPayload);
 
     return { token: jwtToken, user };
+  }
+
+  // ========================= FORGOT PASSWORD =========================
+
+  async forgotPassword(email: string): Promise<string> {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new BadRequestException('User with this email does not exist.');
+    }
+
+    const token = this.jwtService.sign(
+      { userId: user._id },
+      { expiresIn: '10m' },
+    );
+
+    const resetURL = `${process.env.FRONTEND_URL}/reset-password?token=${token}&id=${user._id}`;
+
+    const message = `Forgot your password? Click this link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+    await this.transporter.sendMail({
+      to: email,
+      subject: 'Your password reset token (valid for 10 minutes)',
+      text: message,
+    });
+
+    return 'Token sent to email!';
   }
 }
