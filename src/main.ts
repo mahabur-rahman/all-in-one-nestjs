@@ -1,23 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Use global validation pipe
   app.useGlobalPipes(new ValidationPipe());
 
-  // Enable CORS
-  // app.enableCors({
-  //   origin: 'http://localhost:5173',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  //   credentials: true,
-  // });
+  // Increase payload size limit
+  app.use(bodyParser.json({ limit: '10mb' }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
+  // Configure CORS
   app.enableCors({
-    origin: 'http://localhost:3000',
-    // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
+    origin: 'http://localhost:3000', // Adjust with your frontend URL
+    credentials: true, // Allow cookies and credentials to be sent cross-origin
   });
 
   const port = process.env.PORT || 3000;

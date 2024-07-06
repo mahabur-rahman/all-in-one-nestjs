@@ -1,20 +1,17 @@
-// Import Attachment type from nodemailer
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
-import { SendEmailDto } from './dto/sendEmail.dto';
-import { join } from 'path';
+import { SendEmailDto, AttachmentDto } from './dto/sendEmail.dto';
 
 @Injectable()
 export class MailService {
   constructor(private readonly configService: ConfigService) {}
 
-  // Create transporter for sending emails
   private createTransporter() {
     return nodemailer.createTransport({
       host: this.configService.get<string>('MAIL_HOST'),
       port: +this.configService.get<string>('MAIL_PORT'),
-      secure: false, // true for 465, false for other ports
+      secure: false,
       auth: {
         user: this.configService.get<string>('MAIL_USER'),
         pass: this.configService.get<string>('MAIL_PASSWORD'),
@@ -22,30 +19,24 @@ export class MailService {
     });
   }
 
-  // Send email using nodemailer
   async sendEmail(sendEmailDto: SendEmailDto): Promise<boolean> {
-    const { name, email, subject, message } = sendEmailDto;
+    const { name, email, subject, message, attachments } = sendEmailDto;
 
     const transporter = this.createTransporter();
 
     try {
       const mailOptions: nodemailer.SendMailOptions = {
         from: `${name}-${email}`,
-        to: 'annur4395@gmail.com',
+        to: 'annur4395@gmail.com', // Replace with dynamic recipient if needed
         subject,
         text: message,
-        attachments: [
-          {
-            path: join(process.cwd(), 'templates', 'profile.jpeg'),
-            filename: 'profile.jpeg',
-            contentDisposition: 'attachment' as const,
-          },
-          {
-            path: join(process.cwd(), 'templates', 'resume.pdf'),
-            filename: 'resume.pdf',
-            contentDisposition: 'attachment' as const,
-          },
-        ],
+        attachments: attachments
+          ? attachments.map((attachment: AttachmentDto) => ({
+              path: attachment.path,
+              filename: attachment.filename,
+              contentDisposition: attachment.contentDisposition as any,
+            }))
+          : [],
       };
 
       await transporter.sendMail(mailOptions);
