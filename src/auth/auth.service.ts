@@ -21,6 +21,7 @@ export class AuthService {
     });
   }
 
+  // sign up
   async signUp(signUpDto: SignUpDto): Promise<User> {
     const { firstName, lastName, email, password, role, quotes, image } =
       signUpDto;
