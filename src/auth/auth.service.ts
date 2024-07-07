@@ -109,8 +109,8 @@ export class AuthService {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
+    console.log('token : ', token);
 
-    console.log(token)
     const resetURL = `${process.env.FRONTEND_URL}/reset-password?token=${token}&id=${user._id}`;
 
     const message = `Forgot your password? Click this link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
