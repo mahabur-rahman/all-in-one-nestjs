@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
 import * as nodemailer from 'nodemailer';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -106,21 +107,50 @@ export class AuthService {
       throw new BadRequestException('User with this email does not exist.');
     }
 
-    const token = this.jwtService.sign(
-      { userId: user._id },
-      { expiresIn: '10m' },
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
+
+    console.log(token)
     const resetURL = `${process.env.FRONTEND_URL}/reset-password?token=${token}&id=${user._id}`;
 
     const message = `Forgot your password? Click this link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
 
     await this.transporter.sendMail({
       to: email,
-      subject: 'Your password reset token (valid for 10 minutes)',
+      subject: 'Your password reset token',
       text: message,
     });
 
     return 'Token sent to email!';
+  }
+
+  // reset password
+
+  async resetPassword(
+    token: string,
+    userId: string,
+    newPassword: string,
+  ): Promise<User> {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+        userId: string;
+      };
+
+      if (decoded.userId !== userId) {
+        throw new BadRequestException('Invalid token');
+      }
+
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+
+      user.password = await bcrypt.hash(newPassword, 10);
+
+      await user.save();
+      return user;
+    } catch (error) {
+      throw new BadRequestException('Token is invalid');
+    }
   }
 }

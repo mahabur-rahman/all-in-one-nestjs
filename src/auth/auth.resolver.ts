@@ -55,9 +55,19 @@ export class AuthResolver {
   }
 
   // ========================= FORGOT PASSWORD =========================
-
+  // link generate and sent to mail
   @Mutation(() => String)
   async forgotPassword(@Args('email') email: string): Promise<string> {
     return this.authService.forgotPassword(email);
+  }
+
+  // reset password
+  @Mutation(() => UserType)
+  async resetPassword(
+    @Args('token') token: string,
+    @Args('userId') userId: string,
+    @Args('newPassword') newPassword: string,
+  ) {
+    return this.authService.resetPassword(token, userId, newPassword);
   }
 }
