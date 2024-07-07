@@ -111,14 +111,17 @@ export class AuthService {
 
     console.log('token : ', token);
 
-    const resetURL = `${process.env.FRONTEND_URL}/reset-password?token=${token}&id=${user._id}`;
+    const resetURL = `http://localhost:3000/reset-password?token=${token}&id=${user._id}`;
 
-    const message = `Forgot your password? Click this link to reset your password: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+    const message = `
+    <p>Forgot your password? Click <a href="${resetURL}">here</a> to reset your password.</p>
+    <p>If you didn't forget your password, please ignore this email!</p>
+  `;
 
     await this.transporter.sendMail({
       to: email,
       subject: 'Your password reset token',
-      text: message,
+      html: message,
     });
 
     return 'Token sent to email!';
