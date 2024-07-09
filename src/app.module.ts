@@ -11,6 +11,7 @@ import { QuoteModule } from './quote/quote.module';
 import { CommentModule } from './comment/comment.module';
 import { PassportModule } from '@nestjs/passport';
 import { MailModule } from './mail/mail.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MailModule } from './mail/mail.module';
     CommentModule,
     PassportModule,
     MailModule,
+    GatewayModule,
   ],
   providers: [AppResolver, AppService],
 })
