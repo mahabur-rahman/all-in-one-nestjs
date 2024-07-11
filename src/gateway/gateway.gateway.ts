@@ -4,9 +4,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { OnModuleInit } from '@nestjs/common';
+import { OnModuleInit, UseGuards } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { GatewayService } from './gateway.service';
+import { JwtGuard } from 'src/auth/utils/jwt.guard';
 
 @WebSocketGateway({
   cors: {
@@ -30,6 +31,7 @@ export class MyGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('chatMessage')
+  @UseGuards(JwtGuard)
   async handleChatMessage(
     @MessageBody() message: { senderId: string; content: string },
   ): Promise<void> {

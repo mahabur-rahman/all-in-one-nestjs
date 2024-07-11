@@ -15,7 +15,7 @@ export class GatewayService {
     return await newMessage.save();
   }
 
-  async findAllMessages(): Promise<ChatMessage[]> {
-    return await this.chatMessageModel.find().exec();
-  }
+  // async findAllMessages(): Promise<ChatMessage[]> {
+  //   return await this.chatMessageModel.find().exec();
+  // }
 }
