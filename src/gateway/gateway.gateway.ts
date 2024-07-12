@@ -4,14 +4,13 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { OnModuleInit, UseGuards } from '@nestjs/common';
+import { OnModuleInit } from '@nestjs/common';
 import { Server } from 'socket.io';
 import { GatewayService } from './gateway.service';
-import { JwtGuard } from 'src/auth/utils/jwt.guard';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000'], // Replace with your client URL
+    origin: ['http://localhost:5000'], // Replace with your client URL
   },
 })
 export class MyGateway implements OnModuleInit {
@@ -31,14 +30,19 @@ export class MyGateway implements OnModuleInit {
   }
 
   @SubscribeMessage('chatMessage')
-  @UseGuards(JwtGuard)
   async handleChatMessage(
-    @MessageBody() message: { senderId: string; content: string },
+    @MessageBody() message: { content: string },
   ): Promise<void> {
-    const savedMessage = await this.gatewayService.saveMessage(
-      message.senderId,
-      message.content,
-    );
+    const savedMessage = await this.gatewayService.saveMessage(message.content);
     this.server.emit('chatMessage', savedMessage);
+  }
+
+  // find all message
+
+  @SubscribeMessage('getAllMessages')
+  async handleGetAllMessages(@MessageBody() data: any): Promise<void> {
+    console.log(`Data from server: `, data);
+    const allMessages = await this.gatewayService.findAllMessages();
+    this.server.emit('allMessages', allMessages);
   }
 }
