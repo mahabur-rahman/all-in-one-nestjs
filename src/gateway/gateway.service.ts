@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChatMessage, ChatMessageDocument } from './schema/message.schema';
-import { v4 as uuidv4 } from 'uuid'; // Import only v4 from uuid
 
 @Injectable()
 export class GatewayService {
@@ -11,9 +10,16 @@ export class GatewayService {
     private chatMessageModel: Model<ChatMessageDocument>,
   ) {}
 
-  async saveMessage(content: string): Promise<ChatMessage> {
-    const senderId = uuidv4();
-    const newMessage = new this.chatMessageModel({ senderId, content });
+  async saveMessage(
+    senderId: string,
+    content: string,
+    conversationId: string,
+  ): Promise<ChatMessage> {
+    const newMessage = new this.chatMessageModel({
+      senderId,
+      content,
+      conversationId,
+    });
     return await newMessage.save();
   }
 

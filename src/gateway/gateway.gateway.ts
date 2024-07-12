@@ -10,7 +10,7 @@ import { GatewayService } from './gateway.service';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:5000'], // Replace with your client URL
+    origin: ['http://localhost:5000'],
   },
 })
 export class MyGateway implements OnModuleInit {
@@ -31,13 +31,21 @@ export class MyGateway implements OnModuleInit {
 
   @SubscribeMessage('chatMessage')
   async handleChatMessage(
-    @MessageBody() message: { content: string },
+    @MessageBody()
+    message: {
+      senderId: string;
+      content: string;
+      recipientId: string;
+    },
   ): Promise<void> {
-    const savedMessage = await this.gatewayService.saveMessage(message.content);
+    const conversationId = `${message.senderId}_${message.recipientId}`;
+    const savedMessage = await this.gatewayService.saveMessage(
+      message.senderId,
+      message.content,
+      conversationId,
+    );
     this.server.emit('chatMessage', savedMessage);
   }
-
-  // find all message
 
   @SubscribeMessage('getAllMessages')
   async handleGetAllMessages(@MessageBody() data: any): Promise<void> {

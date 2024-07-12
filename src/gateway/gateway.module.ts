@@ -11,6 +11,6 @@ import { ChatMessage, ChatMessageSchema } from './schema/message.schema';
     ]),
   ],
   providers: [MyGateway, GatewayService],
-  exports: [MyGateway], // Ensure MyGateway is exported if needed in other modules
+  exports: [MyGateway],
 })
 export class GatewayModule {}

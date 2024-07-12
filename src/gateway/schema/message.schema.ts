@@ -7,11 +7,14 @@ export type ChatMessageDocument = ChatMessage & Document;
   timestamps: true,
 })
 export class ChatMessage {
-  @Prop()
+  @Prop({ required: true })
   senderId: string;
 
   @Prop({ required: true })
   content: string;
+
+  @Prop({ required: true })
+  conversationId: string;
 }
 
 export const ChatMessageSchema = SchemaFactory.createForClass(ChatMessage);
