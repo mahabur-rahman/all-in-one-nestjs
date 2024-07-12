@@ -10,7 +10,7 @@ import { GatewayService } from './gateway.service';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:5000'],
+    origin: ['http://localhost:3000'],
   },
 })
 export class MyGateway implements OnModuleInit {
@@ -38,19 +38,38 @@ export class MyGateway implements OnModuleInit {
       recipientId: string;
     },
   ): Promise<void> {
-    const conversationId = `${message.senderId}_${message.recipientId}`;
+    const conversationId = this.generateConversationId(
+      message.senderId,
+      message.recipientId,
+    );
     const savedMessage = await this.gatewayService.saveMessage(
       message.senderId,
       message.content,
       conversationId,
+      message.recipientId,
     );
     this.server.emit('chatMessage', savedMessage);
   }
 
-  @SubscribeMessage('getAllMessages')
-  async handleGetAllMessages(@MessageBody() data: any): Promise<void> {
-    console.log(`Data from server: `, data);
-    const allMessages = await this.gatewayService.findAllMessages();
-    this.server.emit('allMessages', allMessages);
+  @SubscribeMessage('getMessages')
+  async handleGetMessages(
+    @MessageBody()
+    data: {
+      senderId: string;
+      recipientId: string;
+    },
+  ): Promise<void> {
+    const conversationId = this.generateConversationId(
+      data.senderId,
+      data.recipientId,
+    );
+    const messages =
+      await this.gatewayService.findMessagesByConversation(conversationId);
+    this.server.emit('allMessages', messages);
+  }
+
+  private generateConversationId(userId1: string, userId2: string): string {
+    const sortedIds = [userId1, userId2].sort();
+    return `${sortedIds[0]}_${sortedIds[1]}`;
   }
 }

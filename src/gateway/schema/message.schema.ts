@@ -15,6 +15,9 @@ export class ChatMessage {
 
   @Prop({ required: true })
   conversationId: string;
+
+  @Prop({ required: true })
+  recipientId: string; // Add recipientId to track user-to-user messages
 }
 
 export const ChatMessageSchema = SchemaFactory.createForClass(ChatMessage);

@@ -14,16 +14,25 @@ export class GatewayService {
     senderId: string,
     content: string,
     conversationId: string,
+    recipientId: string,
   ): Promise<ChatMessage> {
     const newMessage = new this.chatMessageModel({
       senderId,
       content,
       conversationId,
+      recipientId,
     });
     return await newMessage.save();
   }
 
-  async findAllMessages(): Promise<ChatMessage[]> {
-    return await this.chatMessageModel.find().exec();
+  async findMessagesByConversation(
+    conversationId: string,
+  ): Promise<ChatMessage[]> {
+    try {
+      return await this.chatMessageModel.find({ conversationId }).exec();
+    } catch (error) {
+      console.error('Error retrieving messages by conversation:', error);
+      throw new Error('Could not retrieve messages for the conversation');
+    }
   }
 }
