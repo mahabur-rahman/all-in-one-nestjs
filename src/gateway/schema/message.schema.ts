@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type ChatMessageDocument = ChatMessage & Document;
 
@@ -7,7 +7,7 @@ export type ChatMessageDocument = ChatMessage & Document;
   timestamps: true,
 })
 export class ChatMessage {
-  @Prop({ required: true })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   senderId: string;
 
   @Prop({ required: true })
@@ -16,8 +16,8 @@ export class ChatMessage {
   @Prop({ required: true })
   conversationId: string;
 
-  @Prop({ required: true })
-  recipientId: string; // Add recipientId to track user-to-user messages
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  recipientId: string;
 }
 
 export const ChatMessageSchema = SchemaFactory.createForClass(ChatMessage);

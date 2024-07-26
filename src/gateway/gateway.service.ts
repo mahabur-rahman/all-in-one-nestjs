@@ -29,10 +29,24 @@ export class GatewayService {
     conversationId: string,
   ): Promise<ChatMessage[]> {
     try {
-      return await this.chatMessageModel.find({ conversationId }).exec();
+      return await this.chatMessageModel
+        .find({ conversationId })
+        .populate('senderId', '-password')
+        .populate('recipientId', '-password')
+        .exec();
     } catch (error) {
       console.error('Error retrieving messages by conversation:', error);
       throw new Error('Could not retrieve messages for the conversation');
+    }
+  }
+
+  // delete message :messageId
+  async deleteMessage(messageId: string): Promise<void> {
+    try {
+      await this.chatMessageModel.findByIdAndDelete(messageId).exec();
+    } catch (error) {
+      console.error('Error deleting message:', error);
+      throw new Error('Could not delete the message');
     }
   }
 }
