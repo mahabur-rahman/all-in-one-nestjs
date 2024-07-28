@@ -96,6 +96,7 @@ export class MyGateway implements OnModuleInit {
     }
   }
 
+  // generated conversationId
   private generateConversationId(userId1: string, userId2: string): string {
     const sortedIds = [userId1, userId2].sort();
     return `${sortedIds[0]}_${sortedIds[1]}`;
