@@ -75,6 +75,27 @@ export class MyGateway implements OnModuleInit {
     this.server.emit('messageDeleted', messageId);
   }
 
+  // edit message :messageId
+  @SubscribeMessage('editMessage')
+  async handleEditMessage(
+    @MessageBody()
+    data: {
+      messageId: string;
+      newContent: string;
+    },
+  ): Promise<void> {
+    try {
+      const updatedMessage = await this.gatewayService.editMessage(
+        data.messageId,
+        data.newContent,
+      );
+      this.server.emit('messageEdited', updatedMessage);
+    } catch (error) {
+      console.error('Error handling editMessage:', error);
+      this.server.emit('error', { error: 'Could not edit message' });
+    }
+  }
+
   private generateConversationId(userId1: string, userId2: string): string {
     const sortedIds = [userId1, userId2].sort();
     return `${sortedIds[0]}_${sortedIds[1]}`;
