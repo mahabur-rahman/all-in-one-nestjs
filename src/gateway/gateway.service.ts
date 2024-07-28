@@ -31,8 +31,8 @@ export class GatewayService {
     try {
       return await this.chatMessageModel
         .find({ conversationId })
-        .populate('senderId', '-password')
-        .populate('recipientId', '-password')
+        // .populate('senderId', '-password')
+        // .populate('recipientId', '-password')
         .exec();
     } catch (error) {
       console.error('Error retrieving messages by conversation:', error);
