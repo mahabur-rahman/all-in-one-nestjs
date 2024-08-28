@@ -12,6 +12,7 @@ import { CommentModule } from './comment/comment.module';
 import { PassportModule } from '@nestjs/passport';
 import { MailModule } from './mail/mail.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { GatewayModule } from './gateway/gateway.module';
     PassportModule,
     MailModule,
     GatewayModule,
+    PaymentModule,
   ],
   providers: [AppResolver, AppService],
 })
