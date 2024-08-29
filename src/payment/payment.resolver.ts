@@ -1,17 +1,14 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { PaymentService } from './payment.service';
 import { PaymentDto } from './dto/payment.dto';
-import { CreatePaymentType } from './types/create-payment.type';
+import { PaymentType } from './types/create-payment.type';
 
-@Resolver(() => CreatePaymentType)
+@Resolver(() => PaymentType)
 export class PaymentResolver {
   constructor(private readonly paymentService: PaymentService) {}
 
-  // place an order
-  @Mutation(() => CreatePaymentType)
-  async placeOrder(
-    @Args('createPaymentInput') createPaymentInput: PaymentDto,
-  ): Promise<CreatePaymentType> {
-    return this.paymentService.placeOrder(createPaymentInput);
+  @Mutation(() => PaymentType)
+  async placeOrder(@Args('paymentInput') paymentInput: PaymentDto) {
+    return await this.paymentService.placeOrder(paymentInput);
   }
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { PaymentResolver } from './payment.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Payment, PaymentSchema } from './schema/create-payment.schema';
+import { Payment, PaymentSchema } from './schema/payment.schema';
 
 @Module({
   imports: [

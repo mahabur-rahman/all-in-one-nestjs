@@ -49,10 +49,10 @@ export class AuthResolver {
   // npm i google-auth-library
 
   // google signIn
-  // @Mutation(() => LoginResponseType)
-  // async googleLogin(@Args('token') token: string): Promise<LoginResponseType> {
-  //   return this.authService.googleLogin(token);
-  // }
+  @Mutation(() => LoginResponseType)
+  async googleLogin(@Args('token') token: string): Promise<LoginResponseType> {
+    return this.authService.googleLogin(token);
+  }
 
   // ========================= FORGOT PASSWORD =========================
   // link generate and sent to mail
