@@ -1,0 +1,25 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType('Payment')
+export class CreatePaymentType {
+  @Field()
+  name: string;
+
+  @Field({ nullable: true })
+  amount?: string;
+
+  @Field()
+  currency: string;
+
+  @Field()
+  postCode: string;
+
+  @Field()
+  address: string;
+
+  @Field()
+  phone: string;
+
+  @Field()
+  productId: string;
+}
