@@ -4,30 +4,30 @@ import { IsNotEmpty } from 'class-validator';
 @InputType()
 export class PaymentDto {
   @Field()
-  @IsNotEmpty({ message: `name is required` })
+  @IsNotEmpty({ message: 'Name is required' })
   name: string;
 
   @Field({ nullable: true })
-  @IsNotEmpty({ message: `amount is required` })
+  @IsNotEmpty({ message: 'Amount is required' })
   amount?: string;
 
   @Field()
-  @IsNotEmpty({ message: `currency is required` })
+  @IsNotEmpty({ message: 'Currency is required' })
   currency: string;
 
   @Field()
-  @IsNotEmpty({ message: `postCode is required` })
+  @IsNotEmpty({ message: 'PostCode is required' })
   postCode: string;
 
   @Field()
-  @IsNotEmpty({ message: `address is required` })
+  @IsNotEmpty({ message: 'Address is required' })
   address: string;
 
   @Field()
-  @IsNotEmpty({ message: `phone is required` })
+  @IsNotEmpty({ message: 'Phone is required' })
   phone: string;
 
   @Field()
-  @IsNotEmpty({ message: `ProductId is required` })
+  @IsNotEmpty({ message: 'ProductId is required' })
   productId: string;
 }

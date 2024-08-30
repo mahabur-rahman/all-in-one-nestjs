@@ -1,21 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import { PaymentDto } from './dto/payment.dto';
+import { PaymentOutput } from './dto/payment.output.dto';
 import * as SSLCommerzPayment from 'sslcommerz-lts';
+import { v4 as uuidv4 } from 'uuid';
+import { PaymentResponseDto } from './dto/paymentResponse.dto';
 
 @Injectable()
 export class PaymentService {
-  async placeOrder(paymentDto: PaymentDto) {
+  async placeOrder(paymentDto: PaymentDto): Promise<PaymentResponseDto> {
     const transactionId = uuidv4();
-    const paymentData = { ...paymentDto };
+    const paymentOutput: PaymentOutput = { ...paymentDto };
 
     const store_id = 'test66d0a173afb28';
     const store_passwd = 'test66d0a173afb28@ssl';
     const is_live = false;
 
     const data = {
-      total_amount: paymentData.amount,
-      currency: paymentData.currency,
+      total_amount: paymentOutput.amount,
+      currency: paymentOutput.currency,
       tran_id: transactionId,
       success_url: 'http://localhost:3000/success',
       fail_url: 'http://localhost:3000/fail',
@@ -25,33 +27,34 @@ export class PaymentService {
       product_name: 'Computer',
       product_category: 'Electronic',
       product_profile: 'general',
-      cus_name: paymentData.name,
+      cus_name: paymentOutput.name,
       cus_email: 'mahabur.dev@gmail.com',
-      cus_add1: paymentData.address,
-      cus_add2: paymentData.address,
+      cus_add1: paymentOutput.address,
+      cus_add2: paymentOutput.address,
       cus_city: 'Dhaka',
       cus_state: 'Dhaka',
-      cus_postcode: paymentData.postCode,
+      cus_postcode: paymentOutput.postCode,
       cus_country: 'Bangladesh',
-      cus_phone: paymentData.phone,
-      cus_fax: paymentData.phone,
-      ship_name: paymentData.name,
-      ship_add1: paymentData.address,
-      ship_add2: paymentData.address,
+      cus_phone: paymentOutput.phone,
+      cus_fax: paymentOutput.phone,
+      ship_name: paymentOutput.name,
+      ship_add1: paymentOutput.address,
+      ship_add2: paymentOutput.address,
       ship_city: 'Dhaka',
       ship_state: 'Dhaka',
-      ship_postcode: paymentData.postCode,
+      ship_postcode: paymentOutput.postCode,
       ship_country: 'Bangladesh',
     };
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
-    // console.log(sslcz);
 
-    sslcz.init(data).then((apiResponse) => {
-      // Redirect the user to payment gateway
-      const GatewayPageURL = apiResponse.GatewayPageURL;
+    const apiResponse = await sslcz.init(data);
+    const GatewayPageURL = apiResponse.GatewayPageURL;
 
-      console.log('Redirecting to: ', GatewayPageURL);
-    });
+    console.log(GatewayPageURL);
+    return {
+      GatewayPageURL,
+      paymentOutput,
+    };
   }
 }
