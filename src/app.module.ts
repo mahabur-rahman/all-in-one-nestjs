@@ -27,6 +27,8 @@ import { PaymentModule } from './payment/payment.module';
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
+
+      installSubscriptionHandlers: true,
     }),
 
     AuthModule,
