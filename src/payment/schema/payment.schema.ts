@@ -24,6 +24,12 @@ export class Payment {
 
   @Prop({ required: true })
   productId: string;
+
+  @Prop()
+  transactionId: string;
+
+  @Prop({ default: false })
+  paidStatus: boolean;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

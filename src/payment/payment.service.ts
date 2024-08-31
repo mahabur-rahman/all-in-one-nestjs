@@ -1,12 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PaymentDto } from './dto/payment.dto';
 import { PaymentOutput } from './dto/payment.output.dto';
 import * as SSLCommerzPayment from 'sslcommerz-lts';
 import { v4 as uuidv4 } from 'uuid';
 import { PaymentResponseDto } from './dto/paymentResponse.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Payment } from './schema/payment.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PaymentService {
+  constructor(
+    @InjectModel(Payment.name)
+    private paymentModel: Model<Payment>,
+  ) {}
+
   async placeOrder(paymentDto: PaymentDto): Promise<PaymentResponseDto> {
     const transactionId = uuidv4();
     const paymentOutput: PaymentOutput = { ...paymentDto };
@@ -19,8 +27,8 @@ export class PaymentService {
       total_amount: paymentOutput.amount,
       currency: paymentOutput.currency,
       tran_id: transactionId,
-      success_url: 'http://localhost:3000/success',
-      fail_url: 'http://localhost:3000/fail',
+      success_url: `http://localhost:5000/payment/success/${transactionId}`,
+      fail_url: 'http://localhost:3000/failed',
       cancel_url: 'http://localhost:3000/cancel',
       ipn_url: 'http://localhost:3000/ipn',
       shipping_method: 'Courier',
@@ -51,10 +59,38 @@ export class PaymentService {
     const apiResponse = await sslcz.init(data);
     const GatewayPageURL = apiResponse.GatewayPageURL;
 
-    console.log(GatewayPageURL);
+    console.log(GatewayPageURL, 'tranId: ', transactionId);
+
+    // store payment info on db
+    const payment = new this.paymentModel({
+      ...paymentOutput,
+      paidStatus: false,
+      transactionId: data.tran_id,
+    });
+
+    await payment.save();
+
     return {
       GatewayPageURL,
       paymentOutput,
+    };
+  }
+
+  // SUCCESS PAYMENT
+  async successPayment(transactionId: string) {
+    const payment = await this.paymentModel.findOne({ transactionId });
+
+    if (!payment) {
+      throw new HttpException('Payment not found', HttpStatus.NOT_FOUND);
+    }
+
+    payment.paidStatus = true;
+
+    await payment.save();
+
+    return {
+      message: 'Payment successful!',
+      payment,
     };
   }
 }
