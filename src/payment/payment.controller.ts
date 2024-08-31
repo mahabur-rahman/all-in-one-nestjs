@@ -6,6 +6,7 @@ import { Response } from 'express';
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
+  // if payment is successful
   @Post('payment/success/:transactionId')
   async getSuccessPayment(
     @Param('transactionId') transactionId: string,
@@ -17,5 +18,21 @@ export class PaymentController {
 
     // Redirect to the frontend URL
     res.redirect(`http://localhost:3000/payment/success/${transactionId}`);
+  }
+
+  // if payment is failed
+
+  @Post('payment/cancel/:transactionId')
+  async paymentCancel(
+    @Param('transactionId') transactionId: string,
+    @Res() res: Response,
+  ) {
+    console.log('Payment cancelled for transaction:', transactionId);
+
+    // Update payment status to cancelled (optional)
+    await this.paymentService.cancelPayment(transactionId);
+
+    // Redirect to the frontend cancel page
+    res.redirect(`http://localhost:3000/payment/failed/${transactionId}`);
   }
 }

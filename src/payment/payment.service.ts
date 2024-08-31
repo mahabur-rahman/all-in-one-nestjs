@@ -28,8 +28,8 @@ export class PaymentService {
       currency: paymentOutput.currency,
       tran_id: transactionId,
       success_url: `http://localhost:5000/payment/success/${transactionId}`,
-      fail_url: 'http://localhost:3000/failed',
-      cancel_url: 'http://localhost:3000/cancel',
+      fail_url: `http://localhost:5000/payment/cancel/${transactionId}`,
+      cancel_url: 'http://localhost:3030/cancel',
       ipn_url: 'http://localhost:3000/ipn',
       shipping_method: 'Courier',
       product_name: 'Computer',
@@ -91,6 +91,22 @@ export class PaymentService {
     return {
       message: 'Payment successful!',
       payment,
+    };
+  }
+
+  // CANCEL PAYMENT
+  async cancelPayment(transactionId: string) {
+    const payment = await this.paymentModel.findOne({ transactionId });
+
+    if (!payment) {
+      throw new HttpException('Payment not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Delete the payment record from the database
+    await payment.deleteOne();
+
+    return {
+      message: 'Payment cancelled and record deleted!',
     };
   }
 }
