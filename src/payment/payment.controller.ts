@@ -7,6 +7,7 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   // if payment is successful
+  // match with service success_url
   @Post('payment/success/:transactionId')
   async getSuccessPayment(
     @Param('transactionId') transactionId: string,
@@ -32,7 +33,7 @@ export class PaymentController {
     // Update payment status to cancelled (optional)
     await this.paymentService.cancelPayment(transactionId);
 
-    // Redirect to the frontend cancel page
+    // Redirect to the frontend URL
     res.redirect(`http://localhost:3000/payment/failed/${transactionId}`);
   }
 }

@@ -7,6 +7,7 @@ import { PaymentResponseDto } from './dto/paymentResponse.dto';
 export class PaymentResolver {
   constructor(private readonly paymentService: PaymentService) {}
 
+  // PLACE AN ORDER
   @Mutation(() => PaymentResponseDto)
   async placeOrder(
     @Args('paymentInput') paymentInput: PaymentDto,

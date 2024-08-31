@@ -59,7 +59,7 @@ export class PaymentService {
     const apiResponse = await sslcz.init(data);
     const GatewayPageURL = apiResponse.GatewayPageURL;
 
-    console.log(GatewayPageURL, 'tranId: ', transactionId);
+    // console.log(GatewayPageURL, 'tranId: ', transactionId);
 
     // store payment info on db
     const payment = new this.paymentModel({
