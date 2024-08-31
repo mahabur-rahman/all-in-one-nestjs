@@ -10,6 +10,7 @@ import { Quote } from './schema/quote.schema';
 import { Model } from 'mongoose';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { User } from 'src/auth/schema/user.schema';
+import { PubSub } from 'graphql-subscriptions';
 
 @Injectable()
 export class QuoteService {
@@ -33,7 +34,11 @@ export class QuoteService {
       rating,
     });
 
-    return await newQuote.save();
+    // Publish the event after saving the quote
+
+    const savedQuote = await newQuote.save();
+
+    return savedQuote;
   }
 
   // =====================================================

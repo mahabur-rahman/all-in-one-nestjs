@@ -1,4 +1,11 @@
-import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Context,
+  Query,
+  Subscription,
+} from '@nestjs/graphql';
 import { QuoteService } from './quote.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { QuoteType } from './types/quote.type';
@@ -7,6 +14,8 @@ import { JwtGuard } from 'src/auth/utils/jwt.guard';
 
 @Resolver(() => QuoteType)
 export class QuoteResolver {
+  // initialize pubsub
+
   constructor(private readonly quoteService: QuoteService) {}
 
   // create quote authenticated user
@@ -18,6 +27,8 @@ export class QuoteResolver {
   ) {
     return this.quoteService.createQuote(createQuoteDto, user._id);
   }
+
+  // SUBSCRIPTION WHEN QUOTE IS CREATED REAL TIME
 
   // =====================================================
   // =====================================================
