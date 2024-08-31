@@ -11,12 +11,10 @@ import { CreateQuoteDto } from './dto/create-quote.dto';
 import { QuoteType } from './types/quote.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
-import { PubSub } from 'graphql-subscriptions';
 
 @Resolver(() => QuoteType)
 export class QuoteResolver {
   // initialize pubsub
-  private pubsub = new PubSub();
 
   constructor(private readonly quoteService: QuoteService) {}
 
@@ -31,12 +29,6 @@ export class QuoteResolver {
   }
 
   // SUBSCRIPTION WHEN QUOTE IS CREATED REAL TIME
-  @Subscription(() => QuoteType, {
-    resolve: (payload) => payload.quoteCreated,
-  })
-  quoteCreated() {
-    return this.pubsub.asyncIterator('quoteCreated');
-  }
 
   // =====================================================
   // =====================================================

@@ -14,8 +14,6 @@ import { PubSub } from 'graphql-subscriptions';
 
 @Injectable()
 export class QuoteService {
-  private pubSub = new PubSub(); // initialize pub subscription
-
   constructor(
     @InjectModel(Quote.name)
     private quoteModel: Model<Quote>,
@@ -39,7 +37,6 @@ export class QuoteService {
     // Publish the event after saving the quote
 
     const savedQuote = await newQuote.save();
-    this.pubSub.publish('quoteCreated', { quoteCreated: savedQuote });
 
     return savedQuote;
   }

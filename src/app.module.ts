@@ -13,6 +13,7 @@ import { PassportModule } from '@nestjs/passport';
 import { MailModule } from './mail/mail.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { PaymentModule } from './payment/payment.module';
+import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { PaymentModule } from './payment/payment.module';
       autoSchemaFile: true,
       playground: true,
 
-      installSubscriptionHandlers: true,
+      installSubscriptionHandlers: true, // Enable subscription handlers
     }),
 
     AuthModule,
@@ -40,6 +41,13 @@ import { PaymentModule } from './payment/payment.module';
     GatewayModule,
     PaymentModule,
   ],
-  providers: [AppResolver, AppService],
+  providers: [
+    AppResolver,
+    AppService,
+    {
+      provide: 'PUB_SUB',
+      useValue: new PubSub(),
+    },
+  ],
 })
 export class AppModule {}

@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
 
 @Injectable()
 export class AppService {
+  constructor(@Inject('PUB_SUB') private readonly pubSub: PubSub) {}
+
   getHello(): string {
-    return 'Hello World!';
+    const message = 'Hello World!';
+    this.pubSub.publish('helloUpdated', { helloUpdated: message }); // Publish event
+    return message;
   }
 }
