@@ -10,12 +10,14 @@ import { Quote } from './schema/quote.schema';
 import { Model } from 'mongoose';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { User } from 'src/auth/schema/user.schema';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class QuoteService {
   constructor(
     @InjectModel(Quote.name)
     private quoteModel: Model<Quote>,
+    private notificationService: NotificationService, // Inject NotificationService
   ) {}
 
   // create a quote by authenticated user
@@ -36,6 +38,11 @@ export class QuoteService {
     // Publish the event after saving the quote
 
     const savedQuote = await newQuote.save();
+
+    // Create a notification when a new quote is created
+    await this.notificationService.createNotification(
+      `New quote created: ${title}`,
+    );
 
     return savedQuote;
   }
