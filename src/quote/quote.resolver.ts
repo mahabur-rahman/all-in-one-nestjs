@@ -12,7 +12,6 @@ import { QuoteType } from './types/quote.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
 import { PubSub } from 'graphql-subscriptions';
-import { Quote } from './schema/quote.schema';
 
 const pubSub = new PubSub();
 
