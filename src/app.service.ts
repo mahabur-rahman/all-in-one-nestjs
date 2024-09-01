@@ -7,7 +7,10 @@ export class AppService {
 
   getHello(): string {
     const message = 'Hello World!';
-    this.pubSub.publish('helloUpdated', { helloUpdated: message }); // Publish event
+
+    this.pubSub.publish('helloUpdated', {
+      helloUpdated: 'hello world real time',
+    }); // Publish event
     return message;
   }
 }
