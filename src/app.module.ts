@@ -14,6 +14,7 @@ import { MailModule } from './mail/mail.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { PaymentModule } from './payment/payment.module';
 import { PubSub } from 'graphql-subscriptions';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PubSub } from 'graphql-subscriptions';
     MailModule,
     GatewayModule,
     PaymentModule,
+    NotificationModule,
   ],
   providers: [
     AppResolver,

@@ -7,6 +7,7 @@ import { PubSub } from 'graphql-subscriptions';
 export class AppResolver {
   constructor(
     private readonly appService: AppService,
+    // initialize pubsub 
     @Inject('PUB_SUB') private readonly pubSub: PubSub,
   ) {}
 
