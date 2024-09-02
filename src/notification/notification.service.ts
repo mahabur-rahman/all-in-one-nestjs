@@ -10,7 +10,7 @@ export class NotificationService {
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<Notification>,
-    private pubSub: PubSub, // Inject PubSub for real-time updates
+    private pubSub: PubSub,
   ) {}
 
   async createNotification(
@@ -25,6 +25,36 @@ export class NotificationService {
       notificationCreated: savedNotification,
     });
 
-    return savedNotification;
+    // Populate user information
+    const populatedNotification = await this.notificationModel
+      .findById(savedNotification._id)
+      .populate({
+        path: 'userId',
+        select: 'firstName lastName email',
+      })
+      .exec();
+
+    if (!populatedNotification) {
+      throw new Error('Notification not found');
+    }
+
+    // Map the populated notification to NotificationType
+    const notificationType: NotificationType = {
+      _id: populatedNotification._id.toString(),
+      title: populatedNotification.title,
+      user: populatedNotification.userId // Ensure user is populated
+        ? ({
+            _id: populatedNotification.userId._id,
+            firstName: populatedNotification.userId.firstName,
+            lastName: populatedNotification.userId.lastName,
+            email: populatedNotification.userId.email,
+          } as any)
+        : null,
+    };
+
+    console.log(notificationType.user?._id);
+    console.log(notificationType.user?.email);
+    console.log(notificationType.user);
+    return notificationType;
   }
 }
