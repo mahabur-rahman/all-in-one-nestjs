@@ -65,7 +65,7 @@ export class NotificationService {
       .sort({ createdAt: -1 })
       .populate({
         path: 'userId',
-        select: 'firstName lastName email',
+        select: 'firstName lastName email image',
       });
 
     // Map each notification to the NotificationType format
@@ -74,7 +74,7 @@ export class NotificationService {
       title: notification.title,
       user: notification.userId
         ? ({
-            _id: notification.userId._id.toString(),
+            _id: notification.userId._id,
             firstName: notification.userId.firstName,
             lastName: notification.userId.lastName,
             email: notification.userId.email,
