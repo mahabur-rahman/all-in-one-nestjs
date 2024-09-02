@@ -36,13 +36,10 @@ export class QuoteService {
     });
 
     // Publish the event after saving the quote
-
     const savedQuote = await newQuote.save();
 
     // Create a notification when a new quote is created
-    await this.notificationService.createNotification(
-      `New quote created: ${title}`,
-    );
+    await this.notificationService.createNotification(`${title}`, userId);
 
     return savedQuote;
   }

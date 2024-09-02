@@ -1,12 +1,12 @@
 import { Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { Notification } from './schema/notification.schema';
+import { NotificationType } from './types/notification.type';
 
-@Resolver(() => Notification)
+@Resolver(() => NotificationType)
 export class NotificationResolver {
   constructor(private pubSub: PubSub) {}
 
-  @Subscription(() => Notification, {
+  @Subscription(() => NotificationType, {
     name: 'notificationCreated',
   })
   notificationCreated() {
