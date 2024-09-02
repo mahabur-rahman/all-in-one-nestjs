@@ -62,8 +62,24 @@ export class NotificationService {
   async getAllNotifications(): Promise<NotificationType[]> {
     const notifications = await this.notificationModel
       .find()
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'userId',
+        select: 'firstName lastName email',
+      });
 
-    return notifications;
+    // Map each notification to the NotificationType format
+    return notifications.map((notification) => ({
+      _id: notification._id.toString(),
+      title: notification.title,
+      user: notification.userId
+        ? ({
+            _id: notification.userId._id.toString(),
+            firstName: notification.userId.firstName,
+            lastName: notification.userId.lastName,
+            email: notification.userId.email,
+          } as any)
+        : null,
+    }));
   }
 }
