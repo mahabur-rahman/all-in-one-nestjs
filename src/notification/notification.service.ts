@@ -20,11 +20,6 @@ export class NotificationService {
     const newNotification = new this.notificationModel({ title, userId });
     const savedNotification = await newNotification.save();
 
-    // Publish the notification to subscribers
-    this.pubSub.publish('notificationCreated', {
-      notificationCreated: savedNotification,
-    });
-
     // Populate user information
     const populatedNotification = await this.notificationModel
       .findById(savedNotification._id)
@@ -44,13 +39,18 @@ export class NotificationService {
       title: populatedNotification.title,
       user: populatedNotification.userId // Ensure user is populated
         ? ({
-            _id: populatedNotification.userId._id,
+            _id: populatedNotification.userId._id.toString(),
             firstName: populatedNotification.userId.firstName,
             lastName: populatedNotification.userId.lastName,
             email: populatedNotification.userId.email,
           } as any)
         : null,
     };
+
+    // Publish the populated notification to subscribers
+    this.pubSub.publish('notificationCreated', {
+      notificationCreated: notificationType, // Publish the notification with populated user
+    });
 
     console.log(notificationType.user?._id);
     console.log(notificationType.user?.email);
