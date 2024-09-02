@@ -57,4 +57,13 @@ export class NotificationService {
     console.log(notificationType.user);
     return notificationType;
   }
+
+  // Get all notifications
+  async getAllNotifications(): Promise<NotificationType[]> {
+    const notifications = await this.notificationModel
+      .find()
+      .sort({ createdAt: -1 });
+
+    return notifications;
+  }
 }
