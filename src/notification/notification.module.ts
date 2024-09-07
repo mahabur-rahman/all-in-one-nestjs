@@ -4,11 +4,16 @@ import { Notification, NotificationSchema } from './schema/notification.schema';
 import { NotificationResolver } from './notification.resolver';
 import { NotificationService } from './notification.service';
 import { PubSub } from 'graphql-subscriptions';
+import {
+  NotificationCount,
+  NotificationCountSchema,
+} from './schema/notificationCount.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Notification.name, schema: NotificationSchema },
+      { name: NotificationCount.name, schema: NotificationCountSchema },
     ]),
   ],
   providers: [

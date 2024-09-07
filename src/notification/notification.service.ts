@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { Notification } from './schema/notification.schema';
+import { NotificationCount } from './schema/notificationCount.schema'; // Import new schema
 import { NotificationType } from './types/notification.type';
 import { NotificationResponse } from './types/notificationResponse.type';
 
@@ -11,6 +12,8 @@ export class NotificationService {
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<Notification>,
+    @InjectModel(NotificationCount.name) // Inject new model
+    private notificationCountModel: Model<NotificationCount>,
     private pubSub: PubSub,
   ) {}
 
@@ -48,6 +51,9 @@ export class NotificationService {
         : null,
     };
 
+    // Update notifications count
+    await this.updateNotificationCount();
+
     // Publish the populated notification to subscribers
     this.pubSub.publish('notificationCreated', {
       notificationCreated: notificationType,
@@ -55,8 +61,6 @@ export class NotificationService {
 
     return notificationType;
   }
-
-  // get all notifications
 
   async getAllNotifications(): Promise<NotificationResponse> {
     const notifications = await this.notificationModel
@@ -67,7 +71,7 @@ export class NotificationService {
         select: 'firstName lastName email image',
       });
 
-    const notificationsCount = await this.notificationModel.countDocuments();
+    const notificationsCount = await this.getNotificationCount(); // Fetch count
 
     const formattedNotifications = notifications.map((notification) => ({
       _id: notification._id.toString(),
@@ -88,6 +92,35 @@ export class NotificationService {
     };
   }
 
-  // notification will be 0 when i mutates the notification
-  async notificationCountZero() {}
+  // async updateNotificationCount() {
+  //   const count = await this.notificationCountModel.find();
+
+  //   console.log(count[0].count)
+  //   await this.notificationCountModel.findOneAndUpdate(
+  //     {},
+  //     { count },
+  //     { upsert: true }, // Create if it doesn't exist
+  //   );
+  // }
+
+  async updateNotificationCount() {
+    await this.notificationCountModel.findOneAndUpdate(
+      {},
+      { $inc: { count: 1 } }, // Increment the count field by 1
+      { upsert: true, new: true }, // Create if it doesn't exist, return the updated document
+    );
+  }
+
+  async getNotificationCount(): Promise<number> {
+    const countDoc = await this.notificationCountModel.findOne();
+    return countDoc ? countDoc.count : 0;
+  }
+
+  async notificationCountZero() {
+    await this.notificationCountModel.findOneAndUpdate(
+      {},
+      { count: 0 },
+      { upsert: true }, // Create if it doesn't exist
+    );
+  }
 }

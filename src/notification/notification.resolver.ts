@@ -1,4 +1,4 @@
-import { Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Int, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { NotificationType } from './types/notification.type';
 import { NotificationService } from './notification.service';
@@ -18,14 +18,19 @@ export class NotificationResolver {
     return this.pubSub.asyncIterator('notificationCreated');
   }
 
-  // Query to get all notifications with notificationsCount
   @Query(() => NotificationResponse)
   async getAllNotifications(): Promise<NotificationResponse> {
     return this.notificationService.getAllNotifications();
   }
 
   @Mutation(() => String)
-  async notificationCountZero() {
-    return this.notificationService.notificationCountZero();
+  async resetNotificationCount(): Promise<string> {
+    await this.notificationService.notificationCountZero();
+    return 'Notification count reset to zero';
+  }
+
+  @Query(() => Int)
+  async getNotificationCount(): Promise<number> {
+    return this.notificationService.getNotificationCount();
   }
 }
