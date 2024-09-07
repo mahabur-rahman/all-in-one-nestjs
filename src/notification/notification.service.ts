@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { Notification } from './schema/notification.schema';
 import { NotificationType } from './types/notification.type';
+import { NotificationResponse } from './types/notificationResponse.type';
 
 @Injectable()
 export class NotificationService {
@@ -49,17 +50,15 @@ export class NotificationService {
 
     // Publish the populated notification to subscribers
     this.pubSub.publish('notificationCreated', {
-      notificationCreated: notificationType, // Publish the notification with populated user
+      notificationCreated: notificationType,
     });
 
-    console.log(notificationType.user?._id);
-    console.log(notificationType.user?.email);
-    console.log(notificationType.user);
     return notificationType;
   }
 
-  // Get all notifications
-  async getAllNotifications(): Promise<NotificationType[]> {
+  // get all notifications
+
+  async getAllNotifications(): Promise<NotificationResponse> {
     const notifications = await this.notificationModel
       .find()
       .sort({ createdAt: -1 })
@@ -68,18 +67,24 @@ export class NotificationService {
         select: 'firstName lastName email image',
       });
 
-    // Map each notification to the NotificationType format
-    return notifications.map((notification) => ({
+    const notificationsCount = await this.notificationModel.countDocuments();
+
+    const formattedNotifications = notifications.map((notification) => ({
       _id: notification._id.toString(),
       title: notification.title,
       user: notification.userId
         ? ({
-            _id: notification.userId._id,
+            _id: notification.userId._id.toString(),
             firstName: notification.userId.firstName,
             lastName: notification.userId.lastName,
             email: notification.userId.email,
           } as any)
         : null,
     }));
+
+    return {
+      notifications: formattedNotifications,
+      notificationsCount,
+    };
   }
 }
