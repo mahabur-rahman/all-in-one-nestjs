@@ -87,4 +87,7 @@ export class NotificationService {
       notificationsCount,
     };
   }
+
+  // notification will be 0 when i mutates the notification
+  async notificationCountZero() {}
 }
