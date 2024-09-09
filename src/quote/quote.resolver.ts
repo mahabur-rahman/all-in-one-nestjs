@@ -33,8 +33,6 @@ export class QuoteResolver {
       user._id,
     );
 
-    console.log(user)
-
     // Publish the event for subscription
     pubSub.publish('quoteCreated', { quoteCreated: newQuote });
 
