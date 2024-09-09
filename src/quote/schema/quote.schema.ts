@@ -43,6 +43,54 @@ export class Quote {
     max: 5,
   })
   rating: number;
+
+  // Nested sub-schema for ratings
+  @Prop({
+    type: {
+      average: { type: Number, required: true, default: 0 },
+      count: { type: Number, required: true, default: 0 },
+    },
+  })
+  ratings: Record<string, any>;
+
+  @Prop({
+    type: String,
+    required: true,
+    enum: ['English', 'Spanish', 'French', 'German', 'Other'],
+  })
+  language: string;
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  features: string[];
+
+  @Prop({
+    type: [String],
+    default: [],
+  })
+  topics: string[];
+
+  @Prop({
+    type: String,
+    enum: ['Beginner', 'Intermediate', 'Advanced'],
+  })
+  level: string;
+
+  @Prop({
+    type: String,
+    enum: ['Free', 'Paid'],
+    required: true,
+  })
+  price: string;
+
+  @Prop({
+    type: String,
+    enum: ['0-1 hour', '1-3 hours', '3-6 hours', '6+ hours'],
+    required: true,
+  })
+  duration: string;
 }
 
 // Create the schema factory
