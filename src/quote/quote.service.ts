@@ -86,6 +86,7 @@ export class QuoteService {
     title?: string,
     minRating?: number,
     languages?: string[],
+    durations?: string[],
   ): Promise<Quote[]> {
     let query = this.quoteModel.find();
 
@@ -104,6 +105,11 @@ export class QuoteService {
     // Filter by multiple languages
     if (languages && languages.length > 0) {
       query = query.where('languages').in(languages);
+    }
+
+    // Filter by multiple duration
+    if (durations && durations.length > 0) {
+      query = query.where('duration').in(durations); // Filter by multiple durations
     }
 
     return await query
