@@ -25,7 +25,19 @@ export class QuoteService {
     createQuoteDto: CreateQuoteDto,
     userId: string,
   ): Promise<Quote> {
-    const { title, images, videos, rating } = createQuoteDto;
+    const {
+      title,
+      images,
+      videos,
+      rating,
+      ratings,
+      duration,
+      languages,
+      price,
+      features,
+      topics,
+      level,
+    } = createQuoteDto;
 
     const newQuote = new this.quoteModel({
       title,
@@ -33,6 +45,13 @@ export class QuoteService {
       images,
       videos,
       rating,
+      duration,
+      languages,
+      price,
+      features,
+      topics,
+      level,
+      ratings,
     });
 
     // Publish the event after saving the quote

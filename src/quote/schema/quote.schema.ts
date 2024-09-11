@@ -44,6 +44,7 @@ export class Quote {
   })
   rating: number;
 
+  // Added Extra Things
   @Prop({
     type: {
       average: { type: Number, required: true, default: 0 },
