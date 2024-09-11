@@ -63,11 +63,14 @@ export class QuoteResolver {
   //   }
   // }
 
-  // get all quotes
+  // GET ALL QUOTES | GET QUOTES WITH FILTER
   @Query(() => [QuoteType])
   // @UseGuards(JwtGuard)
-  async getAllQuotes(@Args('title', { nullable: true }) title?: string) {
-    return await this.quoteService.getAllQuotes(title);
+  async getAllQuotes(
+    @Args('title', { nullable: true }) title?: string,
+    @Args('minRating', { nullable: true }) minRating?: number,
+  ) {
+    return await this.quoteService.getAllQuotes(title, minRating);
   }
 
   // get single quote :id
