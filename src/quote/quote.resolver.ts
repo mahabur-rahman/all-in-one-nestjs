@@ -63,7 +63,7 @@ export class QuoteResolver {
   //   }
   // }
 
-  // get all quotes
+  // GET ALL QUOTES | GET QUOTES WITH FILTER
   @Query(() => [QuoteType])
   // @UseGuards(JwtGuard)
   async getAllQuotes(@Args('title', { nullable: true }) title?: string) {
