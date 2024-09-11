@@ -44,7 +44,6 @@ export class Quote {
   })
   rating: number;
 
-  // Nested sub-schema for ratings
   @Prop({
     type: {
       average: { type: Number, required: true, default: 0 },
