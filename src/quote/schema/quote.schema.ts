@@ -50,6 +50,7 @@ export class Quote {
       average: { type: Number, required: true, default: 0 },
       count: { type: Number, required: true, default: 0 },
     },
+    _id: false,
   })
   ratings: Record<string, any>;
 
@@ -58,7 +59,7 @@ export class Quote {
     required: true,
     enum: ['English', 'Spanish', 'French', 'German', 'Other'],
   })
-  language: string;
+  languages: string;
 
   @Prop({
     type: [String],
