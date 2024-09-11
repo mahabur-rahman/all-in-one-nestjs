@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { User } from 'src/auth/schema/user.schema';
 import { NotificationService } from 'src/notification/notification.service';
+import { QuoteFiltersInput } from './dto/quote-filters-input.dto';
 
 @Injectable()
 export class QuoteService {
@@ -82,60 +83,36 @@ export class QuoteService {
   // }
 
   // get all quotes
-  async getAllQuotes(
-    title?: string,
-    minRating?: number,
-    languages?: string[],
-    durations?: string[],
-    features?: string[],
-    topics?: string[],
-    levels?: string[],
-    prices?: string[],
-  ): Promise<Quote[]> {
+  async getAllQuotes(filters?: QuoteFiltersInput): Promise<Quote[]> {
     let query = this.quoteModel.find();
 
-    if (title) {
-      query = query.where('title', {
-        $regex: title,
-        $options: 'i',
-      });
-    }
+    const filterConditions = {
+      title: filters?.title
+        ? { $regex: filters.title, $options: 'i' }
+        : undefined,
+      'ratings.average': filters?.minRating
+        ? { $gte: filters.minRating }
+        : undefined,
+      languages: filters?.languages?.length
+        ? { $in: filters.languages }
+        : undefined,
+      duration: filters?.durations?.length
+        ? { $in: filters.durations }
+        : undefined,
+      features: filters?.features?.length
+        ? { $in: filters.features }
+        : undefined,
+      topics: filters?.topics?.length ? { $in: filters.topics } : undefined,
+      level: filters?.levels?.length ? { $in: filters.levels } : undefined,
+      price: filters?.prices?.length ? { $in: filters.prices } : undefined,
+    };
 
-    // Filter by minimum rating
-    if (minRating) {
-      query = query.where('ratings.average').gte(minRating);
-    }
-
-    // Filter by multiple languages
-    if (languages && languages.length > 0) {
-      query = query.where('languages').in(languages);
-    }
-
-    // Filter by multiple duration
-    if (durations && durations.length > 0) {
-      query = query.where('duration').in(durations); // Filter by multiple durations
-    }
-
-    // Features
-    if (features && features.length > 0) {
-      query = query.where('features').in(features);
-    }
-
-    // Topics
-    if (topics && topics.length > 0) {
-      query = query.where('topics').in(topics);
-    }
-
-    // Levels
-    if (levels && levels.length > 0) {
-      query = query.where('level').in(levels);
-    }
-
-    // Price
-
-    if (prices && prices.length > 0) {
-      query = query.where('price').in(prices);
-    }
+    // Apply filters dynamically
+    Object.keys(filterConditions).forEach((key) => {
+      if (filterConditions[key]) {
+        query = query.where(key, filterConditions[key]);
+      }
+    });
 
     return await query
       .populate('createBy', '_id firstName lastName email password role')

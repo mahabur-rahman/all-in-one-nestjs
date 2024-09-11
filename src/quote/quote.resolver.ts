@@ -12,6 +12,7 @@ import { QuoteType } from './types/quote.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/utils/jwt.guard';
 import { PubSub } from 'graphql-subscriptions';
+import { QuoteFiltersInput } from './dto/quote-filters-input.dto';
 
 const pubSub = new PubSub();
 
@@ -65,33 +66,15 @@ export class QuoteResolver {
 
   // GET ALL QUOTES | GET QUOTES WITH FILTER
   @Query(() => [QuoteType])
-  // @UseGuards(JwtGuard)
   async getAllQuotes(
-    @Args('title', { nullable: true }) title?: string,
-    @Args('minRating', { nullable: true }) minRating?: number,
-    @Args({ name: 'languages', type: () => [String], nullable: true })
-    languages?: string[],
-    @Args({ name: 'durations', type: () => [String], nullable: true })
-    durations?: string[], // Array of durations
-    @Args({ name: 'features', type: () => [String], nullable: true })
-    features?: string[],
-    @Args({ name: 'topics', type: () => [String], nullable: true })
-    topics?: string[],
-    @Args({ name: 'levels', type: () => [String], nullable: true })
-    levels?: string[],
-    @Args({ name: 'prices', type: () => [String], nullable: true })
-    prices?: string[],
+    @Args({
+      name: 'filters',
+      type: () => QuoteFiltersInput,
+      nullable: true,
+    })
+    filters?: QuoteFiltersInput,
   ) {
-    return await this.quoteService.getAllQuotes(
-      title,
-      minRating,
-      languages,
-      durations,
-      features,
-      topics,
-      levels,
-      prices,
-    );
+    return await this.quoteService.getAllQuotes(filters);
   }
 
   // get single quote :id
