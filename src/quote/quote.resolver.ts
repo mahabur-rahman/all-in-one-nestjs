@@ -64,13 +64,23 @@ export class QuoteResolver {
   // }
 
   // GET ALL QUOTES | GET QUOTES WITH FILTER
+  // GET ALL QUOTES | GET QUOTES WITH FILTER
   @Query(() => [QuoteType])
   // @UseGuards(JwtGuard)
   async getAllQuotes(
     @Args('title', { nullable: true }) title?: string,
     @Args('minRating', { nullable: true }) minRating?: number,
+    @Args({ name: 'languages', type: () => [String], nullable: true })
+    languages?: string[],
+    @Args({ name: 'durations', type: () => [String], nullable: true })
+    durations?: string[], // Array of durations
   ) {
-    return await this.quoteService.getAllQuotes(title, minRating);
+    return await this.quoteService.getAllQuotes(
+      title,
+      minRating,
+      languages,
+      durations,
+    );
   }
 
   // get single quote :id

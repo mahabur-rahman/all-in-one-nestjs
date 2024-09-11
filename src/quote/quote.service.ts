@@ -80,12 +80,16 @@ export class QuoteService {
   //     }
   //   }
   // }
-  //   get all quotes
+
   // get all quotes
-  async getAllQuotes(title?: string, minRating?: number): Promise<Quote[]> {
+  async getAllQuotes(
+    title?: string,
+    minRating?: number,
+    languages?: string[],
+    durations?: string[],
+  ): Promise<Quote[]> {
     let query = this.quoteModel.find();
 
-    // Filter by title if provided
     if (title) {
       query = query.where('title', {
         $regex: title,
@@ -93,12 +97,21 @@ export class QuoteService {
       });
     }
 
-    // Filter by minimum rating if provided
+    // Filter by minimum rating
     if (minRating) {
       query = query.where('ratings.average').gte(minRating);
     }
 
-    // Execute query and populate necessary fields
+    // Filter by multiple languages
+    if (languages && languages.length > 0) {
+      query = query.where('languages').in(languages);
+    }
+
+    // Filter by multiple duration
+    if (durations && durations.length > 0) {
+      query = query.where('duration').in(durations); // Filter by multiple durations
+    }
+
     return await query
       .populate('createBy', '_id firstName lastName email password role')
       .populate('likes', '_id firstName lastName email role')
