@@ -64,7 +64,6 @@ export class QuoteResolver {
   // }
 
   // GET ALL QUOTES | GET QUOTES WITH FILTER
-  // GET ALL QUOTES | GET QUOTES WITH FILTER
   @Query(() => [QuoteType])
   // @UseGuards(JwtGuard)
   async getAllQuotes(
@@ -74,12 +73,18 @@ export class QuoteResolver {
     languages?: string[],
     @Args({ name: 'durations', type: () => [String], nullable: true })
     durations?: string[], // Array of durations
+    @Args({ name: 'features', type: () => [String], nullable: true })
+    features?: string[],
+    @Args({ name: 'topics', type: () => [String], nullable: true })
+    topics?: string[],
   ) {
     return await this.quoteService.getAllQuotes(
       title,
       minRating,
       languages,
       durations,
+      features,
+      topics,
     );
   }
 
