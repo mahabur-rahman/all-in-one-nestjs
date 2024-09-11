@@ -77,6 +77,10 @@ export class QuoteResolver {
     features?: string[],
     @Args({ name: 'topics', type: () => [String], nullable: true })
     topics?: string[],
+    @Args({ name: 'levels', type: () => [String], nullable: true })
+    levels?: string[],
+    @Args({ name: 'prices', type: () => [String], nullable: true })
+    prices?: string[],
   ) {
     return await this.quoteService.getAllQuotes(
       title,
@@ -85,6 +89,8 @@ export class QuoteResolver {
       durations,
       features,
       topics,
+      levels,
+      prices,
     );
   }
 

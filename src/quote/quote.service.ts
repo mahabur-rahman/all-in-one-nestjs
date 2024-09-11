@@ -89,6 +89,8 @@ export class QuoteService {
     durations?: string[],
     features?: string[],
     topics?: string[],
+    levels?: string[],
+    prices?: string[],
   ): Promise<Quote[]> {
     let query = this.quoteModel.find();
 
@@ -120,9 +122,19 @@ export class QuoteService {
     }
 
     // Topics
-
     if (topics && topics.length > 0) {
       query = query.where('topics').in(topics);
+    }
+
+    // Levels
+    if (levels && levels.length > 0) {
+      query = query.where('level').in(levels);
+    }
+
+    // Price
+
+    if (prices && prices.length > 0) {
+      query = query.where('price').in(prices);
     }
 
     return await query
