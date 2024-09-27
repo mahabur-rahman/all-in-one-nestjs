@@ -15,6 +15,7 @@ import { GatewayModule } from './gateway/gateway.module';
 import { PaymentModule } from './payment/payment.module';
 import { PubSub } from 'graphql-subscriptions';
 import { NotificationModule } from './notification/notification.module';
+import { GmailModule } from './gmail/gmail.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { NotificationModule } from './notification/notification.module';
     GatewayModule,
     PaymentModule,
     NotificationModule,
+    GmailModule,
   ],
   providers: [
     AppResolver,
