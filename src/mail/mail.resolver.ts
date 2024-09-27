@@ -1,4 +1,3 @@
-// mail.resolver.ts
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { MailService } from './mail.service';
 import { SendEmailDto } from './dto/sendEmail.dto';
