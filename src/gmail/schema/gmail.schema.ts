@@ -1,5 +1,6 @@
 import { registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export enum GmailStatus {
   PENDING = 'PENDING',
