@@ -6,22 +6,20 @@ export class GmailService {
   private transporter;
 
   constructor() {
-    // Create a transporter object with Gmail-specific configuration
     this.transporter = nodemailer.createTransport({
-      service: 'gmail', // Use Gmail's service
+      service: 'gmail', // Automatically uses smtp.gmail.com and the correct port
       auth: {
-        user: process.env.EMAIL_USER, // Your Gmail account
-        pass: process.env.EMAIL_PASS, // The generated App Password
+        user: process.env.EMAIL_USER, // Your Gmail address
+        pass: process.env.EMAIL_APP_PASS, // Your app password or Gmail password
       },
     });
   }
 
-  // Method to send an email
   async sendEmail(to: string, subject: string, text: string, html?: string) {
     try {
       const info = await this.transporter.sendMail({
         from: `"Your App Name" <${process.env.EMAIL_USER}>`, // Sender address
-        to, // Receiver's email
+        to, // Recipient address
         subject, // Subject line
         text, // Plain text body
         html, // HTML body (optional)
