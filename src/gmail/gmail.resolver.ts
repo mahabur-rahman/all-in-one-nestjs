@@ -27,7 +27,8 @@ export class GmailResolver {
       const isValid = this.gmailService.verifyOTP(email, otp);
       return isValid;
     } catch (error) {
-      throw new Error(error.message);
+      console.error('Error verifying OTP:', error.message);
+      return false;
     }
   }
 }
