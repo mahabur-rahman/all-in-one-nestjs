@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Gmail, GmailStatus } from './schema/gmail.schema'; // Import the Gmail model
 
 @Injectable()
 export class GmailService {
   private transporter;
   private otpStore = new Map<string, { otp: string; expiresAt: Date }>(); // In-memory OTP store
 
-  constructor() {
+  constructor(
+    @InjectModel(Gmail.name) private readonly gmailModel: Model<Gmail>,
+  ) {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -23,6 +28,9 @@ export class GmailService {
 
   // Send OTP via email and store it temporarily with an expiration time
   async sendOTP(to: string) {
+    // Store email in MongoDB with status PENDING
+    await this.gmailModel.create({ email: to, status: GmailStatus.PENDING }); // New line added
+
     const otp = this.generateOTP();
     const subject = 'Your OTP Code';
     const text = `Your OTP code is ${otp}. It will expire in 10 minutes.`;
@@ -44,7 +52,7 @@ export class GmailService {
   }
 
   // Verify the OTP for a given email
-  verifyOTP(email: string, otp: string): boolean {
+  async verifyOTP(email: string, otp: string): Promise<boolean> {
     const otpRecord = this.otpStore.get(email);
 
     if (!otpRecord) {
@@ -62,6 +70,13 @@ export class GmailService {
     // Check if the OTP matches
     if (storedOtp === otp) {
       this.otpStore.delete(email); // Delete OTP after successful verification
+
+      // Update status to VERIFIED in MongoDB
+      await this.gmailModel.updateOne(
+        { email },
+        { status: GmailStatus.VERIFIED },
+      );
+
       return true;
     }
 
