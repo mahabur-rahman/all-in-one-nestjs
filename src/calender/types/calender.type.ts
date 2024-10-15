@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class CalendarType {
   @Field(() => ID)
-  _id?: string;
+  _id: string;
 
   @Field()
   title: string;

@@ -1,6 +1,7 @@
-import { Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsBoolean, IsDateString, IsOptional, IsString } from 'class-validator';
 
+@InputType()
 export class CreateCalendarDto {
   @Field()
   @IsString()
