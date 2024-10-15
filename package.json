@@ -20,6 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^10.0.0",
