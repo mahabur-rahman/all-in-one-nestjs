@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Calendar } from './schema/calender.schema';
 import { CreateCalendarDto } from './dto/create-calender.dto';
+import { UpdateCalendarDto } from './dto/update-calender.dto';
 
 @Injectable()
 export class CalendarService {
@@ -21,5 +22,21 @@ export class CalendarService {
   // Find all calendars
   async findAll(): Promise<Calendar[]> {
     return this.calendarModel.find().exec();
+  }
+
+  // Update a calendar
+  async updateCalendar(
+    id: string,
+    updateCalendarDto: UpdateCalendarDto,
+  ): Promise<Calendar> {
+    const updatedCalendar = await this.calendarModel.findByIdAndUpdate(
+      id,
+      updateCalendarDto,
+      { new: true, useFindAndModify: false },
+    );
+    if (!updatedCalendar) {
+      throw new Error(`Calendar with ID ${id} not found`);
+    }
+    return updatedCalendar;
   }
 }

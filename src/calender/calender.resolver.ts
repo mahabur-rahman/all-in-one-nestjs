@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CalendarType } from './types/calender.type';
 import { CreateCalendarDto } from './dto/create-calender.dto';
 import { CalendarService } from './calender.service';
+import { UpdateCalendarDto } from './dto/update-calender.dto';
 
 @Resolver(() => CalendarType)
 export class CalenderResolver {
@@ -19,5 +20,13 @@ export class CalenderResolver {
   @Query(() => [CalendarType])
   async getAllCalendars() {
     return this.calendarService.findAll();
+  }
+
+  @Mutation(() => CalendarType)
+  async updateCalendar(
+    @Args('id') id: string,
+    @Args('updateCalendarDto') updateCalendarDto: UpdateCalendarDto,
+  ) {
+    return this.calendarService.updateCalendar(id, updateCalendarDto);
   }
 }
