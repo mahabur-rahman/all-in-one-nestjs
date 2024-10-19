@@ -7,6 +7,11 @@ export class CreateCalendarDto {
   @IsString()
   title: string;
 
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  desc?: string;
+
   @Field()
   @IsDateString()
   startDate: string;
