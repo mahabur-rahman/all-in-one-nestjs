@@ -11,7 +11,7 @@ export class Calendar {
   title: string;
 
   @Prop()
-  desc?: string;
+  description?: string;
 
   @Prop({ required: true })
   startDate: Date;
