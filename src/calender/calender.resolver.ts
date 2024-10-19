@@ -22,9 +22,8 @@ export class CalenderResolver {
     return this.calendarService.findAll();
   }
 
-  // Update only startDate and endDate
   @Mutation(() => CalendarType)
-  updateCalendar(
+  async updateCalendar(
     @Args('id') id: string,
     @Args('updateCalendarDto') updateCalendarDto: UpdateCalendarDto,
   ) {

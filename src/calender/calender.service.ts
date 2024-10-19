@@ -24,13 +24,19 @@ export class CalendarService {
     return this.calendarModel.find().exec();
   }
 
-  // Update calendar with only startDate and endDate
+  // Update a calendar
   async updateCalendar(
     id: string,
     updateCalendarDto: UpdateCalendarDto,
   ): Promise<Calendar> {
-    return this.calendarModel
-      .findByIdAndUpdate(id, { $set: updateCalendarDto }, { new: true })
-      .exec();
+    const updatedCalendar = await this.calendarModel.findByIdAndUpdate(
+      id,
+      updateCalendarDto,
+      { new: true, useFindAndModify: false },
+    );
+    if (!updatedCalendar) {
+      throw new Error(`Calendar with ID ${id} not found`);
+    }
+    return updatedCalendar;
   }
 }

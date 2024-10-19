@@ -7,22 +7,4 @@ export class UpdateCalendarDto {
 
   @Field({ nullable: true })
   endDate?: string;
-
-  @Field({ nullable: true })
-  title?: string;
-
-  @Field({ nullable: true })
-  description?: string;
-
-  @Field({ nullable: true })
-  allDay?: boolean;
-
-  @Field({ nullable: true })
-  url?: string;
-
-  @Field({ nullable: true })
-  backgroundColor?: string;
-
-  @Field({ nullable: true })
-  borderColor?: string;
 }
