@@ -10,16 +10,16 @@ export class CalendarService {
     @InjectModel(Calendar.name) private readonly calendarModel: Model<Calendar>,
   ) {}
 
-  // Find all calendars
-  async findAll(): Promise<Calendar[]> {
-    return this.calendarModel.find().exec();
-  }
-
   // Create a calendar
   async createCalender(
     createCalendarDto: CreateCalendarDto,
   ): Promise<Calendar> {
     const newCalendar = new this.calendarModel(createCalendarDto);
     return newCalendar.save();
+  }
+
+  // Find all calendars
+  async findAll(): Promise<Calendar[]> {
+    return this.calendarModel.find().exec();
   }
 }
