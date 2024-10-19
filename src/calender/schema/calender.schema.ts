@@ -10,6 +10,9 @@ export class Calendar {
   @Prop({ required: true })
   title: string;
 
+  @Prop()
+  desc?: string;
+
   @Prop({ required: true })
   startDate: Date;
 
