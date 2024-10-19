@@ -10,7 +10,7 @@ export class CreateCalendarDto {
   @Field({ nullable: true })
   @IsString()
   @IsOptional()
-  desc?: string;
+  description?: string;
 
   @Field()
   @IsDateString()

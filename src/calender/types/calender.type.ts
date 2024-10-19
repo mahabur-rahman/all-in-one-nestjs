@@ -9,7 +9,7 @@ export class CalendarType {
   title: string;
 
   @Field({ nullable: true })
-  desc?: string;
+  description?: string;
 
   @Field()
   startDate: string;
