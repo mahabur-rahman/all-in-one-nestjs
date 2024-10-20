@@ -1,7 +1,16 @@
-import { Resolver } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
+import { TaskType } from './types/task.type';
 
-@Resolver()
+@Resolver((of) => TaskType)
 export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
+
+  @Mutation((returns) => TaskType)
+  async createTask(
+    @Args('createTaskInput') createTaskDto: CreateTaskDto,
+  ): Promise<TaskType> {
+    return this.taskService.createTask(createTaskDto);
+  }
 }
