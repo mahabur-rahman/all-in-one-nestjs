@@ -1,16 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { PubSub } from 'graphql-subscriptions';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('PUB_SUB') private readonly pubSub: PubSub) {}
+  constructor() {}
 
   getHello(): string {
-    const message = 'Hello World!';
-
-    this.pubSub.publish('helloUpdated', {
-      helloUpdated: 'hello postgressDB',
-    }); // Publish event
-    return message;
+    return 'Hello World!';
   }
 }
