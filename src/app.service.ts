@@ -9,7 +9,7 @@ export class AppService {
     const message = 'Hello World!';
 
     this.pubSub.publish('helloUpdated', {
-      helloUpdated: 'hello world real time',
+      helloUpdated: 'hello postgressDB',
     }); // Publish event
     return message;
   }
