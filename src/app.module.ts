@@ -4,6 +4,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppService } from './app.service';
 import { AppResolver } from './app.resolver';
+import { typeOrmConfig } from './config/typeorm.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { AppResolver } from './app.resolver';
       playground: true,
       installSubscriptionHandlers: true,
     }),
+
+    // connect with postgres
+    TypeOrmModule.forRoot(typeOrmConfig),
+    // TaskModule
   ],
   providers: [AppService, AppResolver],
 })
