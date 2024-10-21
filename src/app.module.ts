@@ -7,7 +7,6 @@ import { AppResolver } from './app.resolver';
 import { typeOrmConfig } from './config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module';
-import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,7 +24,6 @@ import { UserModule } from './user/user.module';
 
     // connect with postgres
     TypeOrmModule.forRoot(typeOrmConfig),
-    UserModule,
     TaskModule,
   ],
   providers: [AppService, AppResolver],

@@ -1,4 +1,3 @@
-
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -20,6 +19,4 @@ export class Task {
     name: string;
     color: string;
   }[]; // Array of objects with 'name' and 'color' [ {}, {} ]
-
-
 }

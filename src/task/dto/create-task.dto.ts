@@ -29,7 +29,4 @@ export class CreateTaskDto {
   @Type(() => TagInput) // Needed for class-validator to validate nested objects
   tags?: TagInput[];
 
-  @Field() // New field for user ID
-  @IsNotEmpty({ message: 'User ID is required' })
-  userId: string; // The ID of the user creating the task
 }
