@@ -1,23 +1,23 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Role, User } from '../entities/user.entity';
 
-@ObjectType() // Use ObjectType for GraphQL output type
+@ObjectType()
 export class UserType extends User {
-  @Field(() => ID) // Specify that id is an ID type
+  @Field(() => ID)
   id: string;
 
-  @Field() // Make sure to decorate with @Field()
+  @Field()
   email: string;
 
-  @Field() // Make sure to decorate with @Field()
+  @Field()
   firstName: string;
 
-  @Field() // Make sure to decorate with @Field()
+  @Field()
   lastName: string;
 
-  @Field() // Make sure to decorate with @Field()
+  @Field()
   isActive: boolean;
 
-  @Field(() => Role) // Specify that role is of Role enum type
+  @Field(() => Role)
   role: Role;
 }
