@@ -25,8 +25,8 @@ import { UserModule } from './user/user.module';
 
     // connect with postgres
     TypeOrmModule.forRoot(typeOrmConfig),
-    TaskModule,
     UserModule,
+    TaskModule,
   ],
   providers: [AppService, AppResolver],
 })
