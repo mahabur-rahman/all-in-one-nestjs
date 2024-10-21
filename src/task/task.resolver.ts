@@ -30,4 +30,10 @@ export class TaskResolver {
   ): Promise<TaskType> {
     return this.taskService.updateTask(id, updateTaskDto); // Call the service to update the task
   }
+
+  // Delete task mutation
+  @Mutation((returns) => Boolean)
+  async deleteTask(@Args('id') id: string): Promise<boolean> {
+    return this.taskService.deleteTask(id);
+  }
 }
