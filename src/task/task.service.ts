@@ -15,21 +15,10 @@ export class TaskService {
   ) {}
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const task = new Task();
-    task.title = createTaskDto.title;
-    task.description = createTaskDto.description;
-    task.tags = createTaskDto.tags;
-
-    // Find the user by ID and associate with the task
-    const user = await this.userRepository.findOne({
-      where: { id: createTaskDto.userId }, // Use the where option
-    });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-    task.user = user; // Associate user with task
-
-    return this.taskRepository.save(task); // Save the task
+    const task = this.taskRepository.create(createTaskDto);
+    console.log(task);
+    return this.taskRepository.save(task); // Saving the task will automatically set the user
   }
+
+    
 }
