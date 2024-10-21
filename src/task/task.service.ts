@@ -14,7 +14,7 @@ export class TaskService {
   // created task
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepository.create(createTaskDto);
-    console.log(task)
+    console.log(task);
     return this.taskRepository.save(task); // Saving the task will automatically set the user
   }
 
