@@ -28,5 +28,4 @@ export class CreateTaskDto {
   @ValidateNested({ each: true })
   @Type(() => TagInput) // Needed for class-validator to validate nested objects
   tags?: TagInput[];
-
 }
