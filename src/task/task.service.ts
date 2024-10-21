@@ -16,4 +16,8 @@ export class TaskService {
 
     return this.taskRepository.save(task);
   }
+
+  async findAll(): Promise<Task[]> {
+    return this.taskRepository.find(); // Fetch all tasks from the database
+  }
 }
