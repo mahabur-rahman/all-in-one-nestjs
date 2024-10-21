@@ -13,4 +13,10 @@ export class Task {
 
   @Column({ default: false })
   completed: boolean;
+
+  @Column('jsonb', { nullable: true })
+  tags?: {
+    name: string;
+    color: string;
+  }[]; // Array of objects with 'name' and 'color' [ {}, {} ]
 }

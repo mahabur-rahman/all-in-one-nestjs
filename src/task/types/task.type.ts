@@ -2,8 +2,17 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Task } from '../entities/task.entity';
 
 @ObjectType()
+class TagType {
+  @Field()
+  name: string;
+
+  @Field()
+  color: string;
+}
+
+@ObjectType()
 export class TaskType extends Task {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
   @Field()
@@ -14,4 +23,7 @@ export class TaskType extends Task {
 
   @Field()
   completed: boolean;
+
+  @Field(() => [TagType], { nullable: true })
+  tags?: TagType[];
 }
