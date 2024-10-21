@@ -15,7 +15,7 @@ export class TaskResolver {
   }
 
   @Query(() => [TaskType]) // Return an array of TaskType
-  async findAll(): Promise<TaskType[]> {
-    return this.taskService.findAll();
+  async findAllTask(): Promise<TaskType[]> {
+    return this.taskService.findAllTask();
   }
 }
