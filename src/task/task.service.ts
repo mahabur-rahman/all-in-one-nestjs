@@ -13,19 +13,10 @@ export class TaskService {
 
   // created task
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const { title, description, tags } = createTaskDto;
-    const task = this.taskRepository.create({
-      title,
-      description,
-      completed: false,
-      tags,
-    });
-
-    await this.taskRepository.save(task);
-    return task;
+    const task = this.taskRepository.create(createTaskDto);
+    console.log(task)
+    return this.taskRepository.save(task); // Saving the task will automatically set the user
   }
-
-  // get all task
 
   // Get all tasks
   async getAllTasks(): Promise<Task[]> {

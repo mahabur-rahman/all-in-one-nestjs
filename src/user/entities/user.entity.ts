@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Task } from 'src/task/entities/task.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 // Enum for user roles
 export enum UserRole {
@@ -34,4 +35,7 @@ export class User {
     default: UserRole.USER,
   })
   role: UserRole;
+
+  @OneToMany(() => Task, (task) => task.user) // Setting up the one-to-many relationship
+  tasks: Task[]; // Array of tasks created by the user
 }
