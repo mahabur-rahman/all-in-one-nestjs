@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsArray, ValidateNested, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 
 @InputType()
@@ -28,4 +28,8 @@ export class CreateTaskDto {
   @ValidateNested({ each: true })
   @Type(() => TagInput) // Needed for class-validator to validate nested objects
   tags?: TagInput[];
+
+  @Field()
+  @IsUUID() // Ensure it's a valid UUID
+  userId: string; // Add userId field
 }
