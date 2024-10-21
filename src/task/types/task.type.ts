@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Task } from '../entities/task.entity';
+import { UserType } from 'src/user/types/user.type';
 
 @ObjectType()
 class TagType {
@@ -12,7 +13,7 @@ class TagType {
 
 @ObjectType()
 export class TaskType extends Task {
-  @Field(() => ID)
+  @Field((type) => ID)
   id: string;
 
   @Field()
@@ -26,4 +27,7 @@ export class TaskType extends Task {
 
   @Field(() => [TagType], { nullable: true })
   tags?: TagType[];
+
+  @Field(() => UserType) // Include UserType
+  user: UserType; // Add this line to include the user
 }
