@@ -3,7 +3,7 @@ import { IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 @InputType()
-class TagInput {
+export class TagInput {
   @Field()
   @IsNotEmpty({ message: 'Tag name is required' })
   name: string;
