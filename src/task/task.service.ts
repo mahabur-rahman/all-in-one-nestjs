@@ -19,6 +19,4 @@ export class TaskService {
     console.log(task);
     return this.taskRepository.save(task); // Saving the task will automatically set the user
   }
-
-    
 }
