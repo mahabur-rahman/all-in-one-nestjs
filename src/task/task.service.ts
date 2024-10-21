@@ -13,7 +13,7 @@ export class TaskService {
 
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepository.create(createTaskDto);
-    console.log(task);
+
     return this.taskRepository.save(task);
   }
 }
