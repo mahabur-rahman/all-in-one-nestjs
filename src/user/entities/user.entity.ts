@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { registerEnumType } from '@nestjs/graphql';
+import { Task } from 'src/task/entities/task.entity';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -38,4 +39,7 @@ export class User {
     default: Role.USER,
   })
   role: Role;
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[]; // Add this line to establish the relationship
 }

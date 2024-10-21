@@ -1,8 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Task {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid') // Use UUID for the primary key
   id: string;
 
   @Column()
@@ -19,4 +20,13 @@ export class Task {
     name: string;
     color: string;
   }[];
+
+  @ManyToOne(() => User, (user) => user.tasks, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  user: User;
+
+  @Column({ type: 'uuid', nullable: true })
+  userId: string;
 }
