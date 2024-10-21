@@ -18,5 +18,5 @@ export class Task {
   tags?: {
     name: string;
     color: string;
-  }[]; // Array of objects with 'name' and 'color' [ {}, {} ]
+  }[];
 }
