@@ -18,6 +18,6 @@ export class TaskService {
   }
 
   async findAllTask(): Promise<Task[]> {
-    return this.taskRepository.find({ relations: ['user'] }); // Fetch all tasks with related user
+    return this.taskRepository.find({ relations: ['user'] });
   }
 }

@@ -28,6 +28,6 @@ export class TaskType extends Task {
   @Field(() => [TagType], { nullable: true })
   tags?: TagType[];
 
-  @Field(() => UserType) // Include UserType
-  user: UserType; // Add this line to include the user
+  @Field(() => UserType)
+  user: UserType;
 }

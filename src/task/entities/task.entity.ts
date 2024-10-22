@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Task {
-  @PrimaryGeneratedColumn('uuid') // Use UUID for the primary key
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -27,6 +27,6 @@ export class Task {
   })
   user: User;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column()
   userId: string;
 }
