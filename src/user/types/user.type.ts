@@ -22,7 +22,6 @@ export class UserType extends User {
   @Field(() => Role)
   role: Role;
 
-
-  @Field(() => [TaskType], { nullable: true }) // Add the tasks field
+  @Field(() => [TaskType], { nullable: true })
   tasks: TaskType[];
 }

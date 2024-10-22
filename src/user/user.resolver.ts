@@ -16,6 +16,6 @@ export class UserResolver {
 
   @Query(() => [UserType])
   async findAllUsers(): Promise<UserType[]> {
-    return this.userService.findAllUsers();
+    return this.userService.findAllUsers(); // This includes tasks due to relations: ['tasks']
   }
 }
