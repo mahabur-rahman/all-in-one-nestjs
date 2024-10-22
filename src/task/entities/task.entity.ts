@@ -21,12 +21,6 @@ export class Task {
     color: string;
   }[];
 
-  // @ManyToOne(() => User, (user) => user.tasks, {
-  //   nullable: false,
-  //   onDelete: 'CASCADE',
-  // })
-  // user: User;
-
   @ManyToOne(() => User, (user) => user.tasks, {
     nullable: false,
     onDelete: 'CASCADE',
