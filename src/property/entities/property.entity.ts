@@ -69,6 +69,21 @@ class Unit {
   unitPlanImages: string[];
 }
 
+// Embedded entity for PaymentPlan
+class PaymentPlan {
+  @Column()
+  title: string;
+
+  @Column({ type: 'json' })
+  schedule: {
+    onBooking: number;
+    duringConstruction: number;
+    uponHandOver: number;
+    twelveMonthsAfterBooking: number;
+    eightMonthsAfterBooking: number;
+  };
+}
+
 // Main Property entity
 @Entity()
 export class Property {
@@ -181,6 +196,8 @@ export class Property {
   @Column(() => Unit)
   typicalUnitAndPrices: Unit[];
 
+  @Column(() => PaymentPlan)
+  paymentPlans: PaymentPlan[];
   // Creation timestamp
   @CreateDateColumn()
   createdAt: Date;
