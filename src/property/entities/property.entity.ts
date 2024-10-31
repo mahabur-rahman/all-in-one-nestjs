@@ -31,6 +31,19 @@ class Landmark {
   distance: number; // distance in km
 }
 
+// Embedded entity for parking facility details
+class ParkingFacility {
+  @Column()
+  bedrooms: string;
+
+  @Column()
+  propertyType: string;
+
+  @Column({ type: 'int' })
+  parkingSpaces: number;
+}
+
+// Main Property entity
 @Entity()
 export class Property {
   @PrimaryGeneratedColumn()
@@ -49,16 +62,16 @@ export class Property {
   @Column({ length: 50 })
   projectStatus: string;
 
-  @Column()
+  @Column('simple-array')
   unitType: string[];
 
   @Column({ type: 'int', nullable: true })
-  floors: string;
+  floors: number;
 
   @Column({ length: 255, nullable: true })
   furnishing: string;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   serviceCharge: number;
 
   @Column({ length: 255, nullable: true })
@@ -82,13 +95,14 @@ export class Property {
   @Column({ length: 255, nullable: true })
   city: string;
 
-  @Column()
+  // Project Images
+  @Column('simple-array', { nullable: true })
   projectImageOne: string[];
 
-  @Column()
+  @Column('simple-array', { nullable: true })
   projectImageTwo: string[];
 
-  @Column()
+  @Column('simple-array', { nullable: true })
   projectImageThree: string[];
 
   // ===== Project Overview =====
@@ -108,18 +122,17 @@ export class Property {
   locationDescription: string;
 
   // Visualizations
-  @Column({ type: 'simple-array', nullable: true })
+  @Column('simple-array', { nullable: true })
   exteriorImages: string[];
 
-  @Column({ type: 'simple-array', nullable: true })
+  @Column('simple-array', { nullable: true })
   interiorImages: string[];
 
   // ======================== Location and Plans ========================
-
   @Column({ length: 500, nullable: true })
   projectLocationLink: string; // Link to Google Maps
 
-  @Column((type) => Landmark)
+  @Column(() => Landmark)
   landmarks: Landmark[]; // Array of landmarks
 
   @Column({ nullable: true })
@@ -127,6 +140,13 @@ export class Property {
 
   @Column({ nullable: true })
   buildingsImage: string;
+
+  // ======================== Parking Facilities ========================
+  @Column('simple-array', { nullable: true })
+  parkingFacilityImages: string[];
+
+  @Column(() => ParkingFacility)
+  parkingDetails: ParkingFacility[];
 
   // Creation timestamp
   @CreateDateColumn()
