@@ -84,6 +84,21 @@ class PaymentPlan {
   };
 }
 
+// Inventory
+class InventoryUnitDetails {
+  @Column()
+  bedrooms: string;
+
+  @Column()
+  minSize: number;
+
+  @Column()
+  maxSize: number;
+
+  @Column()
+  quantity: number;
+}
+
 // Main Property entity
 @Entity()
 export class Property {
@@ -198,6 +213,14 @@ export class Property {
 
   @Column(() => PaymentPlan)
   paymentPlans: PaymentPlan[];
+
+  // ======================== Inventory Overview ========================
+  @Column()
+  inventoryImages: string[];
+
+  @Column(() => InventoryUnitDetails)
+  inventoryUnitDetails: InventoryUnitDetails[];
+
   // Creation timestamp
   @CreateDateColumn()
   createdAt: Date;
