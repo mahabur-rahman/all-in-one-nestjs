@@ -43,6 +43,14 @@ class ParkingFacility {
   parkingSpaces: number;
 }
 
+class Facilities {
+  @Column()
+  facilityName: string;
+
+  @Column({ type: 'int' })
+  facilityImage: string;
+}
+
 // Main Property entity
 @Entity()
 export class Property {
@@ -143,7 +151,10 @@ export class Property {
 
   // ======================== Parking Facilities ========================
   @Column('simple-array', { nullable: true })
-  parkingFacilityImages: string[];
+  facilities: Facilities[];
+
+  @Column('simple-array', { nullable: true })
+  parkingFacilityImage: string;
 
   @Column(() => ParkingFacility)
   parkingDetails: ParkingFacility[];
