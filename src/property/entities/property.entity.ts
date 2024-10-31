@@ -99,6 +99,42 @@ class InventoryUnitDetails {
   quantity: number;
 }
 
+// Additional Information and Contact Details
+
+class Videos {
+  @Column({ nullable: true })
+  propertyShowcaseVideo: string;
+
+  @Column({ nullable: true })
+  projectVideo: string;
+}
+
+class CompanyDetails {
+  @Column()
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  website: string;
+
+  @Column()
+  address: string;
+
+  @Column()
+  country: string;
+
+  @Column()
+  city: string;
+
+  @Column({ nullable: true })
+  logo: string; // Stores path or filename for the company logo
+}
+
 // Main Property entity
 @Entity()
 export class Property {
@@ -220,6 +256,13 @@ export class Property {
 
   @Column(() => InventoryUnitDetails)
   inventoryUnitDetails: InventoryUnitDetails[];
+
+  //  ========================  Additional Information and Contact Details ========================
+  @Column(() => Videos)
+  videos: Videos;
+
+  @Column(() => CompanyDetails)
+  companyDetails: CompanyDetails;
 
   // Creation timestamp
   @CreateDateColumn()
