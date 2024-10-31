@@ -51,6 +51,21 @@ class Facilities {
   facilityImage: string;
 }
 
+// Embedded entity for payment plan schedule
+class PaymentSchedule {
+  @Column({ type: 'varchar', length: 255 })
+  title: string;
+
+  @Column({ type: 'simple-array', nullable: true })
+  schedule: number[]; // Payment percentages as array
+
+  @Column({ default: false })
+  customPaymentSchedule: boolean;
+
+  @Column({ type: 'text', nullable: true })
+  conditions: string;
+}
+
 // Main Property entity
 @Entity()
 export class Property {
@@ -158,6 +173,17 @@ export class Property {
 
   @Column(() => ParkingFacility)
   parkingDetails: ParkingFacility[];
+
+  // ======================== Units and Financial Details ========================
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  priceRangeFrom: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  priceRangeTo: number;
+
+  // Payment Plans
+  @Column(() => PaymentSchedule)
+  paymentPlans: PaymentSchedule[];
 
   // Creation timestamp
   @CreateDateColumn()
