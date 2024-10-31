@@ -8,6 +8,7 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
+import { PropertyModule } from './property/property.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRoot(typeOrmConfig),
     TaskModule,
     UserModule,
+    PropertyModule,
   ],
   providers: [AppService, AppResolver],
 })
