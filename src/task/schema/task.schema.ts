@@ -5,7 +5,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 })
 export class Task {
   @Prop()
-  name: string;
+  title: string;
 }
 
 // Create the schema factory
