@@ -17,6 +17,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { NotificationModule } from './notification/notification.module';
 import { GmailModule } from './gmail/gmail.module';
 import { CalenderModule } from './calender/calender.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CalenderModule } from './calender/calender.module';
     NotificationModule,
     GmailModule,
     CalenderModule,
+    TaskModule,
   ],
   providers: [
     AppResolver,
