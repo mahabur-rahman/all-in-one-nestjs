@@ -16,7 +16,7 @@ import { PropertyModule } from './property/property.module';
       envFilePath: '.env',
       isGlobal: true,
     }),
-
+    
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
@@ -28,7 +28,7 @@ import { PropertyModule } from './property/property.module';
     TypeOrmModule.forRoot(typeOrmConfig),
     TaskModule,
     UserModule,
-    PropertyModule,
+    // PropertyModule,
   ],
   providers: [AppService, AppResolver],
 })
