@@ -100,7 +100,6 @@ class InventoryUnitDetails {
 }
 
 // Additional Information and Contact Details
-
 class Videos {
   @Column({ nullable: true })
   propertyShowcaseVideo: string;
@@ -238,7 +237,7 @@ export class Property {
   facilities: Facilities[];
 
   @Column('simple-array', { nullable: true })
-  parkingFacilityImage: string;
+  parkingFacilityImage: string[];
 
   @Column(() => ParkingFacility)
   parkingDetails: ParkingFacility[];
@@ -251,7 +250,7 @@ export class Property {
   paymentPlans: PaymentPlan[];
 
   // ======================== Inventory Overview ========================
-  @Column()
+  @Column('simple-array', { nullable: true })
   inventoryImages: string[];
 
   @Column(() => InventoryUnitDetails)
