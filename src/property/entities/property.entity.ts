@@ -223,7 +223,7 @@ export class Property {
   @Column({ length: 500, nullable: true })
   projectLocationLink: string; // Link to Google Maps
 
-  @Column(() => Landmark)
+  @Column(() => Landmark, { array: true })
   landmarks: Landmark[]; // Array of landmarks
 
   @Column({ nullable: true })
