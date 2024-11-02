@@ -9,6 +9,181 @@ import { Currency } from '../entities/property.entity';
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
+class RangeInput {
+  @Field()
+  @IsNumber()
+  minPrice: number;
+
+  @Field()
+  @IsNumber()
+  maxPrice: number;
+
+  @Field()
+  @IsNumber()
+  minSize: number;
+
+  @Field()
+  @IsNumber()
+  maxSize: number;
+}
+
+@InputType()
+class VideosInput {
+  @Field({ nullable: true })
+  propertyShowcaseVideo?: string;
+
+  @Field({ nullable: true })
+  projectVideo?: string;
+}
+
+@InputType()
+class LandmarkInput {
+  @Field()
+  @IsString()
+  name: string;
+
+  @Field()
+  @IsNumber()
+  distance: number; // distance in km
+}
+
+@InputType()
+class FacilityInput {
+  @Field()
+  @IsString()
+  facilityName: string;
+
+  @Field()
+  @IsString()
+  facilityImage: string;
+}
+
+@InputType()
+class ParkingDetailInput {
+  @Field()
+  @IsString()
+  bedrooms: string;
+
+  @Field()
+  @IsString()
+  propertyType: string;
+
+  @Field()
+  @IsNumber()
+  parkingSpaces: number;
+}
+
+@InputType()
+class ScheduleInput {
+  @Field()
+  @IsNumber()
+  onBooking: number;
+
+  @Field()
+  @IsNumber()
+  duringConstruction: number;
+
+  @Field()
+  @IsNumber()
+  uponHandOver: number;
+
+  @Field()
+  @IsNumber()
+  twelveMonthsAfterBooking: number;
+
+  @Field()
+  @IsNumber()
+  eightMonthsAfterBooking: number;
+}
+
+@InputType()
+class PaymentPlanInput {
+  @Field()
+  @IsString()
+  title: string;
+
+  @Field(() => ScheduleInput)
+  schedule: ScheduleInput;
+}
+
+@InputType()
+class UnitInput {
+  @Field(() => RangeInput)
+  unitPriceRange: RangeInput;
+
+  @Field(() => RangeInput)
+  unitSizeRange: RangeInput;
+
+  @Field()
+  @IsString()
+  unitPropertyType: string;
+
+  @Field()
+  @IsString()
+  unitBedrooms: string;
+
+  @Field(() => [String])
+  @IsArray()
+  unitPlanImages: string[];
+}
+
+@InputType()
+class InventoryUnitDetailInput {
+  @Field()
+  @IsString()
+  bedrooms: string;
+
+  @Field()
+  @IsNumber()
+  minSize: number;
+
+  @Field()
+  @IsNumber()
+  maxSize: number;
+
+  @Field()
+  @IsNumber()
+  quantity: number;
+}
+
+@InputType()
+class CompanyDetailsInput {
+  @Field()
+  @IsString()
+  name: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @Field()
+  @IsString()
+  email: string;
+
+  @Field()
+  @IsString()
+  website: string;
+
+  @Field()
+  @IsString()
+  address: string;
+
+  @Field()
+  @IsString()
+  country: string;
+
+  @Field()
+  @IsString()
+  city: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  logo?: string;
+}
+
+@InputType()
 export class CreatePropertyDto {
   @Field()
   @IsString()
@@ -172,179 +347,4 @@ export class CreatePropertyDto {
   @Field(() => CompanyDetailsInput, { nullable: true })
   @IsOptional()
   companyDetails?: CompanyDetailsInput;
-}
-
-@InputType()
-class LandmarkInput {
-  @Field()
-  @IsString()
-  name: string;
-
-  @Field()
-  @IsNumber()
-  distance: number; // distance in km
-}
-
-@InputType()
-class FacilityInput {
-  @Field()
-  @IsString()
-  facilityName: string;
-
-  @Field()
-  @IsString()
-  facilityImage: string;
-}
-
-@InputType()
-class ParkingDetailInput {
-  @Field()
-  @IsString()
-  bedrooms: string;
-
-  @Field()
-  @IsString()
-  propertyType: string;
-
-  @Field()
-  @IsNumber()
-  parkingSpaces: number;
-}
-
-@InputType()
-class UnitInput {
-  @Field(() => RangeInput)
-  unitPriceRange: RangeInput;
-
-  @Field(() => RangeInput)
-  unitSizeRange: RangeInput;
-
-  @Field()
-  @IsString()
-  unitPropertyType: string;
-
-  @Field()
-  @IsString()
-  unitBedrooms: string;
-
-  @Field(() => [String])
-  @IsArray()
-  unitPlanImages: string[];
-}
-
-@InputType()
-class RangeInput {
-  @Field()
-  @IsNumber()
-  minPrice: number;
-
-  @Field()
-  @IsNumber()
-  maxPrice: number;
-
-  @Field()
-  @IsNumber()
-  minSize: number;
-
-  @Field()
-  @IsNumber()
-  maxSize: number;
-}
-
-@InputType()
-class PaymentPlanInput {
-  @Field()
-  @IsString()
-  title: string;
-
-  @Field(() => ScheduleInput)
-  schedule: ScheduleInput;
-}
-
-@InputType()
-class ScheduleInput {
-  @Field()
-  @IsNumber()
-  onBooking: number;
-
-  @Field()
-  @IsNumber()
-  duringConstruction: number;
-
-  @Field()
-  @IsNumber()
-  uponHandOver: number;
-
-  @Field()
-  @IsNumber()
-  twelveMonthsAfterBooking: number;
-
-  @Field()
-  @IsNumber()
-  eightMonthsAfterBooking: number;
-}
-
-@InputType()
-class InventoryUnitDetailInput {
-  @Field()
-  @IsString()
-  bedrooms: string;
-
-  @Field()
-  @IsNumber()
-  minSize: number;
-
-  @Field()
-  @IsNumber()
-  maxSize: number;
-
-  @Field()
-  @IsNumber()
-  quantity: number;
-}
-
-@InputType()
-class VideosInput {
-  @Field({ nullable: true })
-  propertyShowcaseVideo?: string;
-
-  @Field({ nullable: true })
-  projectVideo?: string;
-}
-
-@InputType()
-class CompanyDetailsInput {
-  @Field()
-  @IsString()
-  name: string;
-
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  @Field()
-  @IsString()
-  email: string;
-
-  @Field()
-  @IsString()
-  website: string;
-
-  @Field()
-  @IsString()
-  address: string;
-
-  @Field()
-  @IsString()
-  country: string;
-
-  @Field()
-  @IsString()
-  city: string;
-
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsString()
-  logo?: string;
 }

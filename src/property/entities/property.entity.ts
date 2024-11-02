@@ -1,3 +1,4 @@
+import { registerEnumType } from '@nestjs/graphql';
 import {
   Entity,
   Column,
@@ -5,13 +6,17 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-// Enum for Currency
 export enum Currency {
   USD = 'USD',
-  TRY = 'TRY',
-  AED = 'AED',
   EUR = 'EUR',
+  GBP = 'GBP',
+  // Add other currencies as needed
 }
+
+// Register the enum with GraphQL
+registerEnumType(Currency, {
+  name: 'Currency', // this is the name that will be used in the GraphQL schema
+});
 
 // Embedded entity for completion date
 class CompletionDate {
