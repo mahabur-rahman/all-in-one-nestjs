@@ -1,25 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { PropertyType, UnitType } from './types/property.type';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Property } from './entities/property.entity'; // Import your Property entity
+import { Property } from './entities/property.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PropertyService {
   constructor(
-    @InjectModel(Property.name) private propertyModel: Model<Property>,
+    @InjectRepository(Property)
+    private readonly propertyRepository: Repository<Property>,
   ) {}
 
   async createProperty(
     createPropertyDto: CreatePropertyDto,
   ): Promise<PropertyType> {
-    const newProperty = new this.propertyModel(createPropertyDto);
-    const savedProperty = await newProperty.save();
+    // Use the create method of the repository to create a new property
+    const newProperty = this.propertyRepository.create(createPropertyDto);
+
+    // Save the new property to the database
+    const savedProperty = await this.propertyRepository.save(newProperty);
 
     // Transform the savedProperty to match PropertyType
     const propertyResponse: PropertyType = {
-      id: savedProperty._id.toString(), // Convert ObjectId to string
+      id: savedProperty.id.toString(), // Convert to string
       projectName: savedProperty.projectName,
       projectTag: savedProperty.projectTag,
       projectStatus: savedProperty.projectStatus,
