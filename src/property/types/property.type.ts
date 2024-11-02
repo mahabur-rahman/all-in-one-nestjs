@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
 
+// Type for Landmark
 @ObjectType()
 class LandmarkType {
   @Field()
@@ -9,6 +10,7 @@ class LandmarkType {
   distance: number;
 }
 
+// Type for Facility
 @ObjectType()
 class FacilityType {
   @Field()
@@ -18,6 +20,7 @@ class FacilityType {
   facilityImage: string;
 }
 
+// Type for Parking Facility
 @ObjectType()
 class ParkingFacilityType {
   @Field()
@@ -30,30 +33,46 @@ class ParkingFacilityType {
   parkingSpaces: number;
 }
 
+// Type for Unit Price Range
 @ObjectType()
-class UnitType {
+class UnitPriceRangeType {
   @Field(() => Float)
   minPrice: number;
 
   @Field(() => Float)
   maxPrice: number;
+}
 
+// Type for Unit Size Range
+@ObjectType()
+class UnitSizeRangeType {
   @Field(() => Float)
   minSize: number;
 
   @Field(() => Float)
   maxSize: number;
+}
 
+// Type for Unit
+@ObjectType()
+export class UnitType {
   @Field()
   unitPropertyType: string;
 
   @Field()
   unitBedrooms: string;
 
+  @Field(() => UnitPriceRangeType)
+  unitPriceRange: UnitPriceRangeType;
+
+  @Field(() => UnitSizeRangeType)
+  unitSizeRange: UnitSizeRangeType;
+
   @Field(() => [String])
   unitPlanImages: string[];
 }
 
+// Type for Payment Schedule
 @ObjectType()
 class PaymentScheduleType {
   @Field(() => Float)
@@ -72,6 +91,7 @@ class PaymentScheduleType {
   eightMonthsAfterBooking: number;
 }
 
+// Type for Payment Plan
 @ObjectType()
 class PaymentPlanType {
   @Field()
@@ -81,6 +101,7 @@ class PaymentPlanType {
   schedule: PaymentScheduleType;
 }
 
+// Type for Inventory Unit Details
 @ObjectType()
 class InventoryUnitDetailsType {
   @Field()
@@ -96,6 +117,7 @@ class InventoryUnitDetailsType {
   quantity: number;
 }
 
+// Type for Videos
 @ObjectType()
 class VideosType {
   @Field({ nullable: true })
@@ -105,6 +127,7 @@ class VideosType {
   projectVideo?: string;
 }
 
+// Type for Company Details
 @ObjectType()
 class CompanyDetailsType {
   @Field()
@@ -132,6 +155,7 @@ class CompanyDetailsType {
   logo?: string;
 }
 
+// Main Property Type
 @ObjectType()
 export class PropertyType {
   @Field(() => ID)
