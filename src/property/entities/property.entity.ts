@@ -29,7 +29,7 @@ export class Property {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // ============== Project Basic Information ==============
+  // ============== 1st step ==============
   @Column({ length: 255 })
   projectName: string;
 
@@ -80,4 +80,6 @@ export class Property {
 
   @Column('simple-array')
   projectImages: string[];
+
+  // ============== 2nd step ==============
 }
