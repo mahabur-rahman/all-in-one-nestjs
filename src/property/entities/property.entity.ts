@@ -82,4 +82,22 @@ export class Property {
   projectImages: string[];
 
   // ============== 2nd step ==============
+
+  @Column()
+  projectGeneralFacts: string;
+
+  @Column()
+  projectFinishingAndMaterials: string;
+
+  @Column()
+  projectKitchenAndAppliances: string;
+
+  @Column()
+  projectFurnishingDetails: string;
+
+  @Column('simple-array')
+  exteriorImages: string[];
+
+  @Column('simple-array')
+  interiorImages: string[];
 }
