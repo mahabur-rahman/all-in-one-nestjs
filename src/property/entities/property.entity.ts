@@ -16,6 +16,14 @@ export enum ProjectStatus {
   PLANNED = 'planned',
 }
 
+// currency
+export enum Currency {
+  USD = 'USD',
+  TRY = 'TRY',
+  AED = 'AED',
+  EUR = 'EUR',
+}
+
 // main property entity
 export class Property {
   @PrimaryGeneratedColumn()
@@ -36,4 +44,40 @@ export class Property {
     enum: ProjectStatus,
   })
   projectStatus: ProjectStatus;
+
+  @Column('simple-array')
+  unitType: string[];
+
+  @Column()
+  floors: string;
+
+  @Column()
+  Furnishing: string;
+
+  @Column()
+  serviceCharge: string;
+
+  @Column()
+  readinessProgress;
+
+  @Column({
+    type: 'enum',
+    enum: Currency,
+  })
+  currency: Currency;
+
+  @Column()
+  sizeUnit: string;
+
+  @Column()
+  country: string;
+
+  @Column()
+  district: string;
+
+  @Column()
+  city: string;
+
+  @Column('simple-array')
+  projectImages: string[];
 }
