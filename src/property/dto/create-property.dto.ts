@@ -108,23 +108,28 @@ class PaymentPlanInput {
 
 @InputType()
 class UnitInput {
-  @Field(() => RangeInput)
-  unitPriceRange: RangeInput;
+  @Field(() => RangeInput, { nullable: true })
+  @IsOptional()
+  unitPriceRange?: RangeInput;
 
-  @Field(() => RangeInput)
-  unitSizeRange: RangeInput;
+  @Field(() => RangeInput, { nullable: true })
+  @IsOptional()
+  unitSizeRange?: RangeInput;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  unitPropertyType: string;
+  @IsOptional()
+  unitPropertyType?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  unitBedrooms: string;
+  @IsOptional()
+  unitBedrooms?: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  unitPlanImages: string[];
+  @IsOptional()
+  unitPlanImages?: string[];
 }
 
 @InputType()
