@@ -13,7 +13,7 @@ class CompletionDateType {
 @ObjectType()
 export class PropertyType {
   @Field(() => ID)
-  id: string;
+  id: number; // Change from string to number
 
   @Field()
   projectName: string;

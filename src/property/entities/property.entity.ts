@@ -1,7 +1,7 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
 
-// completed date
-class CompletionDate {
+// Completed date - define as an embeddable class without @Entity decorator
+export class CompletionDate {
   @Column()
   quarter: string;
 
@@ -9,14 +9,14 @@ class CompletionDate {
   year: string;
 }
 
-// projectStatus
+// ProjectStatus enum
 export enum ProjectStatus {
   CONSTRUCTION = 'construction',
   COMPLETED = 'completed',
   PLANNED = 'planned',
 }
 
-// currency
+// Currency enum
 export enum Currency {
   USD = 'USD',
   TRY = 'TRY',
@@ -24,51 +24,63 @@ export enum Currency {
   EUR = 'EUR',
 }
 
-// main property entity
+// Main property entity
+@Entity()
 export class Property {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // ============== 1st step ==============
+  // Project name
   @Column({ length: 255 })
   projectName: string;
 
+  // Project tag
   @Column()
   projectTag: string;
 
+  // Completion date as an embedded entity
   @Column(() => CompletionDate)
   completionDate: CompletionDate;
 
+  // Project status
   @Column({
     type: 'enum',
     enum: ProjectStatus,
   })
   projectStatus: ProjectStatus;
 
+  // Unit types
   @Column('simple-array')
   unitType: string[];
 
+  // Floors
   @Column()
   floors: string;
 
+  // Furnishing details
   @Column()
-  Furnishing: string;
+  furnishing: string;
 
+  // Service charge
   @Column()
   serviceCharge: string;
 
+  // Readiness progress
   @Column()
-  readinessProgress;
+  readinessProgress: string; // Specify the type (string or another type)
 
+  // Currency type
   @Column({
     type: 'enum',
     enum: Currency,
   })
   currency: Currency;
 
+  // Size unit
   @Column()
   sizeUnit: string;
 
+  // Address details
   @Column()
   country: string;
 
@@ -78,23 +90,27 @@ export class Property {
   @Column()
   city: string;
 
+  // Project images
   @Column('simple-array')
   projectImages: string[];
 
-  // ============== 2nd step ==============
-
+  // General facts about the project
   @Column()
   projectGeneralFacts: string;
 
+  // Finishing and materials used
   @Column()
   projectFinishingAndMaterials: string;
 
+  // Kitchen and appliances included
   @Column()
   projectKitchenAndAppliances: string;
 
+  // Furnishing details
   @Column()
   projectFurnishingDetails: string;
 
+  // Exterior and interior images
   @Column('simple-array')
   exteriorImages: string[];
 
