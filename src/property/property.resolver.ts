@@ -20,4 +20,12 @@ export class PropertyResolver {
   async findAllProperties(): Promise<PropertyType[]> {
     return this.propertyService.finAll();
   }
+
+  // delete property
+  @Mutation(() => String)
+  async deleteProperty(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<string> {
+    return this.propertyService.delete(id);
+  }
 }

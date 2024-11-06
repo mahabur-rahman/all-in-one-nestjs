@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Property } from './entities/property.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,5 +19,16 @@ export class PropertyService {
   // get all properties
   async finAll(): Promise<Property[]> {
     return this.propertyRepository.find();
+  }
+
+  // delete property
+  async delete(id: string): Promise<string> {
+    const result = await this.propertyRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Property with ID ${id} not found`);
+    }
+
+    return `Property with ID ${id} deleted successfully.`;
   }
 }
