@@ -3,6 +3,7 @@ import { Property } from './entities/property.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePropertyDto } from './dto/create-property.dto';
+import { UpdatePropertyDto } from './dto/update-property.dto';
 
 @Injectable()
 export class PropertyService {
@@ -43,5 +44,29 @@ export class PropertyService {
     }
 
     return property;
+  }
+
+  // Update property
+  async update(
+    id: string,
+    updatePropertyDto: UpdatePropertyDto,
+  ): Promise<Property> {
+    // Convert the id to a number
+    const property = await this.propertyRepository.findOne({
+      where: { id: Number(id) }, // Convert id to number
+    });
+
+    if (!property) {
+      throw new NotFoundException(`Property with ID ${id} not found`);
+    }
+
+    // Merge the existing property with the new data from the DTO
+    const updatedProperty = this.propertyRepository.merge(
+      property,
+      updatePropertyDto,
+    );
+
+    // Save and return the updated property
+    return this.propertyRepository.save(updatedProperty);
   }
 }
