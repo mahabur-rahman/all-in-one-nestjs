@@ -15,4 +15,9 @@ export class PropertyService {
     const newProperty = this.propertyRepository.create(createPropertyDto);
     return this.propertyRepository.save(newProperty);
   }
+
+  // get all properties
+  async finAll(): Promise<Property[]> {
+    return this.propertyRepository.find();
+  }
 }
