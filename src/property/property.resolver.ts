@@ -41,7 +41,7 @@ export class PropertyResolver {
 
   // Mutation to update an existing property
   @Mutation(() => PropertyType)
-  async editProperty(
+  async updateProperty(
     @Args('id', { type: () => String }) id: string, // ID of the property to update
     @Args('updatePropertyInput', { type: () => UpdatePropertyDto })
     updatePropertyDto: UpdatePropertyDto, // The new data
