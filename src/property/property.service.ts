@@ -31,4 +31,17 @@ export class PropertyService {
 
     return `Property with ID ${id} deleted successfully.`;
   }
+
+  // get single property
+  async findOne(id: string): Promise<Property> {
+    const property = await this.propertyRepository.findOne({
+      where: { id: parseInt(id) }, // convert string to number
+    });
+
+    if (!property) {
+      throw new NotFoundException(`Property with ID ${id} not found`);
+    }
+
+    return property;
+  }
 }

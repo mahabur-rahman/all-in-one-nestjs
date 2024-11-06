@@ -28,4 +28,13 @@ export class PropertyResolver {
   ): Promise<string> {
     return this.propertyService.delete(id);
   }
+
+  // get single property
+  // Query to get a single property by its ID
+  @Query(() => PropertyType)
+  async getProperty(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<PropertyType> {
+    return this.propertyService.findOne(id);
+  }
 }
