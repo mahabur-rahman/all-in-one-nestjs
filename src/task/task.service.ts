@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Not } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 
@@ -42,8 +42,9 @@ export class TaskService {
     const task = await this.taskRepository.findOne({
       where: {
         id,
-        deletedAt: Not(null),
+        deletedAt: Not(IsNull()), // Check if deletedAt is not null
       },
+      withDeleted: true, // Include soft-deleted records in the query
     });
 
     if (!task) {
@@ -52,7 +53,7 @@ export class TaskService {
       );
     }
 
-    task.deletedAt = null;
+    task.deletedAt = null; // Reset the deletedAt field to null to restore
     await this.taskRepository.save(task);
 
     return 'Task restored successfully';
