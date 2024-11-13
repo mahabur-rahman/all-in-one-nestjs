@@ -18,4 +18,11 @@ export class TaskResolver {
   async findAllTask(): Promise<TaskType[]> {
     return this.taskService.findAllTask();
   }
+
+  // delete task
+
+  @Mutation(() => String) // Return type changed to String for the success message
+  async deleteTask(@Args('id') id: string): Promise<string> {
+    return this.taskService.deleteTask(id);
+  }
 }
