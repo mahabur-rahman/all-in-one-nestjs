@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Not, IsNull } from 'typeorm';
+import { Repository, Not, IsNull, LessThan } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class TaskService {
@@ -57,5 +58,20 @@ export class TaskService {
     await this.taskRepository.save(task);
 
     return 'Task restored successfully';
+  }
+
+  // Permanently delete tasks that were soft-deleted more than 1 minute ago
+  @Cron('*/1 * * * *') // Runs every minute
+  async deleteOldSoftDeletedTasks() {
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000); // Get the timestamp for 1 minute ago
+
+    // Delete tasks where deletedAt is older than one minute ago
+    const result = await this.taskRepository.delete({
+      deletedAt: LessThan(oneMinuteAgo), // Tasks that have been soft-deleted for over 1 minute
+    });
+
+    if (result.affected) {
+      console.log(`${result.affected} tasks permanently deleted.`);
+    }
   }
 }
