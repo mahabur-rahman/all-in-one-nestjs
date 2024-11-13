@@ -1,5 +1,11 @@
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Task {
@@ -29,4 +35,8 @@ export class Task {
 
   @Column()
   userId: string;
+
+  // soft delete when the task is deleted
+  @DeleteDateColumn({ nullable: true })
+  deletedAt?: Date;
 }
