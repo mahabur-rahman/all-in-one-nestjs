@@ -58,7 +58,7 @@ export class PropertyType {
   city: string;
 
   @Field(() => [String], { nullable: true })
-  projectImages: string[];
+  projectImages?: string[];
 
   @Field()
   projectGeneralFacts: string;
@@ -73,8 +73,8 @@ export class PropertyType {
   projectFurnishingDetails: string;
 
   @Field(() => [String], { nullable: true })
-  exteriorImages: string[];
+  exteriorImages?: string[];
 
   @Field(() => [String], { nullable: true })
-  interiorImages: string[];
+  interiorImages?: string[];
 }

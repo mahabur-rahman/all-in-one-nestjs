@@ -1,3 +1,4 @@
+import { Field } from '@nestjs/graphql';
 import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
 
 // Completed date - define as an embeddable class without @Entity decorator
@@ -91,8 +92,9 @@ export class Property {
   city: string;
 
   // Project images
-  @Column('simple-array')
-  projectImages: string[];
+  @Field(() => [String], { nullable: true })
+  @Column('text', { array: true, nullable: true }) // Set nullable to true
+  projectImages?: string[];
 
   // General facts about the project
   @Column()
@@ -111,9 +113,11 @@ export class Property {
   projectFurnishingDetails: string;
 
   // Exterior and interior images
-  @Column('simple-array')
-  exteriorImages: string[];
+  @Field(() => [String], { nullable: true })
+  @Column('text', { array: true, nullable: true }) // Set nullable to true
+  exteriorImages?: string[];
 
-  @Column('simple-array')
-  interiorImages: string[];
+  @Field(() => [String], { nullable: true })
+  @Column('text', { array: true, nullable: true }) // Set nullable to true
+  interiorImages?: string[];
 }

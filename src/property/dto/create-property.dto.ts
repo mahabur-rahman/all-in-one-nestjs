@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsArray,
   ValidateNested,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Currency, ProjectStatus } from '../entities/property.entity';
@@ -101,10 +102,11 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   city: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsString({ each: true })
-  projectImages: string[];
+  @IsOptional()
+  projectImages?: string[];
 
   @Field()
   @IsString()
@@ -126,13 +128,15 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   projectFurnishingDetails: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsString({ each: true })
-  exteriorImages: string[];
+  @IsOptional()
+  exteriorImages?: string[];
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsString({ each: true })
-  interiorImages: string[];
+  @IsOptional()
+  interiorImages?: string[];
 }
