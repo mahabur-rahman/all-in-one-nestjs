@@ -10,6 +10,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   database: 'taskmanagement',
   // entities: [Task],
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   synchronize: true,
 };
