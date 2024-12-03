@@ -80,3 +80,59 @@ Nest is [MIT licensed](LICENSE).
 Username: mahabur.dev@gmail.com
 password: Annur@119766annur@119766annur@119766
 recover code : RR5GGWGFH4KE2FAWWJS6UTBW
+
+
+
+===========================================================  Database migration with Postgres ========================================================
+
+1. Folder create : db => data-source.ts
+
+2. In data-source.ts file : 
+
+import { DataSource, DataSourceOptions } from 'typeorm';
+
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'root',
+  database: 'taskmanagement',
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/../db/migrations/*{.ts,.js}'],
+  synchronize: true,
+};
+
+const dataSource = new DataSource(dataSourceOptions);
+
+export default dataSource;
+
+
+
+3. Add this line in our App.module.ts file: 
+    TypeOrmModule.forRoot(dataSourceOptions),
+
+
+
+4. Added these lines in package.json file: 
+5. 
+   "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert"
+
+
+
+
+  6. Open your terminal and run this command : 
+   one terminal: npm run start
+  other terminal: npm run migration:generate -- db/migrations/NewMigrations (if i add age filed then name will be like that: newAgeMigrations just use for sample)
+
+  it will create in db folder with migration folder 
+
+  db folder => migration folder => 45224234234254-NewMigrations..ts 
+
+
+
+  7. again run this command : 
+   npm run migration:run
