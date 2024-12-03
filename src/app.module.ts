@@ -3,13 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { AppService } from './app.service';
 import { AppResolver } from './app.resolver';
-import { typeOrmConfig } from './config/typeorm.config';
-import { TaskModule } from './task/task.module';
+// import { typeOrmConfig } from './config/typeorm.config';
 import { UserModule } from './user/user.module';
-import { PropertyModule } from './property/property.module';
+import { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
@@ -23,10 +21,8 @@ import { PropertyModule } from './property/property.module';
       playground: true,
       installSubscriptionHandlers: true,
     }),
-    TypeOrmModule.forRoot(typeOrmConfig),
-    TaskModule,
+    TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
-    PropertyModule,
   ],
   providers: [AppService, AppResolver],
 })

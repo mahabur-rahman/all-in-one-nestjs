@@ -15,8 +15,8 @@ async function bootstrap() {
 
   // Configure CORS
   app.enableCors({
-    origin: 'http://localhost:3000', // Adjust with your frontend URL
-    credentials: true, // Allow cookies and credentials to be sent cross-origin
+    origin: 'http://localhost:3000',
+    credentials: true,
   });
 
   const port = process.env.PORT || 3000;
