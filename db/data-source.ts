@@ -1,15 +1,13 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 export const dataSourceOptions: DataSourceOptions = {
-  type: 'postgres',
+  type: 'mongodb',
   host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'root',
-  database: 'taskmanagement',
+  port: 27017,
+  database: 'db-migrations',
+  useUnifiedTopology: true,
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../db/migrations/*{.ts,.js}'],
-  synchronize: true,
 };
 
 const dataSource = new DataSource(dataSourceOptions);

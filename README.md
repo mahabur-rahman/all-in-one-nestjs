@@ -136,3 +136,11 @@ export default dataSource;
 
   7. again run this command : 
    npm run migration:run
+
+
+
+
+
+
+
+   ===========================================================  Database migration with MONGODB ========================================================
