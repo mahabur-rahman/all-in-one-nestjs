@@ -5,4 +5,10 @@ import { User } from '../entities/user.entity';
 export class UserType extends User {
   @Field()
   username: string;
+
+  @Field()
+  profileImg: string;
+
+  @Field()
+  country: string;
 }

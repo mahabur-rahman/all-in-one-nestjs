@@ -6,4 +6,11 @@ export class CreateUserDto {
   @Field()
   @IsNotEmpty()
   username: string;
+
+  @Field()
+  @IsNotEmpty()
+  profileImg: string;
+
+  @Field()
+  country: string;
 }
