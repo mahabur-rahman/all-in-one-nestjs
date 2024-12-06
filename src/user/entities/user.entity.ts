@@ -13,4 +13,7 @@ export class User {
 
   @Column()
   country: string;
+
+  @Column({ default: '' })
+  testing: string; // New field added
 }

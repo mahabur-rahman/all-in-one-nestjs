@@ -5,11 +5,10 @@ export const dataSourceOptions: DataSourceOptions = {
   host: 'localhost',
   port: 27017,
   database: 'db-migrations',
-  useUnifiedTopology: true,
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/../db/migrations/*{.ts,.js}'],
+  entities: ['dist/**/*.entity.js'],
+  migrations: ['dist/db/migrations/*.js'],
+  synchronize: true, // Enables schema synchronization
 };
 
 const dataSource = new DataSource(dataSourceOptions);
-
 export default dataSource;
