@@ -144,3 +144,61 @@ export default dataSource;
 
 
    ===========================================================  Database migration with MONGODB ========================================================
+
+   package.json file: 
+
+    "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert"
+
+
+1. data-source.ts file: 
+
+   import { DataSource, DataSourceOptions } from 'typeorm';
+
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'mongodb',
+  host: 'localhost',
+  port: 27017,
+  database: 'db-migrations',
+  entities: ['dist/**/*.entity.js'],
+  migrations: ['dist/db/migrations/*.js'],
+  synchronize: true, // Enables schema synchronization
+};
+
+const dataSource = new DataSource(dataSourceOptions);
+export default dataSource;
+
+2.
+
+#For mongodb manually created file because not support with typeOrm 
+
+#Create a file named AddTestingField.ts inside the db/migrations folder:
+
+AddTestingField.ts file: 
+
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+export class AddTestingField1677713423001 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // Add the 'testing' field with a default value to all documents in the 'users' collection
+    await queryRunner.manager.getMongoRepository('users').updateMany(
+      {}, // Update all documents
+      { $set: { testing: '' } } // Default value for the 'testing' field
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // Remove the 'testing' field from all documents in the 'users' collection
+    await queryRunner.manager.getMongoRepository('users').updateMany(
+      {}, // Update all documents
+      { $unset: { testing: '' } } // Remove the 'testing' field
+    );
+  }
+}
+
+
+3. build project : npm run build
+4. Run migration: npm run typeorm -- migration:run
+
