@@ -19,4 +19,7 @@ export class User {
 
   @Column({ default: '' })
   hellowWorld: string; // New field added
+
+  @Column()
+  binary: false; // New field added
 }
