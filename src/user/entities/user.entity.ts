@@ -16,4 +16,7 @@ export class User {
 
   @Column({ default: '' })
   testing: string; // New field added
+
+  @Column({ default: '' })
+  hellowWorld: string; // New field added
 }
