@@ -202,3 +202,7 @@ export class AddTestingField1677713423001 implements MigrationInterface {
 3. build project : npm run build
 4. Run migration: npm run typeorm -- migration:run
 
+
+5. Revert database migration
+  npm run migration:revert
+

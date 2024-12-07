@@ -22,4 +22,7 @@ export class User {
 
   @Column()
   binary: false; // New field added
+
+  @Column()
+  dynamic: string; // New field added
 }
