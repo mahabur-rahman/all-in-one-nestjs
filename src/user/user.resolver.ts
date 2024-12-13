@@ -15,7 +15,10 @@ export class UserResolver {
   }
 
   @Query(() => [UserType])
-  async findAllUsers(): Promise<UserType[]> {
-    return this.userService.findAllUsers();
+  async findAllUsers(
+    @Args('skip', { defaultValue: 0 }) skip: number,
+    @Args('take', { defaultValue: 100 }) take: number,
+  ): Promise<UserType[]> {
+    return this.userService.findAllUsers(skip, take);
   }
 }

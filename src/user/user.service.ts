@@ -17,7 +17,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async findAllUsers(): Promise<UserType[]> {
-    return this.userRepository.find({ relations: ['tasks'] });
+  async findAllUsers(skip: number, take: number): Promise<UserType[]> {
+    return this.userRepository.find({ skip, take, relations: ['tasks'] });
   }
 }
